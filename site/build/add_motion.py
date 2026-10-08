@@ -108,7 +108,7 @@ css = r"""
   .grid li:hover img{transform:scale(1.07)}
   /* cursor paw prints across the hero */
   .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
-  @keyframes pawGhost{12%{opacity:.62;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}
+  @keyframes pawGhost{12%{opacity:.34;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}
     100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}}
 }
 """
