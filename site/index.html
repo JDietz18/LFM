@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Foot Munchkins</title>
+<meta name="description" content="Little Foot Munchkins is a small home cattery raising Munchkin kittens. Follow along on Facebook, Instagram and TikTok.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<!--
+  EDIT ME: every placeholder is wrapped in <mark class="edit">…</mark>.
+  Search this file for "class="edit"" and replace each one, then delete the
+  <mark> tags. Social links are in the three <a class="social"> buttons and
+  again in the "Follow along" section.
+-->
+<style>
+:root{
+  --whitewash:#F7F3EC;
+  --linen:#EDE5D8;
+  --ink:#3A3532;
+  --ink-soft:#6B635D;
+  --teal:#2E8B8B;
+  --teal-deep:#236F6F;
+  --blush:#F0CFC0;
+  --sage:#9DAE98;
+  --script:'Great Vibes',cursive;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Nunito',system-ui,sans-serif;
+  --gutter:clamp(16px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--whitewash);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:var(--teal-deep)}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+h2{font:600 clamp(1.9rem,3.6vw,2.6rem)/1.15 var(--serif);margin:0 0 .6em;letter-spacing:.005em}
+p{margin:0 0 1em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gutter)}
+mark.edit{background:none;color:inherit;border-bottom:2px dotted var(--teal);cursor:help}
+
+/* hero: text panel beside an arched photo */
+.hero{padding:clamp(28px,5vw,64px) 0 clamp(40px,6vw,80px)}
+.hero .wrap{display:grid;gap:clamp(28px,5vw,64px);align-items:center}
+@media (min-width:860px){.hero .wrap{grid-template-columns:1.15fr .85fr}}
+.hero-copy{text-align:center}
+.wordmark{width:100%;max-width:760px;margin:0 auto 1.4rem}
+.tagline{font:italic 500 clamp(1.35rem,2.4vw,1.75rem)/1.35 var(--serif);color:var(--ink);max-width:28ch;margin:0 auto 1.6rem}
+.arch{aspect-ratio:4/5;border-radius:999px 999px 18px 18px;overflow:hidden;background:var(--linen);margin:0 auto;width:min(100%,500px)}
+.arch img{width:100%;height:100%;object-fit:cover}
+.hero .arch{order:-1}
+@media (min-width:860px){.hero .arch{order:0}}
+
+/* social buttons */
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;padding:0;margin:0}
+.social{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;
+  border:1.5px solid var(--teal);color:var(--teal-deep);background:transparent;font:600 1rem var(--sans);text-decoration:none;
+  transition:background-color .15s,color .15s}
+.social svg{width:20px;height:20px;fill:currentColor}
+.social:hover,.social.primary{background:var(--teal);color:#fff}
+.social.primary:hover{background:var(--teal-deep)}
+
+/* about */
+.about{background:var(--linen);padding:clamp(48px,7vw,96px) 0}
+.about .wrap{max-width:720px}
+.about p{font-size:1.08rem}
+
+/* gallery */
+.gallery{padding:clamp(48px,7vw,96px) 0}
+.gallery h2{text-align:center}
+.gallery .lede{text-align:center;max-width:46ch;margin:0 auto 2.2rem;color:var(--ink-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(12px,2vw,22px);list-style:none;padding:0;margin:0}
+.grid li{aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:var(--linen)}
+.grid img{width:100%;height:100%;object-fit:cover}
+
+/* follow along */
+.follow{background:var(--linen);padding:clamp(48px,7vw,96px) 0}
+.follow .wrap{max-width:760px}
+.channels{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.channel{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;padding:18px 20px;border-radius:14px;background:var(--whitewash)}
+.channel .badge{width:52px;height:52px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center}
+.channel .badge svg{width:26px;height:26px;fill:currentColor}
+.channel h3{font:600 1.35rem/1.2 var(--serif);margin:0 0 .15em}
+.channel a{font-weight:600}
+.channel p{margin:.25em 0 0;color:var(--ink-soft)}
+
+/* contact + footer */
+.contact{padding:clamp(48px,7vw,96px) 0 clamp(32px,5vw,56px);text-align:center}
+.contact .wrap{max-width:600px}
+.contact p{font-size:1.08rem}
+footer{padding:0 0 40px;text-align:center;color:var(--ink-soft);font-size:.95rem}
+footer img{width:128px;margin:0 auto 10px;opacity:.85}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <img class="wordmark" src="assets/logo-a-wordmark-ink.svg" alt="Little Foot Munchkins" width="1053" height="170">
+      <p class="tagline">Short legs, big personalities. Munchkin kittens raised in our home, one litter at a time.</p>
+      <ul class="socials">
+        <li><a class="social primary" href="https://www.facebook.com/" rel="me">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg>
+          Facebook</a></li>
+        <li><a class="social" href="https://www.instagram.com/" rel="me">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg>
+          Instagram</a></li>
+        <li><a class="social" href="https://www.tiktok.com/" rel="me">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg>
+          TikTok</a></li>
+      </ul>
+    </div>
+    <div class="arch">
+      <img src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high">
+    </div>
+  </div>
+</header>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <h2>A small home cattery</h2>
+    <p>We're a family-run cattery in <mark class="edit" title="Edit: your town and state">Your Town, ST</mark>, raising Munchkin kittens since <mark class="edit" title="Edit: the year you started">20XX</mark>. Every kitten grows up in our living room, around people, other cats and everyday noise, so they go home confident and cuddly.</p>
+    <p>Kittens leave us at <mark class="edit" title="Edit: the age kittens go home">12 weeks</mark>, vet-checked, with their first vaccinations and a starter kit. Litter announcements and availability are posted on Facebook first.</p>
+  </div>
+</section>
+
+<section class="gallery" id="kittens">
+  <div class="wrap">
+    <h2>Recent kittens</h2>
+    <p class="lede">A few of the little ones who have grown up here. Many more on Instagram.</p>
+    <ul class="grid">
+      <li><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1237" height="1400"></li>
+      <li><img src="img/kitten-blue-point-closeup.jpg" alt="Fluffy blue-point Munchkin kitten with pale blue eyes" loading="lazy" width="1069" height="1400"></li>
+      <li><img src="img/kitten-lynx-point-standing.jpg" alt="Lynx-point Munchkin kitten standing with tail raised" loading="lazy" width="1067" height="1400"></li>
+      <li><img src="img/kitten-seal-point-lounging.jpg" alt="Seal-point Munchkin kitten lying on a floral quilt" loading="lazy" width="1078" height="1400"></li>
+      <li><img src="img/kitten-ginger-tail-up.jpg" alt="Ginger Munchkin kitten with its tail held high" loading="lazy" width="1064" height="1400"></li>
+      <li><img src="img/kitten-blue-point-scratcher.jpg" alt="Blue-point Munchkin kitten stretched out on a cardboard scratcher" loading="lazy" width="1081" height="1400"></li>
+    </ul>
+  </div>
+</section>
+
+<section class="follow" id="follow">
+  <div class="wrap">
+    <h2>Follow along</h2>
+    <ul class="channels">
+      <li class="channel">
+        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg></span>
+        <div><h3>Facebook</h3><a href="https://www.facebook.com/"><mark class="edit" title="Edit: your Facebook page name">Little Foot Munchkins</mark></a><p>Litter announcements, available kittens and updates from the nursery.</p></div>
+      </li>
+      <li class="channel">
+        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg></span>
+        <div><h3>Instagram</h3><a href="https://www.instagram.com/"><mark class="edit" title="Edit: your Instagram handle">@littlefootmunchkins</mark></a><p>Daily photos of the kittens as they grow.</p></div>
+      </li>
+      <li class="channel">
+        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg></span>
+        <div><h3>TikTok</h3><a href="https://www.tiktok.com/"><mark class="edit" title="Edit: your TikTok handle">@littlefootmunchkins</mark></a><p>Short videos of the little ones at play.</p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Say hello</h2>
+    <p>Questions about upcoming litters? Message us on Facebook, or email <a href="mailto:hello@example.com"><mark class="edit" title="Edit: your email address">hello@littlefootmunchkins.com</mark></a>. You can also call or text <a href="tel:+10000000000"><mark class="edit" title="Edit: your phone number">(000) 000-0000</mark></a>.</p>
+  </div>
+</section>
+
+<footer>
+  <img src="assets/logo-a-monogram-ink.svg" alt="" width="328" height="190">
+  <div>&copy; 2026 Little Foot Munchkins</div>
+</footer>
+
+</body>
+</html>

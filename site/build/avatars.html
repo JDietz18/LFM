@@ -1,0 +1,21 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Avatar render</title>
+<style>
+html,body{margin:0;padding:0;background:#fff}
+.sq{width:100vw;height:100vh;display:grid;place-items:center;overflow:hidden}
+.paw{background:#2E8B8B}
+.paw img{width:96%}
+.mono{background:#F7F3EC}
+.mono img{width:72%}
+</style>
+<div id="stage" class="sq"></div>
+<script>
+const v = new URLSearchParams(location.search).get('v') || 'paw';
+const stage = document.getElementById('stage');
+stage.classList.add(v);
+const img = document.createElement('img');
+img.src = v === 'paw' ? '../assets/paw-only.svg' : '../assets/logo-a-monogram-ink.svg';
+img.alt = '';
+stage.appendChild(img);
+</script>

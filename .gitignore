@@ -1,0 +1,8 @@
+# derived / scratch
+site/build/artifact.html
+site/build/shot-*.jpg
+__pycache__/
+*.pyc
+Thumbs.db
+desktop.ini
+.DS_Store

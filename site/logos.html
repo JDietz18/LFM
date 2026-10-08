@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Foot Munchkins logo options</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--whitewash:#F7F3EC;--linen:#EDE5D8;--ink:#3A3532;--ink-soft:#6B635D;--teal:#2E8B8B;--blush:#F0CFC0;--sage:#9DAE98}
+*{box-sizing:border-box}
+body{margin:0;background:var(--whitewash);color:var(--ink);font:400 16px/1.6 'Nunito',system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:32px clamp(16px,4vw,40px) 64px}
+h1{font:600 clamp(1.8rem,3.5vw,2.4rem)/1.15 'Cormorant Garamond',serif;margin:0 0 .3em}
+h2{font:600 1.6rem/1.2 'Cormorant Garamond',serif;margin:0 0 .4em}
+h3{font:600 1rem 'Nunito',sans-serif;margin:24px 0 10px;color:var(--ink-soft)}
+.intro{max-width:64ch;color:var(--ink-soft);margin-bottom:32px}
+.options{display:grid;gap:28px}
+@media (min-width:900px){.options{grid-template-columns:1fr 1fr}}
+.option{background:#fff;border-radius:16px;padding:28px;border:1px solid #E6DFD3}
+.option p{color:var(--ink-soft);margin:0 0 12px}
+.stage{display:grid;place-items:center;padding:28px;border-radius:12px;background:var(--whitewash);min-height:180px}
+.stage.dark{background:var(--ink)}
+.stage img{max-width:100%}
+.sizes{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+.sizes figure{margin:0;text-align:center;font-size:.8rem;color:var(--ink-soft)}
+.sizes img{display:block;margin:0 auto 6px}
+.links{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.9rem;margin-top:14px}
+.palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:40px 0 8px}
+.swatch{border-radius:12px;padding:14px;border:1px solid #E6DFD3;font-size:.85rem}
+.swatch i{display:block;height:56px;border-radius:8px;margin-bottom:8px}
+.type{display:grid;gap:8px;margin-top:8px}
+.chosen,.alt{display:inline-block;vertical-align:middle;margin-left:10px;padding:3px 12px;border-radius:999px;font:600 .8rem 'Nunito',sans-serif;letter-spacing:.02em}
+.chosen{background:var(--teal);color:#fff}
+.alt{background:var(--linen);color:var(--ink-soft)}
+.option.secondary{opacity:.78}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Logo options</h1>
+  <p class="intro"><strong>Direction A is the chosen logo</strong> (decided 8 October 2026) and is what the landing page uses. Direction B stays here as the alternative in case you want to revisit it. Every file is outlined SVG in three inks (charcoal, teal, white-on-dark) plus a circular icon for social avatars and a favicon, so they open cleanly in any design tool or print shop.</p>
+
+  <div class="options">
+    <section class="option">
+      <h2>A. Refined script wordmark <span class="chosen">Chosen</span></h2>
+      <p>The script already on your photos, redrawn as a clean vector with symmetrical leaf flourishes. Familiar to everyone who follows you now.</p>
+      <div class="stage"><img src="assets/logo-a-wordmark-ink.svg" alt="Little Foot Munchkins script wordmark in charcoal" width="640"></div>
+      <h3>On dark</h3>
+      <div class="stage dark"><img src="assets/logo-a-wordmark-white.svg" alt="Script wordmark in white" width="640"></div>
+      <h3>Monogram and icon</h3>
+      <div class="sizes">
+        <figure><img src="assets/logo-a-monogram-ink.svg" alt="L.F.M monogram" height="110">monogram</figure>
+        <figure><img src="assets/logo-a-icon.svg" alt="Paw icon" width="128">128 px avatar</figure>
+        <figure><img src="assets/logo-a-icon.svg" alt="" width="48">48 px</figure>
+        <figure><img src="assets/favicon.svg" alt="" width="32">favicon</figure>
+        <figure><img src="assets/favicon.svg" alt="" width="16">16 px</figure>
+      </div>
+      <div class="links">
+        <a href="assets/logo-a-wordmark-ink.svg" download>wordmark, charcoal</a>
+        <a href="assets/logo-a-wordmark-teal.svg" download>wordmark, teal</a>
+        <a href="assets/logo-a-wordmark-white.svg" download>wordmark, white</a>
+        <a href="assets/logo-a-monogram-ink.svg" download>monogram, charcoal</a>
+        <a href="assets/logo-a-monogram-teal.svg" download>monogram, teal</a>
+        <a href="assets/logo-a-monogram-white.svg" download>monogram, white</a>
+        <a href="assets/logo-a-icon.svg" download>paw icon</a>
+      </div>
+    </section>
+
+    <section class="option secondary">
+      <h2>B. Munchkin mark with two-tier lockup <span class="alt">Alternative</span></h2>
+      <p>A clean Munchkin silhouette, short legs and plume tail, over a serif "Little Foot" and the script "Munchkins". The silhouette works alone as the icon.</p>
+      <div class="stage"><img src="assets/logo-b-lockup-ink.svg" alt="Munchkin silhouette above Little Foot Munchkins lockup in charcoal" height="300"></div>
+      <h3>On dark</h3>
+      <div class="stage dark"><img src="assets/logo-b-lockup-white.svg" alt="Lockup in white" height="300"></div>
+      <h3>Icon</h3>
+      <div class="sizes">
+        <figure><img src="assets/logo-b-icon.svg" alt="Munchkin silhouette icon" width="128">128 px avatar</figure>
+        <figure><img src="assets/logo-b-icon.svg" alt="" width="48">48 px</figure>
+        <figure><img src="assets/logo-b-icon.svg" alt="" width="32">32 px</figure>
+        <figure><img src="assets/logo-b-icon.svg" alt="" width="16">16 px</figure>
+      </div>
+      <div class="links">
+        <a href="assets/logo-b-lockup-ink.svg" download>lockup, charcoal</a>
+        <a href="assets/logo-b-lockup-teal.svg" download>lockup, teal</a>
+        <a href="assets/logo-b-lockup-white.svg" download>lockup, white</a>
+        <a href="assets/logo-b-icon.svg" download>silhouette icon</a>
+      </div>
+    </section>
+  </div>
+
+  <h2 style="margin-top:48px">Palette</h2>
+  <div class="palette">
+    <div class="swatch"><i style="background:#F7F3EC;border:1px solid #E6DFD3"></i>Whitewash #F7F3EC</div>
+    <div class="swatch"><i style="background:#EDE5D8"></i>Linen #EDE5D8</div>
+    <div class="swatch"><i style="background:#3A3532"></i>Ink #3A3532</div>
+    <div class="swatch"><i style="background:#2E8B8B"></i>Teal #2E8B8B</div>
+    <div class="swatch"><i style="background:#F0CFC0"></i>Blush #F0CFC0</div>
+    <div class="swatch"><i style="background:#9DAE98"></i>Sage #9DAE98</div>
+  </div>
+  <h2>Type</h2>
+  <div class="type">
+    <div>Great Vibes for the script wordmark and monogram</div>
+    <div>Cormorant Garamond for headings and the "Little Foot" tier</div>
+    <div>Nunito for body text and buttons</div>
+    <div style="color:var(--ink-soft)">All three are free on Google Fonts. The logo SVGs are outlined, so they need no font installed.</div>
+  </div>
+</div>
+</body>
+</html>
