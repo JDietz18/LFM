@@ -24,7 +24,10 @@ whole `site/` folder (minus `build/`) to any web host.
 
   Needs `fonttools` and `uharfbuzz` (`pip install fonttools uharfbuzz`).
 
-  `python -P build_ivy.py` draws `assets/ivy.svg`, the ivy garland on the hero and footer.
+  `python -P build_ivy.py` draws `assets/ivy-garland.svg` (hero corner) and `assets/ivy-climber.svg`
+  (footer corner); `build_logos.py` imports it for the wordmark flourishes and the heading
+  ornament, so all the ivy on the page comes from one leaf. Every stem carries `pathLength` and a
+  `--len`, every leaf a `--d`, and anything inside a `.grow` container draws on in that order.
 
   The page is then assembled by two idempotent patch steps (run both, in order, from
   `build/`, after any logo rebuild): `python -P add_motion.py` (inlines the wordmark, adds

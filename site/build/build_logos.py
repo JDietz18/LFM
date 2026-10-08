@@ -15,6 +15,8 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.varLib.instancer import instantiateVariableFont
 
 HERE = Path(__file__).resolve().parent
+import sys; sys.path.insert(0, str(HERE))
+import build_ivy
 FONTS = HERE / "fonts"
 OUT = HERE.parent / "assets"
 OUT.mkdir(exist_ok=True)
@@ -65,26 +67,14 @@ def svg(w, h, body, name):
 
 # ---------- shared drawings ----------
 
-def vine(x, y, length, flip=False, stroke="#3A3532", leaf=SAGE):
-    """A thin stem with three leaves, running from (x,y) outward `length` px.
-    flip mirrors it for the left side. Leaves are filled, stem is stroked."""
-    s = -1 if flip else 1
-    g = [f'<g transform="translate({x:.1f} {y:.1f}) scale({s} 1)" fill="none" stroke="{stroke}" stroke-width="2.4" stroke-linecap="round">']
-    # stem with a gentle wave, ending in a small curl; pathLength lets CSS draw it on
-    g.append(f'<path class="vine-stem" pathLength="1" d="M0 0 C {length*0.35:.1f} -8 {length*0.7:.1f} 8 {length:.1f} 0 '
-             f'C {length+8:.1f} -4 {length+10:.1f} -10 {length+4:.1f} -11"/>')
-    g.append('</g>')
-    leaves = []
-    for t, side in ((0.22, -1), (0.5, 1), (0.78, -1)):
-        lx = x + s * t * length
-        # y on the cubic with control points 0, -8, 8, 0
-        ly = y + 3 * (1 - t) ** 2 * t * -8 + 3 * (1 - t) * t ** 2 * 8
-        ang = (-40 if side < 0 else 40) * s
-        leaves.append(
-            f'<g transform="translate({lx:.1f} {ly:.1f}) rotate({ang}) scale({s} 1)"><g class="vine-leaf">'
-            f'<path fill="{leaf}" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/>'
-            f'<path fill="none" stroke="{stroke}" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>')
-    return "\n".join(g + leaves)
+def vine(x, y, length, flip=False, stroke="#3A3532", leaf=None, pal=None, leaf_scale=0.34, seed=3):
+    """Ivy sprig flourish from (x,y) outward `length` px; flip mirrors it for the left side.
+    pal: a build_ivy palette; default is a single-ink sprig in `stroke` with knocked-out veins."""
+    if pal is None:
+        bg = "#F7F3EC" if stroke != INKS["white"] else INKS["ink"]
+        pal = build_ivy.palette(leaf=stroke, vein=bg, stem=stroke)
+    return (f'<g transform="translate({x:.1f} {y:.1f})">'
+            + build_ivy.sprig(length, flip=flip, pal=pal, leaf_scale=leaf_scale, seed=seed) + "</g>")
 
 
 def paw(cx, cy, r, fill):
@@ -115,14 +105,15 @@ def munchkin(col):
 # ---------- Direction A: refined script wordmark ----------
 
 def logo_a_wordmark(ink):
-    col = INKS[ink]
-    leaf = SAGE if ink != "white" else "#CBD7C6"
+    """ink in INKS gives a single-colour logo; "ivy" gives ink text with the green ivy flourish."""
+    col = INKS["ink"] if ink == "ivy" else INKS[ink]
+    pal = build_ivy.GREEN if ink == "ivy" else None
     d, w = script.shape("LittleFoot Munchkins", 96)
     W, H = w + 2 * 150, 170
     x0 = (W - w) / 2
     body = [f'<path class="wm-text" fill="{col}" transform="translate({x0:.1f} 112)" d="{d}"/>',
-            f'<g class="vine vine-l">{vine(x0 - 18, 104, 118, flip=True, stroke=col, leaf=leaf)}</g>',
-            f'<g class="vine vine-r">{vine(x0 + w + 18, 104, 118, stroke=col, leaf=leaf)}</g>']
+            f'<g class="vine vine-l">{vine(x0 - 18, 104, 118, flip=True, stroke=col, pal=pal, seed=3)}</g>',
+            f'<g class="vine vine-r">{vine(x0 + w + 18, 104, 118, stroke=col, pal=pal, seed=5)}</g>']
     svg(W, H, "\n".join(body), f"logo-a-wordmark-{ink}.svg")
 
 
@@ -160,11 +151,12 @@ def logo_b_icon():
 
 
 def ornament():
-    """Heading ornament: two short vines meeting at a centre point, same leaves as the logo."""
-    W, H = 150, 32
-    body = [f'<g class="vine vine-l">{vine(W/2 - 3, 18, 52, flip=True, stroke=INKS["ink"], leaf=SAGE)}</g>',
-            f'<g class="vine vine-r">{vine(W/2 + 3, 18, 52, stroke=INKS["ink"], leaf=SAGE)}</g>',
-            f'<circle cx="{W/2}" cy="18" r="2.2" fill="{INKS["ink"]}"/>']
+    """Heading ornament: two mirrored ivy sprigs meeting at a centre point."""
+    W, H = 150, 34
+    g = build_ivy.GREEN
+    body = [f'<g class="vine vine-l">{vine(W/2 - 3, 20, 52, flip=True, pal=g, leaf_scale=0.2, seed=8)}</g>',
+            f'<g class="vine vine-r">{vine(W/2 + 3, 20, 52, pal=g, leaf_scale=0.2, seed=9)}</g>',
+            f'<circle cx="{W/2}" cy="20" r="2.2" fill="{g["stem"]}"/>']
     svg(W, H, "\n".join(body), "ornament.svg")
 
 
@@ -176,4 +168,5 @@ def favicon():
 if __name__ == "__main__":
     for ink in INKS:
         logo_a_wordmark(ink); logo_a_monogram(ink); logo_b_lockup(ink)
+    logo_a_wordmark("ivy")
     logo_a_icon(); logo_b_icon(); favicon(); ornament()

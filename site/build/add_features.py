@@ -110,22 +110,27 @@ html = re.sub(r'body::after\{content:"";position:fixed;inset:0;z-index:9999;[^\n
 html = html.replace("</style>", grain_css.rstrip("\n") + "\n</style>", 1)
 
 
-# ---------- 5. ivy drapes: the generated ivy garland (build_ivy.py) over the hero and the footer ----------
+# ---------- 5. ivy drapes: generated garland (hero) and climber (footer), inlined so they can grow ----------
+def _ivy(name, cls, style=""):
+    svg = (SITE / f"assets/{name}.svg").read_text(encoding="utf-8").strip()
+    svg = re.sub(r'\s(width|height)="[^"]*"', "", svg, count=2)
+    return svg.replace('class="ivy"', f'class="{cls}"' + (f' style="{style}"' if style else ""), 1)
+html = re.sub(r'\s*<svg class="ivy ivy-(top|bottom)[^"]*".*?</svg>', "", html, flags=re.S)
 html = re.sub(r'\s*<img class="ivy ivy-(top|bottom)"[^>]*>', "", html)
-html = html.replace('<header class="hero">\n', '<header class="hero">\n  <img class="ivy ivy-top" src="assets/ivy.svg" alt="" aria-hidden="true" width="560" height="310">\n', 1)
-html = html.replace('<footer>\n', '<footer>\n  <img class="ivy ivy-bottom" src="assets/ivy.svg" alt="" aria-hidden="true" width="560" height="310">\n', 1)
+html = html.replace('<header class="hero">\n', '<header class="hero">\n  ' + _ivy("ivy-garland", "ivy ivy-top grow", "--base:.4s") + '\n', 1)
+html = html.replace('<footer>\n', '<footer>\n  ' + _ivy("ivy-climber", "ivy ivy-bottom") + '\n', 1)
 ivy_css = """
 /* ===== ivy drapes ===== */
-.ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
+.ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;overflow:visible;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
 .ivy-top{left:-14px;top:-12px;transform-origin:0 0}
 footer{position:relative;overflow:hidden}
 footer > :not(.ivy){position:relative;z-index:1}
-.ivy-bottom{right:-18px;bottom:-16px;transform:rotate(180deg);transform-origin:50% 50%;width:clamp(170px,26vw,360px)}
+.ivy-bottom{right:-10px;bottom:-8px;transform-origin:100% 100%;width:clamp(170px,24vw,320px)}
 @media (prefers-reduced-motion:no-preference){
   .ivy-top{animation:ivySwayTop 7s ease-in-out infinite alternate}
   .ivy-bottom{animation:ivySwayBottom 8s ease-in-out -3s infinite alternate}
   @keyframes ivySwayTop{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
-  @keyframes ivySwayBottom{from{transform:rotate(178.9deg)}to{transform:rotate(181.1deg)}}
+  @keyframes ivySwayBottom{from{transform:rotate(1deg)}to{transform:rotate(-1deg)}}
 }
 """
 html = re.sub(r'\n/\* ===== ivy drapes =====.*?\n\}\n', "\n", html, count=1, flags=re.S)

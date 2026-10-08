@@ -8,9 +8,9 @@ html_path = SITE / "index.html"
 html = html_path.read_text(encoding="utf-8")
 
 # ---------- 1. inline the wordmark SVG (so its parts can be animated) ----------
-svg = (SITE / "assets/logo-a-wordmark-ink.svg").read_text(encoding="utf-8").strip()
+svg = (SITE / "assets/logo-a-wordmark-ivy.svg").read_text(encoding="utf-8").strip()
 svg = re.sub(r'\s(width|height)="[^"]*"', "", svg, count=2)           # keep viewBox only
-svg = svg.replace('<svg ', '<svg class="wordmark" ', 1)
+svg = svg.replace('<svg ', '<svg class="wordmark grow" style="--base:1.7s" ', 1)
 html = re.sub(r'<img class="wordmark"[^>]*>', svg, html, count=1)
 html = re.sub(r'<svg class="wordmark".*?</svg>', svg, html, count=1, flags=re.S)  # replace if already inline
 
@@ -48,6 +48,7 @@ css = r"""
 }
 .ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
 .gallery .ornament,.contact .ornament{margin-inline:auto}
+.lf,.vine-leaf{transform-box:fill-box;transform-origin:50% 100%}
 /* ===== motion (everything below is skipped when the viewer prefers reduced motion) ===== */
 .wordmark{display:block;height:auto}
 .hero{position:relative;overflow:hidden}
@@ -64,18 +65,15 @@ css = r"""
   /* hero: pen draws the vines, the script writes itself on, then copy and buttons rise */
   .wm-text{clip-path:inset(-12% 100% -12% -2%);animation:writeOn 1.6s cubic-bezier(.45,0,.25,1) .3s forwards}
   @keyframes writeOn{to{clip-path:inset(-12% -2% -12% -2%)}}
-  .vine-stem{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease-out 1.7s forwards}
+  /* ivy growth: stems draw on, leaves unfurl as the tip passes (any .grow container) */
+  .st{stroke-dasharray:1;stroke-dashoffset:1}
+  .lf{transform:scale(0)}
+  .grow .st{animation:draw var(--len,.8s) ease-out calc(var(--base,0s) + var(--d,0s)) forwards}
+  .grow .lf{animation:leafPop .55s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards}
+  .grow .vine-leaf{animation:leafPop .55s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
+    sway 5.5s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1.2s) infinite alternate}
   @keyframes draw{to{stroke-dashoffset:0}}
-  .vine-leaf{transform-box:fill-box;transform-origin:0% 50%;transform:scale(0);
-    animation:leafPop .55s cubic-bezier(.34,1.56,.64,1) forwards,sway 5.5s ease-in-out 3.4s infinite alternate}
-  .vine > g:nth-child(2) .vine-leaf{animation-delay:2.0s,3.4s}
-  .vine > g:nth-child(3) .vine-leaf{animation-delay:2.2s,3.9s}
-  .vine > g:nth-child(4) .vine-leaf{animation-delay:2.4s,4.5s}
-  .ornament .vine-leaf{transform:none;animation:sway 6.5s ease-in-out infinite alternate}
-  .ornament .vine > g:nth-child(2) .vine-leaf{animation-delay:-1s}
-  .ornament .vine > g:nth-child(3) .vine-leaf{animation-delay:-3s}
-  .ornament .vine > g:nth-child(4) .vine-leaf{animation-delay:-5s}
-  @keyframes leafPop{to{transform:scale(1)}}
+  @keyframes leafPop{60%{transform:scale(1.12)}to{transform:scale(1)}}
   @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
   .tagline,.socials li{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
   .tagline{animation-delay:1.4s}
@@ -110,7 +108,8 @@ css = r"""
 }
 """
 html = re.sub(r'\n/\* ===== motion.*?\n\}\n', "\n", html, count=1, flags=re.S)
-html = html.replace("</style>", css.rstrip("\n") + "\n</style>", 1)
+html = html.replace("</style>", css.rstrip("\n") + "\n</style>\n<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}</style></noscript>", 1)
+html = html.replace("<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}</style></noscript>\n<noscript>", "<noscript>")
 
 # ---------- 4. JS ----------
 js = r"""
@@ -138,9 +137,15 @@ js = r"""
     }, { threshold: 0.15 });
     if (trail) io.observe(trail);
     tiles.forEach(function (t) { io.observe(t); });
+    var sprouts = document.querySelectorAll('.ornament, .ivy-bottom');
+    var grow = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('grow'); grow.unobserve(e.target); } });
+    }, { threshold: 0.3 });
+    sprouts.forEach(function (el) { grow.observe(el); });
   } else {
     if (trail) trail.classList.add('is-in');
     tiles.forEach(function (t) { t.classList.add('is-in', 'settled'); });
+    document.querySelectorAll('.ornament, .ivy-bottom').forEach(function (el) { el.classList.add('grow'); });
   }
   // cursor paw prints across the hero (mouse only)
   if (!matchMedia('(pointer: fine)').matches) return;
