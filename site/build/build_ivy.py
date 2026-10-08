@@ -165,7 +165,7 @@ def wrap(w, h, body, cls="ivy"):
 
 
 if __name__ == "__main__":
-    for name, fn in (("ivy-garland", garland), ("ivy-climber", climber)):
+    for name, fn in (("ivy-garland", garland), ("ivy-garland-b", lambda: garland(seed=12)), ("ivy-climber", climber)):
         w, h, body = fn()
         (ASSETS / f"{name}.svg").write_text(wrap(w, h, body), encoding="utf-8")
         print("wrote", name, w, h, body.count('class="lf'), "leaves")

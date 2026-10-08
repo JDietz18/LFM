@@ -120,17 +120,20 @@ def _ivy(name, cls, style=""):
     return svg.replace('class="ivy"', f'class="{cls}"' + (f' style="{style}"' if style else ""), 1)
 html = re.sub(r'\s*<svg[^>]*class="ivy ivy-(top|bottom)[^"]*"[^>]*>.*?</svg>', "", html, flags=re.S)
 html = re.sub(r'\s*<img class="ivy ivy-(top|bottom)"[^>]*>', "", html)
-html = html.replace('<header class="hero">\n', '<header class="hero">\n  ' + _ivy("ivy-garland", "ivy ivy-top grow", "--base:.4s") + '\n', 1)
+html = html.replace('<header class="hero">\n', '<header class="hero">\n  ' + _ivy("ivy-garland", "ivy ivy-top grow", "--base:.4s") + '\n  ' + _ivy("ivy-garland-b", "ivy ivy-top-r grow", "--base:.9s") + '\n', 1)
 html = html.replace('<footer>\n', '<footer>\n  ' + _ivy("ivy-climber", "ivy ivy-bottom") + '\n', 1)
 ivy_css = """
 /* ===== ivy drapes ===== */
 .ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;overflow:visible;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
 .ivy-top{left:-14px;top:-12px;transform-origin:0 0}
+.ivy-top-r{right:-14px;top:-12px;z-index:2;transform:scaleX(-1);transform-origin:50% 0;width:clamp(190px,30vw,430px)}
 footer{position:relative;overflow:hidden}
 footer > :not(.ivy){position:relative;z-index:1}
 .ivy-bottom{right:-10px;bottom:-8px;transform-origin:100% 100%;width:clamp(170px,24vw,320px)}
 @media (prefers-reduced-motion:no-preference){
   .ivy-top{animation:ivySwayTop 5s ease-in-out infinite alternate}
+  .ivy-top-r{animation:ivySwayTopR 6s ease-in-out -2.5s infinite alternate}
+  @keyframes ivySwayTopR{from{transform:scaleX(-1) rotate(-2.2deg) translateX(-3px)}to{transform:scaleX(-1) rotate(2.2deg) translateX(3px)}}
   .ivy-bottom{animation:ivySwayBottom 6s ease-in-out -3s infinite alternate}
   @keyframes ivySwayTop{from{transform:rotate(-2.6deg) translateX(-4px)}to{transform:rotate(2.6deg) translateX(4px)}}
   @keyframes ivySwayBottom{from{transform:rotate(2.4deg)}to{transform:rotate(-2.4deg)}}
