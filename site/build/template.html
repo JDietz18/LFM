@@ -46,8 +46,13 @@ mark.edit{background:none;color:inherit;border-bottom:2px dotted var(--teal);cur
 
 /* shiplap wall */
 .wall{background-color:var(--linen);
-  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 173px,rgba(120,100,78,.11) 173px,rgba(120,100,78,.11) 175px,rgba(255,255,255,.6) 175px,rgba(255,255,255,.6) 176px);
-  background-position:0 56px}
+  background-image:
+    repeating-linear-gradient(to bottom,
+      transparent 0,transparent 128px,
+      rgba(120,100,78,.10) 128px,rgba(120,100,78,.22) 132px,rgba(120,100,78,.30) 134px,
+      rgba(255,255,255,.75) 134px,rgba(255,255,255,.75) 136px,rgba(255,255,255,.25) 138px,transparent 140px),
+    linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,0) 30%,rgba(120,100,78,.05) 70%,rgba(120,100,78,.09));
+  background-position:0 44px,0 0}
 
 /* ===== nav (appears once the window scrolls away) ===== */
 .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:18px;padding:10px var(--gutter);
@@ -81,7 +86,6 @@ mark.edit{background:none;color:inherit;border-bottom:2px dotted var(--teal);cur
 .window .pane img{width:100%;height:100%;object-fit:cover;will-change:transform}
 .window .glare{position:absolute;inset:12px;border-radius:999px 999px 18px 18px;pointer-events:none;
   background:linear-gradient(115deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 60%,rgba(255,255,255,.12) 100%)}
-.window .mullion{position:absolute;left:50%;top:12px;bottom:12px;width:8px;margin-left:-4px;background:var(--paper);opacity:.9;pointer-events:none;box-shadow:0 0 0 1px rgba(58,53,50,.08)}
 .sill{position:absolute;left:-6%;right:-6%;bottom:-16px;height:22px;border-radius:6px;background:var(--paper);box-shadow:0 12px 24px -12px rgba(58,53,50,.5),0 0 0 1px rgba(58,53,50,.08)}
 .kotw-tag{position:absolute;left:50%;bottom:-48px;transform:translateX(-50%);white-space:nowrap;font:italic 500 1.05rem var(--serif);color:var(--ink-soft)}
 .ivy{position:absolute;pointer-events:none;height:auto;overflow:visible;filter:drop-shadow(0 3px 3px rgba(58,53,50,.18));z-index:3}
@@ -280,7 +284,6 @@ body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;b
     <figure class="window">
       <div class="frame"></div>
       <div class="pane"><img id="kotw" src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high"></div>
-      <div class="mullion"></div>
       <div class="glare"></div>
       <div class="sill"></div>
       {{IVY_GARLAND}}
