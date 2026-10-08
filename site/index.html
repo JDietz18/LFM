@@ -95,6 +95,33 @@ footer{padding:0 0 40px;text-align:center;color:var(--ink-soft);font-size:.95rem
 footer img{width:128px;margin:0 auto 10px;opacity:.85}
 
 
+
+/* ===== texture + ornament ===== */
+.about,.follow{
+  --plank:140px;
+  background-color:var(--linen);
+  background-image:
+    repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--plank) - 2px),
+      rgba(120,100,78,.13) calc(var(--plank) - 2px), rgba(120,100,78,.13) calc(var(--plank) - 1px),
+      rgba(255,255,255,.55) calc(var(--plank) - 1px), rgba(255,255,255,.55) var(--plank)),
+    repeating-linear-gradient(to right, rgba(255,255,255,.0) 0 11px, rgba(255,255,255,.08) 11px 12px);
+}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
+.gallery .ornament,.contact .ornament{margin-inline:auto}
+
+/* ===== texture + ornament ===== */
+.about,.follow{
+  --plank:176px;
+  background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--plank) - 3px),
+      rgba(120,100,78,.11) calc(var(--plank) - 3px), rgba(120,100,78,.11) calc(var(--plank) - 1px),
+      rgba(255,255,255,.6) calc(var(--plank) - 1px), rgba(255,255,255,.6) var(--plank));
+  background-position:0 56px;
+}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
+.gallery .ornament,.contact .ornament{margin-inline:auto}
 /* ===== motion (everything below is skipped when the viewer prefers reduced motion) ===== */
 .wordmark{display:block;height:auto}
 .hero{position:relative;overflow:hidden}
@@ -118,6 +145,10 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
   .vine > g:nth-child(2) .vine-leaf{animation-delay:2.0s,3.4s}
   .vine > g:nth-child(3) .vine-leaf{animation-delay:2.2s,3.9s}
   .vine > g:nth-child(4) .vine-leaf{animation-delay:2.4s,4.5s}
+  .ornament .vine-leaf{transform:none;animation:sway 6.5s ease-in-out infinite alternate}
+  .ornament .vine > g:nth-child(2) .vine-leaf{animation-delay:-1s}
+  .ornament .vine > g:nth-child(3) .vine-leaf{animation-delay:-3s}
+  .ornament .vine > g:nth-child(4) .vine-leaf{animation-delay:-5s}
   @keyframes leafPop{to{transform:scale(1)}}
   @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
   .tagline,.socials li{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
@@ -199,6 +230,21 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
 <section class="about" id="about">
   <div class="wrap">
     <h2>A small home cattery</h2>
+    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32">
+<g class="vine vine-l"><g transform="translate(72.0 18.0) scale(-1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(60.6 15.7) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(46.0 18.0) rotate(-40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(31.4 20.3) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 18.0) scale(1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(89.4 15.7) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(104.0 18.0) rotate(40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(118.6 20.3) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<circle cx="75.0" cy="18" r="2.2" fill="#3A3532"/>
+</svg>
     <p>We're a family-run cattery in <mark class="edit" title="Edit: your town and state">Your Town, ST</mark>, raising Munchkin kittens since <mark class="edit" title="Edit: the year you started">20XX</mark>. Every kitten grows up in our living room, around people, other cats and everyday noise, so they go home confident and cuddly.</p>
     <p>Kittens leave us at <mark class="edit" title="Edit: the age kittens go home">12 weeks</mark>, vet-checked, with their first vaccinations and a starter kit. Litter announcements and availability are posted on Facebook first.</p>
   </div>
@@ -208,6 +254,21 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
   <div class="wrap">
     <div class="paw-trail" aria-hidden="true"><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg></div>
     <h2>Recent kittens</h2>
+    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32">
+<g class="vine vine-l"><g transform="translate(72.0 18.0) scale(-1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(60.6 15.7) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(46.0 18.0) rotate(-40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(31.4 20.3) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 18.0) scale(1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(89.4 15.7) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(104.0 18.0) rotate(40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(118.6 20.3) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<circle cx="75.0" cy="18" r="2.2" fill="#3A3532"/>
+</svg>
     <p class="lede">A few of the little ones who have grown up here. Many more on Instagram.</p>
     <ul class="grid">
       <li><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1237" height="1400"></li>
@@ -223,6 +284,21 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
 <section class="follow" id="follow">
   <div class="wrap">
     <h2>Follow along</h2>
+    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32">
+<g class="vine vine-l"><g transform="translate(72.0 18.0) scale(-1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(60.6 15.7) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(46.0 18.0) rotate(-40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(31.4 20.3) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 18.0) scale(1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(89.4 15.7) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(104.0 18.0) rotate(40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(118.6 20.3) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<circle cx="75.0" cy="18" r="2.2" fill="#3A3532"/>
+</svg>
     <ul class="channels">
       <li class="channel">
         <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg></span>
@@ -243,6 +319,21 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
 <section class="contact" id="contact">
   <div class="wrap">
     <h2>Say hello</h2>
+    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32">
+<g class="vine vine-l"><g transform="translate(72.0 18.0) scale(-1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(60.6 15.7) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(46.0 18.0) rotate(-40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(31.4 20.3) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 18.0) scale(1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(89.4 15.7) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(104.0 18.0) rotate(40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(118.6 20.3) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<circle cx="75.0" cy="18" r="2.2" fill="#3A3532"/>
+</svg>
     <p>Questions about upcoming litters? Message us on Facebook, or email <a href="mailto:hello@example.com"><mark class="edit" title="Edit: your email address">hello@littlefootmunchkins.com</mark></a>. You can also call or text <a href="tel:+10000000000"><mark class="edit" title="Edit: your phone number">(000) 000-0000</mark></a>.</p>
   </div>
 </section>

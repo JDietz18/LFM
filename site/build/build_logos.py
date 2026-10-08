@@ -159,6 +159,15 @@ def logo_b_icon():
     svg(128, 128, "\n".join(body), "logo-b-icon.svg")
 
 
+def ornament():
+    """Heading ornament: two short vines meeting at a centre point, same leaves as the logo."""
+    W, H = 150, 32
+    body = [f'<g class="vine vine-l">{vine(W/2 - 3, 18, 52, flip=True, stroke=INKS["ink"], leaf=SAGE)}</g>',
+            f'<g class="vine vine-r">{vine(W/2 + 3, 18, 52, stroke=INKS["ink"], leaf=SAGE)}</g>',
+            f'<circle cx="{W/2}" cy="18" r="2.2" fill="{INKS["ink"]}"/>']
+    svg(W, H, "\n".join(body), "ornament.svg")
+
+
 def favicon():
     body = [f'<rect width="64" height="64" rx="14" fill="{INKS["teal"]}"/>', paw(32, 33, 18, INKS["white"])]
     svg(64, 64, "\n".join(body), "favicon.svg")
@@ -167,4 +176,4 @@ def favicon():
 if __name__ == "__main__":
     for ink in INKS:
         logo_a_wordmark(ink); logo_a_monogram(ink); logo_b_lockup(ink)
-    logo_a_icon(); logo_b_icon(); favicon()
+    logo_a_icon(); logo_b_icon(); favicon(); ornament()

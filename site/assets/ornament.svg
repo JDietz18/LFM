@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32" width="150" height="32" role="img" aria-label="Little Foot Munchkins">
+<g class="vine vine-l"><g transform="translate(72.0 18.0) scale(-1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(60.6 15.7) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(46.0 18.0) rotate(-40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(31.4 20.3) rotate(40) scale(-1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 18.0) scale(1 1)" fill="none" stroke="#3A3532" stroke-width="2.4" stroke-linecap="round">
+<path class="vine-stem" pathLength="1" d="M0 0 C 18.2 -8 36.4 8 52.0 0 C 60.0 -4 62.0 -10 56.0 -11"/>
+</g>
+<g transform="translate(89.4 15.7) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(104.0 18.0) rotate(40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>
+<g transform="translate(118.6 20.3) rotate(-40) scale(1 1)"><g class="vine-leaf"><path fill="#9DAE98" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/><path fill="none" stroke="#3A3532" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g></g>
+<circle cx="75.0" cy="18" r="2.2" fill="#3A3532"/>
+</svg>

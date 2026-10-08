@@ -27,8 +27,27 @@ trail = ('<div class="paw-trail" aria-hidden="true">'
 html = re.sub(r'<div class="paw-trail".*?</div>\n\s*', "", html, count=1, flags=re.S)
 html = html.replace('<h2>Recent kittens</h2>', trail + '<h2>Recent kittens</h2>', 1)
 
+# ---------- 2b. vine ornament under each section heading ----------
+orn = (SITE / "assets/ornament.svg").read_text(encoding="utf-8").strip()
+orn = re.sub(r'\s(width|height)="[^"]*"', "", orn, count=2)
+orn = orn.replace('<svg ', '<svg class="ornament" aria-hidden="true" ', 1).replace(' role="img" aria-label="Little Foot Munchkins"', "")
+html = re.sub(r'\n\s*<svg class="ornament".*?</svg>', "", html, flags=re.S)
+html = re.sub(r'(<h2>[^<]*</h2>)', lambda m: m.group(1) + "\n    " + orn, html)
+
 # ---------- 3. CSS ----------
 css = r"""
+/* ===== texture + ornament ===== */
+.about,.follow{
+  --plank:176px;
+  background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--plank) - 3px),
+      rgba(120,100,78,.11) calc(var(--plank) - 3px), rgba(120,100,78,.11) calc(var(--plank) - 1px),
+      rgba(255,255,255,.6) calc(var(--plank) - 1px), rgba(255,255,255,.6) var(--plank));
+  background-position:0 56px;
+}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
+.gallery .ornament,.contact .ornament{margin-inline:auto}
 /* ===== motion (everything below is skipped when the viewer prefers reduced motion) ===== */
 .wordmark{display:block;height:auto}
 .hero{position:relative;overflow:hidden}
@@ -52,6 +71,10 @@ css = r"""
   .vine > g:nth-child(2) .vine-leaf{animation-delay:2.0s,3.4s}
   .vine > g:nth-child(3) .vine-leaf{animation-delay:2.2s,3.9s}
   .vine > g:nth-child(4) .vine-leaf{animation-delay:2.4s,4.5s}
+  .ornament .vine-leaf{transform:none;animation:sway 6.5s ease-in-out infinite alternate}
+  .ornament .vine > g:nth-child(2) .vine-leaf{animation-delay:-1s}
+  .ornament .vine > g:nth-child(3) .vine-leaf{animation-delay:-3s}
+  .ornament .vine > g:nth-child(4) .vine-leaf{animation-delay:-5s}
   @keyframes leafPop{to{transform:scale(1)}}
   @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
   .tagline,.socials li{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
