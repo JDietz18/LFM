@@ -92,5 +92,20 @@ css = r"""
 html = re.sub(r'\n/\* ===== polaroid gallery.*?\n\}\n', "\n", html, count=1, flags=re.S)
 html = html.replace("</style>", css.rstrip("\n") + "\n</style>", 1)
 
+# ---------- 4. paper grain: alpha-only SVG noise laid over the whole page ----------
+noise_svg = ("<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'>"
+             "<filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/>"
+             "<feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0'/></filter>"
+             "<rect width='100%' height='100%' filter='url(#g)'/></svg>")
+noise_uri = "data:image/svg+xml;utf8," + noise_svg.replace("#", "%23").replace("'", "%27")
+grain_css = """
+/* ===== paper grain ===== */
+body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:url("NOISE") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
+""".replace("NOISE", noise_uri)
+html = re.sub(r'\n/\* ===== paper grain =====.*?\n', "\n", html, count=1, flags=re.S)
+html = re.sub(r'body::after\{content:"";position:fixed;inset:0;z-index:9999;[^\n]*\n[^\n]*\n', "", html, count=1)
+html = html.replace("</style>", grain_css.rstrip("\n") + "\n</style>", 1)
+
 html_path.write_text(html, encoding="utf-8")
 print("index.html patched:", len(html), "chars; polaroids:", html.count('class="polaroid"'), "; kotw:", html.count('id="kotw"'))

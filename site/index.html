@@ -212,6 +212,11 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
     100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}}
 }
 
+
+
+
+
+
 /* ===== polaroid gallery + kitten of the week ===== */
 .arch-figure{margin:0;width:min(100%,500px);margin-inline:auto}
 .arch-figure .arch{width:100%}
@@ -238,6 +243,10 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
   .grid li:hover{transform:rotate(0deg) translateY(-6px) scale(1.02);z-index:1}
   .grid li:hover img{transform:none}
 }
+
+/* ===== paper grain ===== */
+body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%27260%27><filter id=%27g%27><feTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%273%27 stitchTiles=%27stitch%27/><feColorMatrix values=%270 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0%27/></filter><rect width=%27100%%27 height=%27100%%27 filter=%27url(%23g)%27/></svg>") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
 </style>
 </head>
 <body>
