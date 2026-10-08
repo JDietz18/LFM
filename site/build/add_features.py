@@ -125,7 +125,7 @@ html = html.replace('<footer>\n', '<footer>\n  ' + _ivy("ivy-climber", "ivy ivy-
 ivy_css = """
 /* ===== ivy drapes ===== */
 .ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;overflow:visible;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
-.ivy-top{left:-14px;top:-12px;transform-origin:0 0}
+.ivy-top{left:-14px;top:-12px;z-index:2;transform-origin:0 0}
 .ivy-top-r{right:-14px;top:-12px;z-index:2;transform:scaleX(-1);transform-origin:50% 0;width:clamp(190px,30vw,430px)}
 footer{position:relative;overflow:hidden}
 footer > :not(.ivy){position:relative;z-index:1}
