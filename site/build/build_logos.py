@@ -70,8 +70,8 @@ def vine(x, y, length, flip=False, stroke="#3A3532", leaf=SAGE):
     flip mirrors it for the left side. Leaves are filled, stem is stroked."""
     s = -1 if flip else 1
     g = [f'<g transform="translate({x:.1f} {y:.1f}) scale({s} 1)" fill="none" stroke="{stroke}" stroke-width="2.4" stroke-linecap="round">']
-    # stem with a gentle wave, ending in a small curl
-    g.append(f'<path d="M0 0 C {length*0.35:.1f} -8 {length*0.7:.1f} 8 {length:.1f} 0 '
+    # stem with a gentle wave, ending in a small curl; pathLength lets CSS draw it on
+    g.append(f'<path class="vine-stem" pathLength="1" d="M0 0 C {length*0.35:.1f} -8 {length*0.7:.1f} 8 {length:.1f} 0 '
              f'C {length+8:.1f} -4 {length+10:.1f} -10 {length+4:.1f} -11"/>')
     g.append('</g>')
     leaves = []
@@ -81,9 +81,9 @@ def vine(x, y, length, flip=False, stroke="#3A3532", leaf=SAGE):
         ly = y + 3 * (1 - t) ** 2 * t * -8 + 3 * (1 - t) * t ** 2 * 8
         ang = (-40 if side < 0 else 40) * s
         leaves.append(
-            f'<g transform="translate({lx:.1f} {ly:.1f}) rotate({ang}) scale({s} 1)">'
+            f'<g transform="translate({lx:.1f} {ly:.1f}) rotate({ang}) scale({s} 1)"><g class="vine-leaf">'
             f'<path fill="{leaf}" d="M0 0 C 6 -12 16 -14 24 -7 C 16 2 6 3 0 0 Z"/>'
-            f'<path fill="none" stroke="{stroke}" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g>')
+            f'<path fill="none" stroke="{stroke}" stroke-width="1" d="M1 -0.5 C 8 -4 14 -6 22 -7"/></g></g>')
     return "\n".join(g + leaves)
 
 
@@ -120,9 +120,9 @@ def logo_a_wordmark(ink):
     d, w = script.shape("Little Foot Munchkins", 96)
     W, H = w + 2 * 150, 170
     x0 = (W - w) / 2
-    body = [f'<path fill="{col}" transform="translate({x0:.1f} 112)" d="{d}"/>',
-            vine(x0 - 18, 104, 118, flip=True, stroke=col, leaf=leaf),
-            vine(x0 + w + 18, 104, 118, stroke=col, leaf=leaf)]
+    body = [f'<path class="wm-text" fill="{col}" transform="translate({x0:.1f} 112)" d="{d}"/>',
+            f'<g class="vine vine-l">{vine(x0 - 18, 104, 118, flip=True, stroke=col, leaf=leaf)}</g>',
+            f'<g class="vine vine-r">{vine(x0 + w + 18, 104, 118, stroke=col, leaf=leaf)}</g>']
     svg(W, H, "\n".join(body), f"logo-a-wordmark-{ink}.svg")
 
 
