@@ -1,6 +1,6 @@
-# Little Foot Munchkins
+# LittleFoot Munchkins
 
-Brand and website files for Little Foot Munchkins, a small home cattery raising Munchkin kittens.
+Brand and website files for LittleFoot Munchkins, a small home cattery raising Munchkin kittens.
 
 - `site/` — the landing page, logo SVGs, web-sized photos and avatar exports. See `site/README.md`
   for how to edit the placeholders and rebuild the logos.

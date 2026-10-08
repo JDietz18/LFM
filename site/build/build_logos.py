@@ -1,4 +1,4 @@
-"""Build the Little Foot Munchkins logo set as outlined SVGs.
+"""Build the LittleFoot Munchkins logo set as outlined SVGs.
 
 Run from LFM/site/build:   python -I build_logos.py
 Inputs : fonts/GreatVibes-Regular.ttf, fonts/CormorantGaramond.ttf (OFL, Google Fonts repo)
@@ -58,7 +58,7 @@ serif = Face(FONTS / "CormorantGaramond.ttf", wght=600)
 
 def svg(w, h, body, name):
     doc = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w:.0f} {h:.0f}" '
-           f'width="{w:.0f}" height="{h:.0f}" role="img" aria-label="Little Foot Munchkins">\n{body}\n</svg>\n')
+           f'width="{w:.0f}" height="{h:.0f}" role="img" aria-label="LittleFoot Munchkins">\n{body}\n</svg>\n')
     (OUT / name).write_text(doc, encoding="utf-8")
     print("wrote", name)
 
@@ -117,7 +117,7 @@ def munchkin(col):
 def logo_a_wordmark(ink):
     col = INKS[ink]
     leaf = SAGE if ink != "white" else "#CBD7C6"
-    d, w = script.shape("Little Foot Munchkins", 96)
+    d, w = script.shape("LittleFoot Munchkins", 96)
     W, H = w + 2 * 150, 170
     x0 = (W - w) / 2
     body = [f'<path class="wm-text" fill="{col}" transform="translate({x0:.1f} 112)" d="{d}"/>',
@@ -142,7 +142,7 @@ def logo_a_icon():
 
 def logo_b_lockup(ink):
     col = INKS[ink]
-    top_d, top_w = serif.shape("LITTLE FOOT", 46, tracking=9)
+    top_d, top_w = serif.shape("LITTLEFOOT", 46, tracking=9)
     bot_d, bot_w = script.shape("Munchkins", 92)
     W = max(top_w, bot_w, 240) + 80
     H = 330

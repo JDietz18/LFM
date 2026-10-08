@@ -30,7 +30,7 @@ html = html.replace('<h2>Recent kittens</h2>', trail + '<h2>Recent kittens</h2>'
 # ---------- 2b. vine ornament under each section heading ----------
 orn = (SITE / "assets/ornament.svg").read_text(encoding="utf-8").strip()
 orn = re.sub(r'\s(width|height)="[^"]*"', "", orn, count=2)
-orn = orn.replace('<svg ', '<svg class="ornament" aria-hidden="true" ', 1).replace(' role="img" aria-label="Little Foot Munchkins"', "")
+orn = orn.replace('<svg ', '<svg class="ornament" aria-hidden="true" ', 1).replace(' role="img" aria-label="LittleFoot Munchkins"', "")
 html = re.sub(r'\n\s*<svg class="ornament".*?</svg>', "", html, flags=re.S)
 html = re.sub(r'(<h2>[^<]*</h2>)', lambda m: m.group(1) + "\n    " + orn, html)
 

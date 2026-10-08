@@ -1,4 +1,4 @@
-# Little Foot Munchkins site
+# LittleFoot Munchkins site
 
 Static landing page plus logo set. No build step is needed to host it: upload the
 whole `site/` folder (minus `build/`) to any web host.
