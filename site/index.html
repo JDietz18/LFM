@@ -4,227 +4,262 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LittleFoot Munchkins</title>
-<meta name="description" content="LittleFoot Munchkins is a small home cattery raising Munchkin kittens. Follow along on Facebook, Instagram and TikTok.">
+<meta name="description" content="LittleFoot Munchkins is a small home cattery raising Munchkin kittens. See who's in the nursery and follow along on Facebook, Instagram and TikTok.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <!--
-  EDIT ME: every placeholder is wrapped in <mark class="edit">…</mark>.
-  Search this file for "class="edit"" and replace each one, then delete the
-  <mark> tags. Social links are in the three <a class="social"> buttons and
-  again in the "Follow along" section.
+  EDIT ME: every placeholder is wrapped in <mark class="edit">…</mark>. Search for class="edit",
+  replace each one, then delete the <mark> tags. Kitten cards live in the "nursery" section:
+  each card has data-status="available|reserved|home" which drives the ribbon and the filter.
+  Social links: the three buttons in the hero, the nav button, and the evening band.
 -->
 <style>
+/* Layout concept: a shiplap wall with one big arched window into the nursery; the rest of the
+   page is a sheet of paper that slides up over the window as you scroll. */
 :root{
-  --whitewash:#F7F3EC;
-  --linen:#EDE5D8;
-  --ink:#3A3532;
-  --ink-soft:#6B635D;
-  --teal:#2E8B8B;
-  --teal-deep:#236F6F;
-  --blush:#F0CFC0;
-  --sage:#9DAE98;
-  --script:'Great Vibes',cursive;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Nunito',system-ui,sans-serif;
-  --gutter:clamp(16px,4vw,48px);
+  --whitewash:#F7F3EC; --linen:#EDE5D8; --paper:#FFFDF8;
+  --ink:#3A3532; --ink-soft:#6B635D;
+  --teal:#2E8B8B; --teal-deep:#236F6F; --evening:#1E5555; --evening-deep:#15403F;
+  --blush:#F0CFC0; --sage:#9DAE98; --leaf:#52AE3C;
+  --script:'Great Vibes',cursive; --serif:'Cormorant Garamond',Georgia,serif; --sans:'Nunito',system-ui,sans-serif;
+  --gutter:clamp(16px,4vw,56px); --spring:cubic-bezier(.34,1.56,.64,1); --ease:cubic-bezier(.2,.8,.2,1);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--whitewash);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--whitewash);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:var(--teal-deep)}
 :focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
-h2{font:600 clamp(1.9rem,3.6vw,2.6rem)/1.15 var(--serif);margin:0 0 .6em;letter-spacing:.005em}
+h2{font:600 clamp(2.1rem,4.4vw,3.4rem)/1.08 var(--serif);margin:0 0 .5em;letter-spacing:.005em;text-wrap:balance}
+h3{font:600 1.4rem/1.2 var(--serif);margin:0 0 .3em}
 p{margin:0 0 1em}
-.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gutter)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
 mark.edit{background:none;color:inherit;border-bottom:2px dotted var(--teal);cursor:help}
-
-/* hero: text panel beside an arched photo */
-.hero{padding:clamp(28px,5vw,64px) 0 clamp(40px,6vw,80px)}
-.hero .wrap{display:grid;gap:clamp(28px,5vw,64px);align-items:center}
-@media (min-width:860px){.hero .wrap{grid-template-columns:1.15fr .85fr}}
-.hero-copy{text-align:center}
-.wordmark{width:100%;max-width:760px;margin:0 auto 1.4rem}
-.tagline{font:italic 500 clamp(1.35rem,2.4vw,1.75rem)/1.35 var(--serif);color:var(--ink);max-width:28ch;margin:0 auto 1.6rem}
-.arch{aspect-ratio:4/5;border-radius:999px 999px 18px 18px;overflow:hidden;background:var(--linen);margin:0 auto;width:min(100%,500px)}
-.arch img{width:100%;height:100%;object-fit:cover}
-.hero .arch{order:-1}
-@media (min-width:860px){.hero .arch{order:0}}
-
-/* social buttons */
-.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;padding:0;margin:0}
-.social{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;
-  border:1.5px solid var(--teal);color:var(--teal-deep);background:transparent;font:600 1rem var(--sans);text-decoration:none;
-  transition:background-color .15s,color .15s}
-.social svg{width:20px;height:20px;fill:currentColor}
-.social:hover,.social.primary{background:var(--teal);color:#fff}
-.social.primary:hover{background:var(--teal-deep)}
-
-/* about */
-.about{background:var(--linen);padding:clamp(48px,7vw,96px) 0}
-.about .wrap{max-width:720px}
-.about p{font-size:1.08rem}
-
-/* gallery */
-.gallery{padding:clamp(48px,7vw,96px) 0}
-.gallery h2{text-align:center}
-.gallery .lede{text-align:center;max-width:46ch;margin:0 auto 2.2rem;color:var(--ink-soft)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(12px,2vw,22px);list-style:none;padding:0;margin:0}
-.grid li{aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:var(--linen)}
-.grid img{width:100%;height:100%;object-fit:cover}
-
-/* follow along */
-.follow{background:var(--linen);padding:clamp(48px,7vw,96px) 0}
-.follow .wrap{max-width:760px}
-.channels{list-style:none;padding:0;margin:0;display:grid;gap:14px}
-.channel{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;padding:18px 20px;border-radius:14px;background:var(--whitewash)}
-.channel .badge{width:52px;height:52px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center}
-.channel .badge svg{width:26px;height:26px;fill:currentColor}
-.channel h3{font:600 1.35rem/1.2 var(--serif);margin:0 0 .15em}
-.channel a{font-weight:600}
-.channel p{margin:.25em 0 0;color:var(--ink-soft)}
-
-/* contact + footer */
-.contact{padding:clamp(48px,7vw,96px) 0 clamp(32px,5vw,56px);text-align:center}
-.contact .wrap{max-width:600px}
-.contact p{font-size:1.08rem}
-footer{padding:0 0 40px;text-align:center;color:var(--ink-soft);font-size:.95rem}
-footer img{width:128px;margin:0 auto 10px;opacity:.85}
-
-
-
-/* ===== texture + ornament ===== */
-.about,.follow{
-  --plank:176px;
-  background-color:var(--linen);
-  background-image:repeating-linear-gradient(to bottom,
-      transparent 0, transparent calc(var(--plank) - 3px),
-      rgba(120,100,78,.11) calc(var(--plank) - 3px), rgba(120,100,78,.11) calc(var(--plank) - 1px),
-      rgba(255,255,255,.6) calc(var(--plank) - 1px), rgba(255,255,255,.6) var(--plank));
-  background-position:0 56px;
-}
-.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
-.gallery .ornament,.contact .ornament{margin-inline:auto}
 .lf,.vine-leaf{transform-box:fill-box;transform-origin:50% 100%}
-/* ===== motion (everything below is skipped when the viewer prefers reduced motion) ===== */
-.wordmark{display:block;height:auto}
-.hero{position:relative;overflow:hidden}
-.hero .wrap{position:relative;z-index:1}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.1em 0 1.1em}
+.centered .ornament{margin-inline:auto}
+.centered{text-align:center}
+.lede{color:var(--ink-soft);max-width:52ch;font-size:1.1rem}
+.centered .lede{margin-inline:auto}
+
+/* shiplap wall */
+.wall{background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 173px,rgba(120,100,78,.11) 173px,rgba(120,100,78,.11) 175px,rgba(255,255,255,.6) 175px,rgba(255,255,255,.6) 176px);
+  background-position:0 56px}
+
+/* ===== nav (appears once the window scrolls away) ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:18px;padding:10px var(--gutter);
+  background:rgba(247,243,236,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(58,53,50,.08);
+  transform:translateY(-110%);transition:transform .5s var(--ease)}
+.nav.show{transform:none}
+.nav .mono{height:34px;width:auto}
+.nav ul{display:flex;gap:4px 22px;list-style:none;margin:0 0 0 auto;padding:0;flex-wrap:wrap;justify-content:flex-end}
+.nav a{font:600 .95rem var(--sans);color:var(--ink);text-decoration:none}
+.nav a:hover{color:var(--teal-deep)}
+.nav .btn{margin-left:8px}
+@media (max-width:640px){.nav ul li:not(.keep){display:none}}
+
+/* ===== buttons ===== */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;border:1.5px solid var(--teal);
+  color:var(--teal-deep);background:transparent;font:700 1rem var(--sans);text-decoration:none;transition:background-color .15s,color .15s,transform .4s var(--spring),box-shadow .3s}
+.btn svg{width:20px;height:20px;fill:currentColor}
+.btn:hover,.btn.primary{background:var(--teal);color:#fff}
+.btn.primary:hover{background:var(--teal-deep)}
+.btn.small{min-height:40px;padding:0 18px;font-size:.9rem}
+.btn.ghost{border-color:rgba(255,255,255,.7);color:#fff}
+.btn.ghost:hover{background:#fff;color:var(--evening)}
+
+/* ===== hero: the window ===== */
+.hero{position:sticky;top:0;height:100svh;min-height:640px;overflow:hidden;z-index:0;display:grid;place-items:center}
+.hero .scene{position:relative;width:min(92vw,980px);height:100%;display:grid;grid-template-rows:1fr auto;align-items:end;justify-items:center;padding-bottom:clamp(18px,3vh,36px)}
+.window{position:relative;width:min(78vw,520px);aspect-ratio:4/5;max-height:50svh;align-self:center;margin-top:3svh}
+.window .frame{position:absolute;inset:0;border-radius:999px 999px 26px 26px;background:var(--paper);
+  box-shadow:0 2px 0 rgba(255,255,255,.9) inset,0 30px 60px -30px rgba(58,53,50,.45),0 0 0 1px rgba(58,53,50,.08)}
+.window .pane{position:absolute;inset:12px;border-radius:999px 999px 18px 18px;overflow:hidden;background:var(--linen);box-shadow:inset 0 0 0 1px rgba(58,53,50,.15),inset 0 18px 30px -20px rgba(58,53,50,.5)}
+.window .pane img{width:100%;height:100%;object-fit:cover;will-change:transform}
+.window .glare{position:absolute;inset:12px;border-radius:999px 999px 18px 18px;pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 60%,rgba(255,255,255,.12) 100%)}
+.window .mullion{position:absolute;left:50%;top:12px;bottom:12px;width:8px;margin-left:-4px;background:var(--paper);opacity:.9;pointer-events:none;box-shadow:0 0 0 1px rgba(58,53,50,.08)}
+.sill{position:absolute;left:-6%;right:-6%;bottom:-16px;height:22px;border-radius:6px;background:var(--paper);box-shadow:0 12px 24px -12px rgba(58,53,50,.5),0 0 0 1px rgba(58,53,50,.08)}
+.kotw-tag{position:absolute;left:50%;bottom:-48px;transform:translateX(-50%);white-space:nowrap;font:italic 500 1.05rem var(--serif);color:var(--ink-soft)}
+.ivy{position:absolute;pointer-events:none;height:auto;overflow:visible;filter:drop-shadow(0 3px 3px rgba(58,53,50,.18));z-index:3}
+.ivy-top{left:-9%;top:-4%;width:min(58%,330px);transform-origin:0 0}
+.ivy-top-r{right:-9%;top:-5%;width:min(55%,310px);transform:scaleX(-1);transform-origin:50% 0}
+.hero-copy{position:relative;z-index:4;text-align:center;width:min(100%,760px);margin-top:clamp(40px,6vh,64px)}
+.glass{display:inline-block;padding:6px clamp(16px,3.5vw,34px) 0;border-radius:999px;background:rgba(247,243,236,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px -18px rgba(58,53,50,.5)}
+.wordmark{display:block;width:min(88vw,620px);height:auto}
+.tagline{font:italic 500 clamp(1.2rem,2.2vw,1.5rem)/1.35 var(--serif);max-width:34ch;margin:.7rem auto .9rem}
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;padding:0;margin:0}
+.scroll-hint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font:600 .75rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);opacity:.7}
+.paw-ghost{position:absolute;z-index:5;width:36px;height:36px;fill:var(--teal);pointer-events:none;opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(.6)}
+@media (max-height:700px){.window{max-height:42svh}.hero-copy{margin-top:40px}}
+@media (max-width:640px){.window{max-height:44svh}}
+
+/* ===== the sheet that slides over the window ===== */
+.sheet{position:relative;z-index:10;background:var(--whitewash);border-radius:44px 44px 0 0;box-shadow:0 -24px 60px -30px rgba(58,53,50,.5);margin-top:0}
+
+/* ===== about + promises ===== */
+.about{padding:clamp(72px,9vw,120px) 0 clamp(56px,7vw,96px)}
+.about .cols{display:grid;gap:clamp(28px,5vw,64px);align-items:start}
+@media (min-width:900px){.about .cols{grid-template-columns:1.1fr .9fr}}
+.about .text p{font-size:1.1rem}
+.promises{display:grid;gap:16px}
+.promise{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;padding:20px 22px;border-radius:18px;background:var(--paper);box-shadow:0 1px 2px rgba(58,53,50,.06),0 18px 40px -30px rgba(58,53,50,.4)}
+.promise .ico{width:56px;height:56px;border-radius:50%;background:var(--linen);display:grid;place-items:center}
+.promise .ico svg{width:32px;height:32px}
+.promise p{margin:0;color:var(--ink-soft)}
+
+/* ===== nursery board ===== */
+.nursery{padding:clamp(56px,7vw,96px) 0;background:var(--linen);position:relative}
 .paw-trail{display:flex;justify-content:center;gap:clamp(10px,3vw,30px);height:44px;margin:0 auto 14px}
 .paw-trail svg{width:26px;height:26px;fill:var(--teal);opacity:.5}
 .paw-trail svg:nth-child(odd){transform:translateY(-7px) rotate(-16deg) scaleX(-1)}
 .paw-trail svg:nth-child(even){transform:translateY(7px) rotate(16deg)}
-.paw-ghost{position:absolute;z-index:2;width:36px;height:36px;fill:var(--teal);pointer-events:none;opacity:0;
-  transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(.6)}
-.social{transition:background-color .15s,color .15s,transform .35s cubic-bezier(.34,1.56,.64,1)}
-.grid img{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 36px;padding:0;list-style:none}
+.chip{border:1.5px solid rgba(58,53,50,.18);background:transparent;color:var(--ink);font:700 .85rem var(--sans);padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .25s}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:hover{border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:clamp(22px,3vw,40px);list-style:none;padding:0;margin:0}
+.grid li{transform:rotate(var(--rest,0deg));transition:transform .5s var(--spring),opacity .4s}
+.grid li:nth-child(6n+1){--rest:-2.4deg}.grid li:nth-child(6n+2){--rest:1.6deg}.grid li:nth-child(6n+3){--rest:-1.1deg}
+.grid li:nth-child(6n+4){--rest:2.1deg}.grid li:nth-child(6n+5){--rest:-1.7deg}.grid li:nth-child(6n+6){--rest:1.2deg}
+.grid li.hide{display:none}
+.polaroid{position:relative;margin:0;background:var(--paper);padding:12px 12px 14px;box-shadow:0 1px 2px rgba(58,53,50,.08),0 12px 28px -12px rgba(58,53,50,.4);transition:box-shadow .5s}
+.polaroid img{aspect-ratio:4/5;width:100%;height:auto;object-fit:cover;background:var(--linen)}
+.polaroid::before{content:"";position:absolute;left:50%;top:-11px;width:84px;height:24px;margin-left:-42px;background:rgba(237,229,216,.85);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(58,53,50,.12);
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px);mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px)}
+.ribbon{position:absolute;top:22px;right:-8px;padding:5px 14px 5px 12px;font:700 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--teal);box-shadow:0 4px 10px -4px rgba(0,0,0,.4);border-radius:4px 0 0 4px}
+.ribbon::after{content:"";position:absolute;right:0;bottom:-6px;border:3px solid transparent;border-top-color:var(--teal-deep);border-left-color:var(--teal-deep)}
+li[data-status="reserved"] .ribbon{background:#B8864B}li[data-status="reserved"] .ribbon::after{border-top-color:#8E6632;border-left-color:#8E6632}
+li[data-status="home"] .ribbon{background:#8A8F86}li[data-status="home"] .ribbon::after{border-top-color:#6B6F69;border-left-color:#6B6F69}
+.polaroid figcaption{padding:12px 4px 4px;text-align:center}
+.polaroid .name{font:400 1.7rem/1 var(--script);color:var(--ink)}
+.polaroid .meta{font:600 .82rem var(--sans);color:var(--ink-soft);margin-top:6px;letter-spacing:.02em}
+.grid li:hover{transform:rotate(0deg) translateY(-16px) scale(1.06);z-index:1}
+.grid li:hover .polaroid{box-shadow:0 2px 3px rgba(58,53,50,.1),0 28px 40px -16px rgba(58,53,50,.45)}
+
+/* ===== the path home ===== */
+.path{padding:clamp(64px,8vw,120px) 0;position:relative;overflow:hidden}
+.route{position:relative;max-width:900px;margin:0 auto}
+.route svg.line{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.route .line path{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.28}
+.route .line .dots{stroke:none;fill:var(--teal);opacity:.45}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:clamp(40px,6vw,72px);position:relative}
+.step{display:grid;grid-template-columns:84px 1fr;gap:20px;align-items:center;max-width:520px}
+.step:nth-child(even){margin-left:auto;grid-template-columns:1fr 84px}
+.step:nth-child(even) .badge{order:2}
+.step:nth-child(even) .copy{text-align:right}
+.badge{width:84px;height:84px;border-radius:50%;background:var(--paper);display:grid;place-items:center;box-shadow:0 1px 2px rgba(58,53,50,.08),0 16px 30px -18px rgba(58,53,50,.5);position:relative}
+.badge svg{width:40px;height:40px;fill:var(--teal)}
+.badge b{position:absolute;right:-4px;top:-4px;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font:700 .85rem/28px var(--sans);text-align:center}
+.step p{margin:0;color:var(--ink-soft)}
+@media (max-width:640px){.step,.step:nth-child(even){grid-template-columns:64px 1fr;margin-left:0}.step:nth-child(even) .badge{order:0}.step:nth-child(even) .copy{text-align:left}.badge{width:64px;height:64px}}
+
+/* ===== happy homes ===== */
+.homes{padding:clamp(56px,7vw,96px) 0;background:var(--linen)}
+.quotes{display:grid;gap:18px}
+@media (min-width:820px){.quotes{grid-template-columns:repeat(3,1fr)}}
+.quote{background:var(--paper);border-radius:18px;padding:26px 26px 22px;position:relative;box-shadow:0 1px 2px rgba(58,53,50,.06),0 18px 40px -30px rgba(58,53,50,.4)}
+.quote::before{content:"\201C";position:absolute;left:18px;top:-6px;font:400 4.6rem/1 var(--serif);color:var(--blush)}
+.quote p{font:italic 500 1.2rem/1.45 var(--serif);margin:14px 0 14px}
+.quote cite{font:600 .9rem var(--sans);color:var(--ink-soft);font-style:normal}
+
+/* ===== faq ===== */
+.faq{padding:clamp(56px,7vw,96px) 0}
+.faq .wrap{max-width:820px}
+details{border-bottom:1px solid rgba(58,53,50,.14)}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 4px;font:600 1.3rem/1.25 var(--serif)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:12px;height:12px;border-right:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(45deg);transition:transform .35s var(--spring);flex:none;margin-right:6px}
+details[open] summary::after{transform:rotate(-135deg)}
+details .a{padding:0 4px 20px;color:var(--ink-soft);max-width:62ch}
+
+/* ===== evening band ===== */
+.evening{position:relative;overflow:hidden;color:#fff;background:radial-gradient(1200px 600px at 70% -10%,#2A7272 0%,var(--evening) 45%,var(--evening-deep) 100%);padding:clamp(72px,9vw,128px) 0 clamp(40px,5vw,64px)}
+.evening h2{color:#fff}
+.evening .lede{color:rgba(255,255,255,.78)}
+.evening a{color:#fff}
+.evening .contact{display:grid;gap:10px;margin:22px 0 30px;font-size:1.1rem}
+.evening .contact span{display:block;color:rgba(255,255,255,.7);font-size:.9rem}
+.evening .ivy-bottom{right:-10px;bottom:-8px;width:clamp(180px,26vw,340px);transform-origin:100% 100%;filter:drop-shadow(0 0 18px rgba(127,203,85,.25)) drop-shadow(0 3px 3px rgba(0,0,0,.3));z-index:0}
+.evening .wrap{position:relative;z-index:1;max-width:760px}
+.evening .mono{width:140px;height:auto;margin:48px auto 10px;opacity:.9}
+.evening .fine{text-align:center;color:rgba(255,255,255,.6);font-size:.9rem}
+.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,.55) 50%,transparent 51%),radial-gradient(1px 1px at 32% 40%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 58% 12%,rgba(255,255,255,.5) 50%,transparent 51%),radial-gradient(1px 1px at 80% 30%,rgba(255,255,255,.45) 50%,transparent 51%),radial-gradient(1px 1px at 45% 70%,rgba(255,255,255,.3) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 90% 65%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1px 1px at 22% 85%,rgba(255,255,255,.35) 50%,transparent 51%)}
+
+/* paper grain over everything */
+body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;background:url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%27260%27><filter id=%27g%27><feTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%273%27 stitchTiles=%27stitch%27/><feColorMatrix values=%270 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0%27/></filter><rect width=%27100%%27 height=%27100%%27 filter=%27url(%23g)%27/></svg>") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
+
+/* ===== motion ===== */
 @media (prefers-reduced-motion:no-preference){
-  /* hero: pen draws the vines, the script writes itself on, then copy and buttons rise */
-  .wm-text{clip-path:inset(-12% 100% -12% -2%);animation:writeOn 1.6s cubic-bezier(.45,0,.25,1) .3s forwards}
-  @keyframes writeOn{to{clip-path:inset(-12% -2% -12% -2%)}}
-  /* ivy growth: stems draw on, leaves unfurl as the tip passes (any .grow container) */
   .st{stroke-dasharray:1;stroke-dashoffset:1}
   .lf{transform:scale(0)}
   .grow .st{animation:draw calc(var(--len,.8s) * .8) cubic-bezier(.2,.9,.3,1) calc(var(--base,0s) + var(--d,0s)) forwards}
-  .grow .lf{animation:leafPop .7s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
-    ripple 3.6s ease-in-out calc(var(--base,0s) + var(--d,0s) + .9s) infinite alternate}
-  .grow .vine-leaf{animation:leafPop .7s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
-    sway 3.2s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1s) infinite alternate}
+  .grow .lf{animation:leafPop .7s var(--spring) calc(var(--base,0s) + var(--d,0s)) forwards,ripple 3.6s ease-in-out calc(var(--base,0s) + var(--d,0s) + .9s) infinite alternate}
+  .grow .vine-leaf{animation:leafPop .7s var(--spring) calc(var(--base,0s) + var(--d,0s)) forwards,sway 3.2s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1s) infinite alternate}
   @keyframes draw{to{stroke-dashoffset:0}}
-  h2.will-rise{opacity:0;transform:translateY(34px)}
-  h2.risen{animation:rise .9s cubic-bezier(.34,1.56,.64,1) forwards}
   @keyframes leafPop{55%{transform:scale(1.32) rotate(-8deg)}80%{transform:scale(.94) rotate(4deg)}to{transform:scale(1)}}
   @keyframes sway{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
   @keyframes ripple{from{transform:rotate(-7deg) scale(1)}50%{transform:rotate(2deg) scale(1.04)}to{transform:rotate(7deg) scale(1)}}
-  .tagline,.socials li{opacity:0;animation:rise .9s cubic-bezier(.34,1.56,.64,1) forwards}
-  .tagline{animation-delay:1.4s}
-  .socials li:nth-child(1){animation-delay:1.9s}
-  .socials li:nth-child(2){animation-delay:2.05s}
-  .socials li:nth-child(3){animation-delay:2.2s}
-  @keyframes rise{from{opacity:0;transform:translateY(42px) scale(.86)}to{opacity:1;transform:none}}
-  .hero .arch{animation:archIn 1.1s cubic-bezier(.34,1.56,.64,1) both}
-  @keyframes archIn{from{opacity:0;transform:translateY(60px) scale(.92)}to{opacity:1;transform:none}}
-  .hero .arch img{transform:scale(1.22) rotate(-3deg);animation:settle 2.4s cubic-bezier(.2,.8,.2,1) .1s forwards}
-  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  /* hero sequence */
+  .window{opacity:0;animation:windowIn 1.3s var(--spring) .1s forwards}
+  @keyframes windowIn{from{opacity:0;transform:translateY(70px) scale(.86)}to{opacity:1;transform:none}}
+  .window .pane img{transform:scale(1.22) rotate(-3deg);animation:settle 2.6s var(--ease) .2s forwards}
   @keyframes settle{to{transform:scale(1) rotate(0)}}
-  /* buttons answer the pointer */
-  .social:hover{transform:translateY(-7px) scale(1.06)}
-  .social:hover svg{animation:wiggle .6s ease-in-out}
+  .wm-text{clip-path:inset(-12% 100% -12% -2%);animation:writeOn 1.6s cubic-bezier(.45,0,.25,1) 1.1s forwards}
+  @keyframes writeOn{to{clip-path:inset(-12% -2% -12% -2%)}}
+  .glass{opacity:0;animation:rise .9s var(--spring) .9s forwards}
+  .tagline{opacity:0;animation:rise .9s var(--spring) 2.3s forwards}
+  .socials li{opacity:0;animation:rise .9s var(--spring) forwards}
+  .socials li:nth-child(1){animation-delay:2.6s}.socials li:nth-child(2){animation-delay:2.75s}.socials li:nth-child(3){animation-delay:2.9s}
+  .kotw-tag{opacity:0;animation:rise .9s var(--spring) 2s forwards}
+  .scroll-hint{animation:bob 1.8s ease-in-out 3.5s infinite}
+  @keyframes bob{50%{transform:translate(-50%,6px)}}
+  @keyframes rise{from{opacity:0;transform:translateY(42px) scale(.86)}to{opacity:1;transform:none}}
+  .ivy-top{animation:swayL 5s ease-in-out infinite alternate}
+  .ivy-top-r{animation:swayR 6s ease-in-out -2.5s infinite alternate}
+  @keyframes swayL{from{transform:rotate(-2.6deg) translateX(-4px)}to{transform:rotate(2.6deg) translateX(4px)}}
+  @keyframes swayR{from{transform:scaleX(-1) rotate(-2.2deg) translateX(-3px)}to{transform:scaleX(-1) rotate(2.2deg) translateX(3px)}}
+  .ivy-bottom{animation:swayB 6s ease-in-out -3s infinite alternate}
+  @keyframes swayB{from{transform:rotate(2.4deg)}to{transform:rotate(-2.4deg)}}
+  /* buttons */
+  .btn:hover{transform:translateY(-7px) scale(1.06)}
+  .btn:hover svg{animation:wiggle .6s ease-in-out}
   @keyframes wiggle{20%{transform:rotate(-24deg) scale(1.25)}60%{transform:rotate(18deg) scale(1.15)}}
-  /* gallery: paw prints walk in, then the tiles tumble into place */
+  /* headings + ornaments on scroll */
+  h2.will-rise{opacity:0;transform:translateY(34px)}
+  h2.risen{animation:rise .9s var(--spring) forwards}
+  /* nursery */
   .paw-trail.will-animate svg{opacity:0;transform:scale(.4)}
-  .paw-trail.is-in svg{animation:pawIn .55s cubic-bezier(.34,1.56,.64,1) calc(var(--i,0) * .22s) forwards}
+  .paw-trail.is-in svg{animation:pawIn .55s var(--spring) calc(var(--i,0) * .22s) forwards}
   .paw-trail.is-in svg:nth-child(odd){animation-name:pawInL}
   @keyframes pawIn{50%{opacity:.75;transform:translateY(-4px) rotate(16deg) scale(1.5)}to{opacity:.55;transform:translateY(7px) rotate(16deg) scale(1)}}
   @keyframes pawInL{50%{opacity:.75;transform:translateY(-18px) rotate(-16deg) scaleX(-1) scale(1.5)}to{opacity:.55;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
-  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(90px) rotate(var(--tilt,2deg)) scale(.9)}
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(90px) rotate(calc(var(--rest,0deg) + var(--tilt,2deg))) scale(.9)}
   .grid li:nth-child(even){--tilt:-2deg}
   .grid li.is-in{animation:tumble 1s cubic-bezier(.34,1.4,.64,1) calc(.1s + var(--k,0) * .13s) forwards}
   .grid li.settled{animation:none}
-  @keyframes tumble{to{opacity:1;transform:none}}
-  .grid li:hover img{transform:scale(1.07)}
-  /* cursor paw prints across the hero */
-  .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
-  @keyframes pawGhost{12%{opacity:.34;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}
-    100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}}
-}
-
-/* ===== polaroid gallery + kitten of the week ===== */
-.arch-figure{margin:0;width:min(100%,500px);margin-inline:auto}
-.hero .arch-figure{order:-1}
-@media (min-width:860px){.hero .arch-figure{order:0}}
-.arch-figure .arch{width:100%}
-.kotw-caption{font:italic 500 1.05rem/1.3 var(--serif);color:var(--ink-soft);text-align:center;margin-top:.9rem}
-@media (prefers-reduced-motion:no-preference){.kotw-caption{opacity:0;animation:rise .9s cubic-bezier(.34,1.56,.64,1) 1.6s forwards}}
-.grid{gap:clamp(18px,3vw,34px)}
-.grid li{aspect-ratio:auto;border-radius:0;overflow:visible;background:none;transform:rotate(var(--rest,0deg));transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
-.polaroid{transition:box-shadow .5s}
-.grid li:nth-child(6n+1){--rest:-2.4deg}
-.grid li:nth-child(6n+2){--rest:1.6deg}
-.grid li:nth-child(6n+3){--rest:-1.1deg}
-.grid li:nth-child(6n+4){--rest:2.1deg}
-.grid li:nth-child(6n+5){--rest:-1.7deg}
-.grid li:nth-child(6n+6){--rest:1.2deg}
-.polaroid{position:relative;margin:0;background:#FFFDF8;padding:12px 12px 14px;
-  box-shadow:0 1px 2px rgba(58,53,50,.08),0 10px 24px -10px rgba(58,53,50,.35)}
-.polaroid img{aspect-ratio:4/5;width:100%;height:auto;object-fit:cover;display:block;background:var(--linen)}
-.polaroid::before{content:"";position:absolute;left:50%;top:-11px;width:84px;height:24px;margin-left:-42px;
-  background:rgba(237,229,216,.82);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(58,53,50,.12);
-  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px);mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px)}
-.polaroid figcaption{font:400 1.55rem/1 var(--script);color:var(--ink);text-align:center;padding:14px 4px 8px;min-height:2.6rem}
-.polaroid figcaption mark.edit{border-bottom-width:1px}
-@media (prefers-reduced-motion:no-preference){
-  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(calc(var(--rest,0deg) + var(--tilt,2deg)))}
   @keyframes tumble{to{opacity:1;transform:rotate(var(--rest,0deg))}}
-  .grid li:hover{transform:rotate(0deg) translateY(-16px) scale(1.06);z-index:1}
-  .grid li:hover .polaroid{box-shadow:0 2px 3px rgba(58,53,50,.1),0 28px 40px -16px rgba(58,53,50,.45)}
-  .grid li:hover img{transform:none}
+  .ribbon{transform-origin:100% 0}
+  .grid li.settled .ribbon{animation:flutter 4s ease-in-out infinite alternate}
+  @keyframes flutter{to{transform:rotate(-2deg) translateX(-1px)}}
+  /* path steps */
+  .step{opacity:0;transform:translateY(40px)}
+  .step.grow{animation:rise .9s var(--spring) forwards}
+  .step.grow .badge{animation:pop .7s var(--spring) .2s both}
+  @keyframes pop{from{transform:scale(.4)}60%{transform:scale(1.15)}to{transform:scale(1)}}
+  /* quotes */
+  .quote{opacity:0;transform:translateY(30px)}
+  .quote.grow{animation:rise .9s var(--spring) calc(var(--k,0) * .15s) forwards}
+  /* cursor paws */
+  .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
+  @keyframes pawGhost{12%{opacity:.34;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}}
 }
-
-/* ===== paper grain ===== */
-body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
-  background:url("data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%27260%27><filter id=%27g%27><feTurbulence type=%27fractalNoise%27 baseFrequency=%270.85%27 numOctaves=%273%27 stitchTiles=%27stitch%27/><feColorMatrix values=%270 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0%27/></filter><rect width=%27100%%27 height=%27100%%27 filter=%27url(%23g)%27/></svg>") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
-
-/* ===== ivy drapes ===== */
-.ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;overflow:visible;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
-.ivy-top{left:-14px;top:-12px;z-index:2;transform-origin:0 0}
-.ivy-top-r{right:-14px;top:-12px;z-index:2;transform:scaleX(-1);transform-origin:50% 0;width:clamp(190px,30vw,430px)}
-footer{position:relative;overflow:hidden}
-footer > :not(.ivy){position:relative;z-index:1}
-.ivy-bottom{right:-10px;bottom:-8px;transform-origin:100% 100%;width:clamp(170px,24vw,320px)}
-@media (prefers-reduced-motion:no-preference){
-  .ivy-top{animation:ivySwayTop 5s ease-in-out infinite alternate}
-  .ivy-top-r{animation:ivySwayTopR 6s ease-in-out -2.5s infinite alternate}
-  @keyframes ivySwayTopR{from{transform:scaleX(-1) rotate(-2.2deg) translateX(-3px)}to{transform:scaleX(-1) rotate(2.2deg) translateX(3px)}}
-  .ivy-bottom{animation:ivySwayBottom 6s ease-in-out -3s infinite alternate}
-  @keyframes ivySwayTop{from{transform:rotate(-2.6deg) translateX(-4px)}to{transform:rotate(2.6deg) translateX(4px)}}
-  @keyframes ivySwayBottom{from{transform:rotate(2.4deg)}to{transform:rotate(-2.4deg)}}
-}
+@media (prefers-reduced-motion:reduce){.route .line path{stroke-dashoffset:0}}
 </style>
-<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}</style></noscript>
+<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}.step,.quote,h2.will-rise{opacity:1!important;transform:none!important}.route .line path{stroke-dashoffset:0}</style></noscript>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="paw" viewBox="0 0 128 128"><ellipse cx="64" cy="75.0" rx="22.3" ry="18.0"/>
@@ -233,8 +268,26 @@ footer > :not(.ivy){position:relative;z-index:1}
 <ellipse cx="73.4" cy="41.5" rx="7.9" ry="10.8" transform="rotate(8 73.4 41.5)"/>
 <ellipse cx="89.9" cy="53.4" rx="7.9" ry="10.8" transform="rotate(25 89.9 53.4)"/></symbol></svg>
 
-<header class="hero">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 310" class="ivy ivy-top grow" style="--base:.4s" aria-hidden="true">
+<nav class="nav" aria-label="Page">
+  <a href="#top" aria-label="LittleFoot Munchkins, back to top"><img class="mono" src="assets/logo-a-monogram-ink.svg" alt="" width="328" height="190"></a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#nursery">Nursery</a></li>
+    <li><a href="#path">Bringing one home</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li class="keep"><a class="btn primary small" href="https://www.facebook.com/" rel="me">Facebook</a></li>
+  </ul>
+</nav>
+
+<header class="hero wall" id="top">
+  <div class="scene">
+    <figure class="window">
+      <div class="frame"></div>
+      <div class="pane"><img id="kotw" src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high"></div>
+      <div class="mullion"></div>
+      <div class="glare"></div>
+      <div class="sill"></div>
+      <svg style="--base:.6s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 310" class="ivy ivy-top grow" aria-hidden="true">
 <path class="st" pathLength="1" style="--d:0.10s;--len:1.60s" d="M34.0 66.0 C 110.0 26.0 165.0 124.0 230.0 76.0 C 295.0 28.0 370.0 124.0 425.0 66.0 C 455.0 40.0 485.0 80.0 500.0 68.0" fill="none" stroke="#3F8A35" stroke-width="4" stroke-linecap="round"/>
 <path class="st" pathLength="1" style="--d:0.74s;--len:0.60s" d="M233.9 73.3 C 223.9 123.3 258.9 167.3 243.9 213.3" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/>
 <path class="st curl" pathLength="1" style="--d:1.34s;--len:.35s" d="M243.9 213.3 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/>
@@ -272,7 +325,7 @@ footer > :not(.ivy){position:relative;z-index:1}
 <g transform="translate(386.1 85.1) rotate(159.4) scale(0.95)"><g class="lf" style="--d:1.05s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 <g transform="translate(147.4 78.8) rotate(205.3) scale(0.97)"><g class="lf" style="--d:0.40s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 </svg>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 310" class="ivy ivy-top-r grow" style="--base:.9s" aria-hidden="true">
+      <svg style="--base:1.1s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 310" class="ivy ivy-top-r grow" aria-hidden="true">
 <path class="st" pathLength="1" style="--d:0.10s;--len:1.60s" d="M34.0 66.0 C 110.0 26.0 165.0 124.0 230.0 76.0 C 295.0 28.0 370.0 124.0 425.0 66.0 C 455.0 40.0 485.0 80.0 500.0 68.0" fill="none" stroke="#3F8A35" stroke-width="4" stroke-linecap="round"/>
 <path class="st" pathLength="1" style="--d:0.74s;--len:0.60s" d="M233.9 73.3 C 223.9 123.3 258.9 167.3 243.9 213.3" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/>
 <path class="st curl" pathLength="1" style="--d:1.34s;--len:.35s" d="M243.9 213.3 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/>
@@ -310,119 +363,136 @@ footer > :not(.ivy){position:relative;z-index:1}
 <g transform="translate(488.1 69.6) rotate(31.0) scale(0.96)"><g class="lf" style="--d:1.58s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 <g transform="translate(435.8 59.3) rotate(143.6) scale(1.00)"><g class="lf" style="--d:1.23s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#7FCB55"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 </svg>
-  <div class="wrap">
+      <figcaption class="kotw-tag">Kitten of the week</figcaption>
+    </figure>
     <div class="hero-copy">
-      <svg class="wordmark grow" style="--base:1.7s" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1036 170" role="img" aria-label="LittleFoot Munchkins">
+      <div class="glass"><svg style="--base:2.6s" class="wordmark grow" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1036 170">
 <path class="wm-text" fill="#3A3532" transform="translate(150.0 112)" d="M76.7 29.86Q75.74 29.86 75.46 29.52Q75.17 29.18 75.17 28.8Q76.9 28.51 78.53 26.26Q80.16 24 80.16 21.02Q80.16 16.32 77.09 11.95Q74.02 7.58 68.45 3.94Q62.88 0.29 55.44 -2.35Q48 -4.99 39.17 -6.24Q35.9 -1.63 31.82 2.26Q27.74 6.14 22.8 8.5Q17.86 10.85 12.1 10.85Q6.05 10.85 2.88 8.06Q-0.29 5.28 -0.29 1.63Q-0.29 -1.73 2.45 -5.14Q5.18 -8.54 10.8 -10.8Q16.42 -13.06 25.06 -13.06Q31.68 -13.06 38.5 -11.9Q40.9 -16.13 42.82 -20.35Q44.74 -24.58 46.18 -28.32Q36.67 -28.7 31.2 -31.25Q25.73 -33.79 23.42 -37.63Q21.12 -41.47 21.12 -45.5Q21.12 -50.59 24.19 -55.15Q27.26 -59.71 32.54 -62.59Q37.82 -65.47 44.35 -65.47Q45.12 -65.47 45.31 -64.9Q45.5 -64.32 45.5 -63.94Q41.86 -63.94 38.45 -62.3Q35.04 -60.67 32.35 -57.94Q29.66 -55.2 28.08 -51.84Q26.5 -48.48 26.5 -44.93Q26.5 -41.47 28.32 -38.16Q30.14 -34.85 34.56 -32.64Q38.98 -30.43 46.94 -30.24Q47.81 -32.45 48.43 -34.32Q49.06 -36.19 49.54 -37.54Q51.84 -44.45 54.48 -51.26Q57.12 -58.08 60.53 -63.65Q63.94 -69.22 68.64 -72.58Q73.34 -75.94 79.87 -75.94Q84.1 -75.94 86.45 -73.54Q88.8 -71.14 88.8 -66.91Q88.8 -62.78 86.88 -57.84Q84.96 -52.9 81.5 -48Q78.05 -43.1 73.34 -38.88Q68.64 -34.66 63.07 -31.87Q57.5 -29.09 51.36 -28.42Q49.92 -25.34 47.71 -20.69Q45.5 -16.03 42.43 -11.14Q50.78 -9.22 58.22 -5.95Q65.66 -2.69 71.38 1.49Q77.09 5.66 80.35 10.42Q83.62 15.17 83.62 19.87Q83.62 24.1 81.5 26.98Q79.39 29.86 76.7 29.86ZM79.87 -71.04Q75.74 -71.04 72.1 -67.44Q68.45 -63.84 65.14 -57.94Q61.82 -52.03 58.66 -44.83Q55.49 -37.63 52.32 -30.53Q57.98 -31.3 62.88 -33.98Q67.78 -36.67 71.81 -40.56Q75.84 -44.45 78.72 -48.86Q81.6 -53.28 83.14 -57.55Q84.67 -61.82 84.67 -65.18Q84.67 -67.87 83.52 -69.46Q82.37 -71.04 79.87 -71.04ZM2.11 2.98Q2.11 5.38 4.7 7.15Q7.3 8.93 12.1 8.93Q19.2 8.93 24.96 4.37Q30.72 -0.19 35.23 -6.72Q30.14 -7.2 25.06 -7.2Q17.18 -7.2 12.1 -5.62Q7.01 -4.03 4.56 -1.68Q2.11 0.67 2.11 2.98ZM82.37 0Q78.82 0 77.38 -2.06Q75.94 -4.13 75.94 -6.82Q75.94 -8.26 76.27 -9.74Q76.61 -11.23 77.09 -12.48L83.52 -28.9Q83.81 -29.66 83.81 -30.24Q83.81 -31.2 83.33 -31.92Q82.85 -32.64 82.66 -32.93L87.94 -33.12Q89.38 -33.22 90 -32.78Q90.62 -32.35 90.62 -31.78Q90.62 -31.2 89.95 -29.66Q88.99 -27.36 87.36 -23.9Q85.73 -20.45 84.14 -16.8Q82.56 -13.15 81.46 -9.98Q80.35 -6.82 80.35 -5.09Q80.35 -3.84 80.98 -2.98Q81.6 -2.11 83.14 -2.11Q85.15 -2.11 87.12 -3.7Q89.09 -5.28 90.82 -7.78Q92.54 -10.27 94.03 -13.15Q95.52 -16.03 96.58 -18.53Q97.73 -18.53 97.73 -17.66Q96.77 -15.26 95.23 -12.19Q93.7 -9.12 91.73 -6.38Q89.76 -3.65 87.41 -1.82Q85.06 0 82.37 0ZM90.91 -39.07Q89.66 -39.07 88.75 -40.03Q87.84 -40.99 87.84 -42.34Q87.84 -43.97 89.18 -45.26Q90.53 -46.56 92.16 -46.56Q93.5 -46.56 94.46 -45.7Q95.42 -44.83 95.42 -43.49Q95.42 -41.76 94.08 -40.42Q92.74 -39.07 90.91 -39.07ZM101.38 0.29Q97.34 0.29 95.9 -1.87Q94.46 -4.03 94.46 -7.01Q94.46 -9.31 95.23 -12.86Q96 -16.42 97.25 -20.5Q98.5 -24.58 99.84 -28.56Q101.18 -32.54 102.48 -35.76Q103.78 -38.98 104.54 -40.8Q102.24 -40.7 100.42 -40.13Q98.59 -39.55 96.96 -36.86L96.67 -36.38Q96.38 -36 96.1 -36Q95.81 -36 95.62 -36.29Q95.42 -36.58 95.52 -36.96Q96.77 -40.22 99.65 -41.66Q102.53 -43.1 105.7 -43.3Q106.85 -45.6 108.34 -48.53Q109.82 -51.46 111.74 -54.14Q113.66 -56.83 115.92 -58.61Q118.18 -60.38 120.77 -60.38Q123.07 -60.38 123.84 -57.89Q121.15 -57.31 118.7 -54.77Q116.26 -52.22 114.29 -49.06Q112.32 -45.89 111.17 -43.39Q114.53 -43.3 118.61 -42.91Q122.69 -42.53 126.34 -42.43Q128.26 -46.46 130.66 -50.59Q133.06 -54.72 135.74 -57.55Q138.43 -60.38 141.22 -60.38Q143.52 -60.38 144.29 -57.89Q142.18 -57.41 139.97 -55.01Q137.76 -52.61 135.7 -49.2Q133.63 -45.79 131.9 -42.53Q134.5 -42.62 137.33 -43.06Q140.16 -43.49 142.32 -44.5Q144.48 -45.5 145.15 -47.23Q146.3 -47.23 146.3 -46.56Q145.44 -44.16 142.9 -42.72Q140.35 -41.28 136.99 -40.61Q133.63 -39.94 130.46 -39.74Q130.18 -39.07 129.89 -38.5Q129.6 -37.92 129.31 -37.34L128.93 -36.48Q127.87 -34.37 126.34 -30.43Q124.8 -26.5 123.26 -22.08Q121.73 -17.66 120.72 -13.73Q119.71 -9.79 119.71 -7.58Q119.71 -4.7 120.91 -3.31Q122.11 -1.92 123.84 -1.92Q126.05 -1.92 128.21 -3.84Q130.37 -5.76 132.29 -8.59Q134.21 -11.42 135.65 -14.16Q137.09 -16.9 137.76 -18.53Q138.91 -18.53 138.91 -17.66Q137.95 -15.46 136.46 -12.43Q134.98 -9.41 132.91 -6.48Q130.85 -3.55 128.06 -1.63Q125.28 0.29 121.82 0.29Q117.79 0.29 116.35 -1.82Q114.91 -3.94 114.91 -7.01Q114.91 -8.74 115.3 -11.04Q113.76 -8.26 111.74 -5.66Q109.73 -3.07 107.18 -1.39Q104.64 0.29 101.38 0.29ZM99.26 -7.58Q99.26 -4.7 100.46 -3.31Q101.66 -1.92 103.39 -1.92Q105.31 -1.92 107.28 -3.5Q109.25 -5.09 111.02 -7.44Q112.8 -9.79 114.24 -12.34Q115.68 -14.88 116.54 -16.9Q117.5 -20.54 118.8 -24.29Q120.1 -28.03 121.34 -31.2Q122.59 -34.37 123.46 -36.38L123.84 -37.25Q124.13 -37.82 124.42 -38.45Q124.7 -39.07 124.99 -39.74Q121.06 -39.94 116.83 -40.46Q112.61 -40.99 110.02 -40.9Q109.15 -39.17 107.86 -35.81Q106.56 -32.45 105.07 -28.37Q103.58 -24.29 102.24 -20.16Q100.9 -16.03 100.08 -12.67Q99.26 -9.31 99.26 -7.58ZM142.18 0.29Q138.62 0.29 136.94 -1.87Q135.26 -4.03 135.26 -7.01Q135.26 -10.08 136.13 -13.34Q136.99 -16.61 137.66 -18.82Q139.2 -24.19 141.55 -30.29Q143.9 -36.38 146.74 -42.29Q149.57 -48.19 152.35 -52.9Q154.56 -56.64 157.1 -58.51Q159.65 -60.38 161.57 -60.38Q163.1 -60.38 164.02 -59.28Q164.93 -58.18 164.93 -55.97Q164.93 -54.43 164.4 -52.32Q163.87 -50.21 162.62 -47.52Q159.26 -40.03 154.61 -32.54Q149.95 -25.06 142.85 -18.53Q141.7 -15.84 140.93 -12.77Q140.16 -9.7 140.16 -7.78Q140.16 -1.82 144.19 -1.82Q147.26 -1.82 151.01 -6.29Q154.75 -10.75 158.11 -18.53Q158.5 -18.53 158.88 -18.38Q159.26 -18.24 159.26 -17.66Q158.21 -15.07 156.62 -11.95Q155.04 -8.83 152.98 -6.05Q150.91 -3.26 148.22 -1.49Q145.54 0.29 142.18 0.29ZM143.62 -21.6Q147.07 -25.15 150.34 -29.81Q153.6 -34.46 156.43 -39.5Q159.26 -44.54 161.18 -49.06Q161.86 -50.5 162.29 -52.22Q162.72 -53.95 162.72 -55.1Q162.72 -56.45 162.05 -56.45Q161.66 -56.45 160.9 -55.73Q160.13 -55.01 158.88 -53.28Q157.06 -50.88 154.9 -46.75Q152.74 -42.62 150.53 -37.92Q148.32 -33.22 146.5 -28.85Q144.67 -24.48 143.62 -21.6ZM165.02 0.38Q161.47 0.38 158.64 -1.92Q155.81 -4.22 155.81 -8.93Q155.81 -12.86 157.58 -17.28Q159.36 -21.7 162.29 -25.58Q165.22 -29.47 168.82 -31.92Q172.42 -34.37 176.06 -34.37Q177.89 -34.37 179.62 -33.31Q181.34 -32.26 181.34 -29.66Q181.34 -27.26 179.52 -24.38Q177.7 -21.5 174.34 -19.01Q172.9 -17.95 170.69 -16.99Q168.48 -16.03 166.27 -15.41Q164.06 -14.78 162.62 -14.78Q162.14 -13.63 161.71 -11.71Q161.28 -9.79 161.28 -7.78Q161.28 -5.38 162.24 -3.46Q163.2 -1.54 165.79 -1.54Q168.96 -1.54 171.7 -3.36Q174.43 -5.18 176.59 -7.97Q178.75 -10.75 180.29 -13.63Q181.82 -16.51 182.69 -18.53Q183.84 -18.53 183.84 -17.66Q182.59 -14.98 181.01 -11.81Q179.42 -8.64 177.26 -5.9Q175.1 -3.17 172.08 -1.39Q169.06 0.38 165.02 0.38ZM163.3 -16.51Q164.64 -16.51 167.81 -17.52Q170.98 -18.53 173.57 -20.74Q176.06 -22.94 177.41 -25.58Q178.75 -28.22 178.75 -30.05Q178.75 -32.16 177.22 -32.16Q176.06 -32.16 174.05 -30.62Q172.03 -29.09 169.06 -25.44Q167.23 -23.14 165.6 -20.45Q163.97 -17.76 163.3 -16.51ZM214.27 9.7Q203.71 9.7 195.89 6.43Q188.06 3.17 183.79 -2.54Q179.52 -8.26 179.52 -15.55Q179.52 -21.5 181.63 -26.4Q183.74 -31.3 187.25 -34.56Q190.75 -37.82 194.98 -38.88Q195.65 -38.98 195.65 -38.4Q195.65 -37.92 195.17 -37.63Q190.18 -34.66 187.54 -29.09Q184.9 -23.52 184.9 -16.7Q184.9 -9.31 188.74 -3.98Q192.58 1.34 199.25 4.18Q205.92 7.01 214.27 7.01Q221.47 7.01 227.95 4.46Q234.43 1.92 239.9 -2.5Q245.38 -6.91 249.74 -12.53Q254.11 -18.14 257.09 -24.29Q257.76 -25.73 258.43 -27.07Q259.1 -28.42 259.78 -29.76Q257.47 -29.86 255.6 -29.95Q253.73 -30.05 253.06 -30.05Q250.46 -30.05 247.54 -29.71Q244.61 -29.38 242.06 -28.42Q239.52 -27.46 237.89 -25.44Q237.22 -24.77 237.07 -24.38Q236.93 -24 236.64 -24Q236.26 -24 235.97 -24.62Q235.68 -25.25 236.06 -26.02Q238.27 -30.91 242.3 -32.69Q246.34 -34.46 251.33 -34.46Q252.38 -34.46 255.31 -34.13Q258.24 -33.79 261.5 -33.41Q265.73 -41.95 269.23 -48.86Q272.74 -55.78 275.81 -60.38Q268.9 -62.69 261.12 -64.46Q253.34 -66.24 244.42 -66.24Q237.79 -66.24 232.42 -64.42Q227.04 -62.59 223.25 -59.52Q219.46 -56.45 217.44 -52.7Q215.42 -48.96 215.42 -45.22Q215.42 -40.99 217.06 -38.5Q218.69 -36 221.33 -34.9Q223.97 -33.79 226.75 -33.79Q230.88 -33.79 233.81 -35.81Q236.74 -37.82 238.46 -40.37Q240.19 -42.91 240.58 -44.54Q240.96 -46.08 241.73 -46.08Q242.88 -46.08 242.69 -44.74Q242.11 -40.51 239.71 -37.44Q237.31 -34.37 233.86 -32.78Q230.4 -31.2 226.56 -31.2Q222.62 -31.2 218.98 -33.12Q215.33 -35.04 213.02 -38.69Q210.72 -42.34 210.72 -47.52Q210.72 -51.74 212.59 -55.92Q214.46 -60.1 218.26 -63.6Q222.05 -67.1 227.9 -69.22Q233.76 -71.33 241.73 -71.33Q247.39 -71.33 253.34 -70.03Q259.3 -68.74 265.39 -66.77Q271.49 -64.8 277.44 -62.69Q279.46 -65.28 281.28 -66.67Q283.1 -68.06 284.93 -68.06Q285.7 -68.06 285.98 -67.73Q286.27 -67.39 286.27 -67.1Q286.27 -66.72 285.98 -66.24Q285.7 -65.76 284.93 -65.76Q281.76 -65.76 278.98 -62.21Q285.89 -59.9 292.27 -58.13Q298.66 -56.35 304.13 -56.35Q308.35 -56.35 309.7 -57.26Q311.04 -58.18 311.04 -59.81Q311.04 -60.86 311.71 -60.86Q312.19 -60.86 312.62 -60.24Q313.06 -59.62 313.06 -58.75Q313.06 -56.45 310.51 -55.01Q307.97 -53.57 303.46 -53.57Q297.5 -53.57 291.07 -55.54Q284.64 -57.5 277.44 -59.9Q274.85 -55.58 272.35 -48.62Q269.86 -41.66 266.5 -32.93Q270.62 -32.54 275.23 -32.3Q279.84 -32.06 282.72 -32.06Q283.68 -32.06 283.68 -31.49Q283.68 -30.72 281.47 -30.14Q280.03 -29.76 276.62 -29.57Q273.22 -29.38 269.57 -29.38Q268.8 -29.38 267.65 -29.42Q266.5 -29.47 265.15 -29.47Q264.29 -27.26 263.38 -25.01Q262.46 -22.75 261.41 -20.35Q257.38 -10.85 251.57 -4.94Q245.76 0.96 239.18 4.18Q232.61 7.39 226.13 8.54Q219.65 9.7 214.27 9.7ZM285.12 0Q281.18 0 279.31 -2.83Q277.44 -5.66 277.44 -9.7Q277.44 -13.44 278.88 -17.47Q280.42 -21.89 283.15 -25.54Q285.89 -29.18 289.2 -31.44Q292.51 -33.7 295.78 -33.7Q299.71 -33.7 301.58 -31.01Q303.46 -28.32 303.46 -24.19Q303.46 -21.31 302.5 -18.14Q301.54 -14.98 299.9 -11.9Q301.15 -10.66 303.46 -10.66Q306.14 -10.66 308.06 -12.38Q309.98 -14.11 311.81 -18.53Q312.96 -18.53 312.96 -17.66Q311.14 -13.25 308.78 -11.18Q306.43 -9.12 302.78 -9.22Q300.58 -9.22 299.14 -10.46Q296.45 -6.05 292.75 -3.02Q289.06 0 285.12 0ZM286.46 -2.11Q288.67 -2.11 290.88 -3.98Q293.09 -5.86 294.91 -8.26Q296.74 -10.66 297.5 -12.38Q295.97 -15.17 295.73 -16.56Q295.49 -17.95 295.49 -18.62Q295.49 -20.45 296.45 -21.41Q297.41 -22.37 298.37 -22.37Q299.71 -22.37 300.67 -21.22Q300.86 -22.27 300.96 -23.18Q301.06 -24.1 301.06 -24.96Q301.06 -27.46 300.14 -29.04Q299.23 -30.62 297.31 -30.62Q295.3 -30.62 293.09 -28.9Q290.88 -27.17 288.91 -24.29Q286.94 -21.41 285.5 -17.86Q284.26 -14.88 283.58 -12.24Q282.91 -9.6 282.91 -7.39Q282.91 -4.99 283.78 -3.55Q284.64 -2.11 286.46 -2.11ZM317.57 0Q313.63 0 311.76 -2.83Q309.89 -5.66 309.89 -9.7Q309.89 -13.44 311.33 -17.47Q312.86 -21.89 315.6 -25.54Q318.34 -29.18 321.65 -31.44Q324.96 -33.7 328.22 -33.7Q332.16 -33.7 334.03 -31.01Q335.9 -28.32 335.9 -24.19Q335.9 -21.31 334.94 -18.14Q333.98 -14.98 332.35 -11.9Q333.6 -10.66 335.9 -10.66Q338.59 -10.66 340.51 -12.38Q342.43 -14.11 344.26 -18.53Q345.41 -18.53 345.41 -17.66Q343.58 -13.25 341.23 -11.18Q338.88 -9.12 335.23 -9.22Q333.02 -9.22 331.58 -10.46Q328.9 -6.05 325.2 -3.02Q321.5 0 317.57 0ZM318.91 -2.11Q321.12 -2.11 323.33 -3.98Q325.54 -5.86 327.36 -8.26Q329.18 -10.66 329.95 -12.38Q328.42 -15.17 328.18 -16.56Q327.94 -17.95 327.94 -18.62Q327.94 -20.45 328.9 -21.41Q329.86 -22.37 330.82 -22.37Q332.16 -22.37 333.12 -21.22Q333.31 -22.27 333.41 -23.18Q333.5 -24.1 333.5 -24.96Q333.5 -27.46 332.59 -29.04Q331.68 -30.62 329.76 -30.62Q327.74 -30.62 325.54 -28.9Q323.33 -27.17 321.36 -24.29Q319.39 -21.41 317.95 -17.86Q316.7 -14.88 316.03 -12.24Q315.36 -9.6 315.36 -7.39Q315.36 -4.99 316.22 -3.55Q317.09 -2.11 318.91 -2.11ZM364.13 -50.69Q362.88 -48.86 361.34 -46.08Q359.81 -43.3 358.51 -40.7Q357.22 -38.11 356.54 -36.77H365.38Q365.38 -36.38 365.04 -35.52Q364.7 -34.66 363.74 -34.27H355.39Q354.24 -31.68 352.75 -28.03Q351.26 -24.38 349.87 -20.45Q348.48 -16.51 347.57 -13.1Q346.66 -9.7 346.66 -7.58Q346.66 -4.7 347.42 -3.31Q348.19 -1.92 350.21 -1.92Q352.8 -1.92 355.2 -4.46Q357.6 -7.01 359.76 -10.85Q361.92 -14.69 363.55 -18.53Q364.7 -18.53 364.7 -17.66Q363.65 -15.07 362.11 -12Q360.58 -8.93 358.61 -6.1Q356.64 -3.26 354.19 -1.49Q351.74 0.29 348.77 0.29Q344.74 0.29 343.3 -1.97Q341.86 -4.22 341.86 -7.78Q341.86 -10.37 342.82 -14.06Q343.78 -17.76 345.17 -21.7Q346.56 -25.63 347.9 -29.04Q349.25 -32.45 350.02 -34.27H343.87Q343.87 -35.04 344.54 -35.9Q345.22 -36.77 345.98 -36.77H351.07Q351.84 -38.3 352.85 -40.61Q353.86 -42.91 355.58 -45.7Q357.02 -48 359.28 -49.34Q361.54 -50.69 364.13 -50.69ZM505.34 11.04Q503.9 10.85 501.41 10.32Q498.91 9.79 496.32 8.26Q493.73 6.72 491.9 3.6Q490.08 0.48 490.08 -4.7Q490.08 -10.66 492.53 -17.81Q494.98 -24.96 498.53 -32.74Q502.08 -40.51 505.34 -48.1Q507.94 -54.14 507.94 -57.31Q507.94 -60.48 505.54 -60.48Q502.85 -60.48 497.52 -56.21Q492.19 -51.94 485.18 -43.3Q483.36 -40.99 480.48 -36.91Q477.6 -32.83 474.34 -27.89Q471.07 -22.94 467.95 -17.9Q464.83 -12.86 462.48 -8.64Q460.13 -4.42 459.07 -1.92Q457.82 1.06 456.19 2.16Q454.56 3.26 453.12 3.26Q451.87 3.26 451.01 2.59Q450.05 1.92 450.05 0.96Q450.05 0.38 450.34 0Q450.91 -1.15 453.22 -5.28Q455.52 -9.41 458.59 -16.22Q461.66 -23.04 464.45 -32.06Q465.31 -34.85 466.22 -38.5Q467.14 -42.14 467.9 -46.03Q468.67 -49.92 469.2 -53.33Q469.73 -56.74 469.73 -58.85Q469.73 -62.21 468.58 -63.79Q467.42 -65.38 465.5 -65.38Q463.39 -65.38 460.7 -63.55Q458.02 -61.73 455.23 -58.27Q450.43 -52.22 446.78 -47.09Q443.14 -41.95 440.11 -36.86Q437.09 -31.78 434.16 -26.02Q431.23 -20.26 427.97 -13.1Q424.7 -5.95 420.48 3.46Q419.81 4.99 418.22 5.66Q416.64 6.34 415.3 6.34Q413.95 6.34 413.09 5.76Q412.22 5.18 412.51 4.13Q414.62 0.77 417.22 -4.27Q419.81 -9.31 422.5 -15.46Q425.18 -21.6 427.68 -28.22Q430.18 -34.85 432.14 -41.18Q434.11 -47.52 435.26 -53.09Q436.42 -58.66 436.42 -62.59Q436.42 -69.98 433.3 -73.15Q430.18 -76.32 425.28 -76.32Q420.96 -76.32 415.78 -74.21Q410.59 -72.1 405.36 -68.45Q400.13 -64.8 395.52 -60.19Q388.9 -53.57 385.1 -45.79Q381.31 -38.02 381.31 -30.05Q381.31 -24.67 383.33 -20.93Q385.34 -17.18 388.66 -15.26Q391.97 -13.34 396 -13.34Q400.13 -13.34 403.73 -15.41Q407.33 -17.47 410.06 -20.78Q412.8 -24.1 414.34 -27.79Q415.87 -31.49 415.87 -34.75Q415.87 -37.54 414.34 -39.36Q412.8 -41.18 409.44 -41.18Q409.06 -41.18 408.62 -41.14Q408.19 -41.09 407.71 -41.09H407.42Q406.75 -41.09 406.18 -41.33Q405.6 -41.57 405.6 -41.95Q405.6 -42.34 406.61 -42.82Q407.62 -43.3 410.3 -43.3Q414.62 -43.3 416.78 -40.75Q418.94 -38.21 418.94 -34.27Q418.94 -30.43 416.98 -26.4Q415.01 -22.37 411.65 -18.91Q408.29 -15.46 404.11 -13.34Q399.94 -11.23 395.52 -11.23Q390.34 -11.23 385.87 -13.63Q381.41 -16.03 378.72 -20.59Q376.03 -25.15 376.03 -31.49Q376.03 -37.54 378.53 -43.44Q381.02 -49.34 385.01 -54.58Q388.99 -59.81 393.5 -63.84Q398.5 -68.35 404.06 -71.57Q409.63 -74.78 415.15 -76.56Q420.67 -78.34 425.47 -78.34Q432.58 -78.34 437.23 -74.11Q441.89 -69.89 441.89 -60.48Q441.89 -56.64 440.83 -51.7Q439.78 -46.75 438.34 -41.81Q436.9 -36.86 435.55 -33.02H435.74Q439.2 -39.26 441.94 -43.73Q444.67 -48.19 447.46 -52.03Q450.24 -55.87 453.7 -60.1Q456.67 -63.65 460.51 -65.76Q464.35 -67.87 467.9 -67.87Q471.07 -67.87 473.28 -65.76Q475.49 -63.65 475.49 -58.56Q475.49 -57.98 475.49 -57.6Q475.49 -57.22 475.39 -56.45Q474.53 -47.23 471.74 -38.35Q468.96 -29.47 465.98 -20.45Q468.96 -25.06 474.05 -32.16Q479.14 -39.26 485.18 -46.85Q492.58 -56.06 498.91 -60.67Q505.25 -65.28 509.38 -65.28Q514.56 -65.28 514.56 -58.94Q514.56 -56.54 513.65 -53.18Q512.74 -49.82 510.82 -46.08Q508.7 -41.86 506.16 -36.34Q503.62 -30.82 501.31 -24.77Q499.01 -18.72 497.52 -12.91Q496.03 -7.1 496.03 -2.21Q496.03 3.07 498.48 6.29Q500.93 9.5 506.98 9.5H507.55Q508.99 9.5 508.99 10.08Q508.99 10.46 508.03 10.85Q507.07 11.23 505.34 11.04ZM511.2 0Q510.14 0 508.66 -0.48Q507.17 -0.96 506.06 -2.26Q504.96 -3.55 504.96 -6.14Q504.96 -8.64 506.59 -11.9Q508.22 -15.17 509.47 -17.66Q508.42 -17.66 508.42 -18.53Q508.51 -18.82 509.28 -20.35Q510.05 -21.89 511.1 -24Q512.16 -26.11 513.17 -28.08Q514.18 -30.05 514.75 -31.1Q515.9 -33.22 518.4 -33.22H524.35Q522.72 -31.97 521.42 -30.48Q520.13 -28.99 518.21 -25.06Q518.21 -25.06 517.54 -23.71Q516.86 -22.37 515.86 -20.3Q514.85 -18.24 513.84 -16.13Q512.83 -14.02 512.16 -12.58Q510.91 -9.89 510.53 -8.3Q510.14 -6.72 510.14 -5.38Q510.14 -2.21 512.26 -2.21Q514.56 -2.21 517.82 -5.95Q520.51 -9.12 523.1 -13.54Q525.7 -17.95 528.05 -22.66Q530.4 -27.36 532.22 -31.1Q533.28 -33.22 535.97 -33.22H541.25Q539.14 -31.49 536.98 -28.03Q534.82 -24.58 532.22 -19.2Q531.55 -17.76 530.5 -15.55Q529.44 -13.34 528.62 -10.85Q527.81 -8.35 527.81 -5.86Q527.81 -2.5 530.21 -2.5Q533.47 -2.5 536.54 -7.01Q539.62 -11.52 542.59 -18.53Q543.36 -18.53 543.5 -18.43Q543.65 -18.34 543.74 -17.66Q542.69 -15.07 541.2 -12.05Q539.71 -9.02 537.84 -6.24Q535.97 -3.46 533.71 -1.73Q531.46 0 528.77 0Q526.37 0 524.83 -1.78Q523.3 -3.55 523.3 -6.82Q523.3 -9.41 524.26 -12.38Q522.62 -9.5 520.51 -6.62Q518.4 -3.74 516 -1.87Q513.6 0 511.2 0ZM533.38 0.77Q536.83 -6.24 540 -13.1Q543.17 -19.97 546.53 -26.21Q548.45 -29.66 549.79 -31.06Q551.14 -32.45 553.34 -32.45Q554.11 -32.45 554.98 -32.21Q555.84 -31.97 556.7 -31.97Q557.28 -31.97 557.57 -32.06Q556.22 -31.3 554.06 -28.27Q551.9 -25.25 549.7 -21.31Q547.49 -17.38 545.76 -13.92Q547.58 -16.13 549.6 -18.34Q551.62 -20.54 554.02 -22.56Q556.32 -24.58 559.54 -26.74Q562.75 -28.9 565.82 -30.34Q568.9 -31.78 570.72 -31.78Q571.39 -31.78 571.68 -31.68Q571.68 -31.68 570.62 -29.81Q569.57 -27.94 567.98 -24.91Q566.4 -21.89 564.77 -18.48Q563.14 -15.07 561.84 -11.95Q560.54 -8.83 560.16 -6.72Q559.87 -5.47 559.87 -4.42Q559.87 -2.88 560.45 -2.4Q561.02 -1.92 561.7 -1.92Q563.52 -1.92 565.44 -3.55Q567.36 -5.18 569.14 -7.73Q570.91 -10.27 572.45 -13.15Q573.98 -16.03 575.04 -18.53Q576.19 -18.53 576.19 -17.66Q575.14 -15.07 573.55 -11.95Q571.97 -8.83 570 -6.05Q568.03 -3.26 565.63 -1.44Q563.23 0.38 560.45 0.38Q558.53 0.38 556.46 -0.96Q554.4 -2.3 554.4 -5.95Q554.4 -7.01 554.59 -8.21Q554.78 -9.41 555.26 -10.85Q556.03 -12.77 557.09 -14.98Q558.14 -17.18 560.54 -21.02Q561.22 -22.08 561.36 -22.66Q561.5 -23.23 561.5 -23.62Q561.5 -24.77 560.45 -24.77Q559.58 -24.77 557.9 -23.81Q556.22 -22.85 553.73 -20.45Q551.33 -18.14 548.02 -13.92Q544.7 -9.7 540.38 -1.44Q539.71 -0.19 538.9 -0.1Q538.08 0 536.64 0.1Q535.68 0.19 534.82 0.24Q533.95 0.29 533.38 0.77ZM583.3 0.38Q578.02 0.38 575.47 -2.4Q572.93 -5.18 572.93 -9.89Q572.93 -12.1 573.79 -14.98Q574.66 -17.86 576.1 -20.83Q577.54 -23.81 579.26 -26.11Q582.05 -29.86 585.41 -31.92Q588.77 -33.98 592.22 -33.98Q595.87 -33.98 597.46 -32.4Q599.04 -30.82 599.04 -28.7Q599.04 -26.69 598.08 -25.1Q597.12 -23.52 595.92 -22.56Q594.72 -21.6 593.86 -21.6Q593.09 -21.6 592.51 -22.18Q593.28 -23.14 594.14 -24.48Q595.01 -25.82 595.39 -27.07Q595.78 -28.22 595.78 -29.38Q595.78 -31.87 593.47 -31.87Q590.69 -31.87 588.05 -29.57Q585.41 -27.26 583.25 -23.66Q581.09 -20.06 579.79 -16.08Q578.5 -12.1 578.5 -8.74Q578.5 -5.66 579.79 -3.65Q581.09 -1.63 584.06 -1.63Q588 -1.63 590.98 -4.18Q593.95 -6.72 596.26 -10.61Q598.56 -14.5 600.29 -18.53Q600.67 -18.53 601.06 -18.38Q601.44 -18.24 601.44 -17.66Q599.52 -12.86 596.93 -8.74Q594.34 -4.61 591.02 -2.11Q587.71 0.38 583.3 0.38ZM590.98 0.77Q595.01 -7.49 599.38 -16.56Q603.74 -25.63 608.35 -34.85Q612.96 -44.06 617.47 -52.42Q619.1 -55.3 620.5 -56.93Q621.89 -58.56 624.19 -58.56Q625.06 -58.56 626.21 -58.27Q627.36 -57.98 628.42 -58.18Q627.17 -56.83 625.01 -53.47Q622.85 -50.11 620.21 -45.41Q617.57 -40.7 614.64 -35.28Q611.71 -29.86 608.88 -24.34Q606.05 -18.82 603.65 -14.02Q605.57 -16.51 607.58 -18.72Q609.6 -20.93 611.52 -22.56Q613.63 -24.48 616.85 -26.59Q620.06 -28.7 623.28 -30.24Q626.5 -31.78 628.42 -31.78Q629.09 -31.78 629.38 -31.68Q629.38 -31.68 628.32 -29.76Q627.26 -27.84 625.68 -24.86Q624.1 -21.89 622.42 -18.43Q620.74 -14.98 619.49 -11.86Q618.24 -8.74 617.86 -6.72Q617.57 -5.18 617.57 -4.13Q617.57 -2.59 618.14 -2.06Q618.72 -1.54 619.39 -1.54Q621.02 -1.54 622.9 -3.22Q624.77 -4.9 626.59 -7.49Q628.42 -10.08 630 -13.01Q631.58 -15.94 632.54 -18.53Q633.7 -18.53 633.7 -17.66Q632.64 -15.07 631.06 -11.95Q629.47 -8.83 627.46 -6.05Q625.44 -3.26 623.04 -1.44Q620.64 0.38 617.95 0.38Q616.03 0.38 614.02 -0.96Q612 -2.3 612 -5.86Q612 -6.91 612.19 -8.11Q612.38 -9.31 612.86 -10.85Q613.44 -12.77 614.78 -15.12Q616.13 -17.47 618.24 -21.02Q619.2 -22.66 619.2 -23.62Q619.2 -24.77 618.05 -24.77Q617.09 -24.77 615.46 -23.81Q613.82 -22.85 611.33 -20.45Q608.93 -18.14 605.38 -13.73Q601.82 -9.31 597.79 -1.34Q597.12 -0.1 596.3 -0.05Q595.49 0 594.14 0.1Q593.28 0.19 592.42 0.24Q591.55 0.29 590.98 0.77ZM649.25 0.67Q646.56 0.38 644.83 -1.39Q643.1 -3.17 642.34 -5.57Q641.57 -7.97 641.57 -9.98Q641.57 -13.82 643.3 -16.18Q645.02 -18.53 646.46 -18.62Q648 -18.53 650.21 -19.34Q652.42 -20.16 654.05 -21.6Q656.83 -23.81 656.83 -26.11Q656.83 -28.51 654.05 -28.51Q652.51 -28.51 650.16 -27.46Q647.81 -26.4 644.74 -23.81Q640.9 -20.54 636.77 -15.07Q636.19 -13.82 635.42 -11.38Q634.66 -8.93 634.13 -6.34Q633.6 -3.74 633.6 -1.92Q633.6 -0.48 634.08 0H628.03Q626.98 0 626.98 -0.86Q626.98 -1.15 627.07 -1.34Q627.17 -1.54 627.26 -2.11Q628.61 -7.1 630.48 -10.94Q632.35 -14.78 633.6 -17.66Q632.74 -17.38 632.64 -17.81Q632.54 -18.24 632.54 -18.53Q633.22 -20.06 634.8 -23.47Q636.38 -26.88 638.54 -31.34Q640.7 -35.81 643.2 -40.7Q645.7 -45.6 648.19 -50.11Q650.69 -54.72 652.27 -56.64Q653.86 -58.56 656.16 -58.56Q657.02 -58.56 658.22 -58.27Q659.42 -57.98 660.38 -58.18Q658.27 -56.35 655.1 -51.5Q651.94 -46.66 648.38 -40.22Q644.83 -33.79 641.57 -27.07Q640.61 -25.15 639.74 -23.04Q638.88 -20.93 638.11 -18.82Q640.13 -21.31 642.72 -24Q645.31 -26.69 648.14 -28.94Q650.98 -31.2 653.76 -32.26Q656.93 -33.41 659.04 -33.41Q661.25 -33.41 662.26 -32.35Q663.26 -31.3 663.26 -29.66Q663.26 -27.84 661.82 -25.3Q660.38 -22.75 657.89 -20.93Q655.78 -19.49 653.47 -18.43Q651.17 -17.38 648 -17.09Q647.42 -15.74 647.18 -14.35Q646.94 -12.96 646.94 -11.62Q646.94 -7.87 648.67 -5.04Q650.4 -2.21 653.18 -2.21Q654.53 -2.21 656.11 -2.98Q657.7 -3.74 659.42 -5.57Q661.34 -7.49 663.26 -10.9Q665.18 -14.3 667.1 -18.53Q668.26 -18.53 668.26 -17.66Q664.8 -9.31 661.54 -5.28Q658.27 -1.25 655.25 -0.14Q652.22 0.96 649.25 0.67ZM669.79 0Q666.24 0 664.8 -2.06Q663.36 -4.13 663.36 -6.82Q663.36 -8.26 663.7 -9.74Q664.03 -11.23 664.51 -12.48L670.94 -28.9Q671.23 -29.66 671.23 -30.24Q671.23 -31.2 670.75 -31.92Q670.27 -32.64 670.08 -32.93L675.36 -33.12Q676.8 -33.22 677.42 -32.78Q678.05 -32.35 678.05 -31.78Q678.05 -31.2 677.38 -29.66Q676.42 -27.36 674.78 -23.9Q673.15 -20.45 671.57 -16.8Q669.98 -13.15 668.88 -9.98Q667.78 -6.82 667.78 -5.09Q667.78 -3.84 668.4 -2.98Q669.02 -2.11 670.56 -2.11Q672.58 -2.11 674.54 -3.7Q676.51 -5.28 678.24 -7.78Q679.97 -10.27 681.46 -13.15Q682.94 -16.03 684 -18.53Q685.15 -18.53 685.15 -17.66Q684.19 -15.26 682.66 -12.19Q681.12 -9.12 679.15 -6.38Q677.18 -3.65 674.83 -1.82Q672.48 0 669.79 0ZM678.34 -39.07Q677.09 -39.07 676.18 -40.03Q675.26 -40.99 675.26 -42.34Q675.26 -43.97 676.61 -45.26Q677.95 -46.56 679.58 -46.56Q680.93 -46.56 681.89 -45.7Q682.85 -44.83 682.85 -43.49Q682.85 -41.76 681.5 -40.42Q680.16 -39.07 678.34 -39.07ZM674.78 0.77Q678.24 -6.24 681.41 -13.1Q684.58 -19.97 687.94 -26.21Q689.86 -29.66 691.2 -31.06Q692.54 -32.45 694.75 -32.45Q695.52 -32.45 696.38 -32.21Q697.25 -31.97 698.11 -31.97Q698.69 -31.97 698.98 -32.06Q697.63 -31.3 695.47 -28.27Q693.31 -25.25 691.1 -21.31Q688.9 -17.38 687.17 -13.92Q688.99 -16.13 691.01 -18.34Q693.02 -20.54 695.42 -22.56Q697.73 -24.58 700.94 -26.74Q704.16 -28.9 707.23 -30.34Q710.3 -31.78 712.13 -31.78Q712.8 -31.78 713.09 -31.68Q713.09 -31.68 712.03 -29.81Q710.98 -27.94 709.39 -24.91Q707.81 -21.89 706.18 -18.48Q704.54 -15.07 703.25 -11.95Q701.95 -8.83 701.57 -6.72Q701.28 -5.47 701.28 -4.42Q701.28 -2.88 701.86 -2.4Q702.43 -1.92 703.1 -1.92Q704.93 -1.92 706.85 -3.55Q708.77 -5.18 710.54 -7.73Q712.32 -10.27 713.86 -13.15Q715.39 -16.03 716.45 -18.53Q717.6 -18.53 717.6 -17.66Q716.54 -15.07 714.96 -11.95Q713.38 -8.83 711.41 -6.05Q709.44 -3.26 707.04 -1.44Q704.64 0.38 701.86 0.38Q699.94 0.38 697.87 -0.96Q695.81 -2.3 695.81 -5.95Q695.81 -7.01 696 -8.21Q696.19 -9.41 696.67 -10.85Q697.44 -12.77 698.5 -14.98Q699.55 -17.18 701.95 -21.02Q702.62 -22.08 702.77 -22.66Q702.91 -23.23 702.91 -23.62Q702.91 -24.77 701.86 -24.77Q700.99 -24.77 699.31 -23.81Q697.63 -22.85 695.14 -20.45Q692.74 -18.14 689.42 -13.92Q686.11 -9.7 681.79 -1.44Q681.12 -0.19 680.3 -0.1Q679.49 0 678.05 0.1Q677.09 0.19 676.22 0.24Q675.36 0.29 674.78 0.77ZM718.46 0.38Q714.53 0.38 712.08 -2.06Q709.63 -4.51 709.63 -7.2Q709.63 -9.41 710.74 -11.28Q711.84 -13.15 713.66 -13.15L713.76 -13.34Q715.87 -17.18 717.84 -21.17Q719.81 -25.15 722.21 -29.66Q724.22 -33.41 726.58 -35.81Q728.93 -38.21 732.1 -38.21Q732.86 -38.21 734.21 -37.87Q735.55 -37.54 735.55 -36.48Q735.55 -35.71 734.69 -35.71Q734.02 -35.71 733.2 -36.1Q732.38 -36.48 731.9 -36.48Q730.08 -36.48 728.83 -34.37Q727.58 -32.26 727.58 -29.86Q727.58 -27.26 728.45 -25.2Q729.31 -23.14 730.46 -21.22Q731.62 -19.3 732.48 -17.33Q733.34 -15.36 733.34 -13.06Q733.34 -8.45 731.57 -5.62Q729.79 -2.78 726.91 -1.34H727.01Q732.1 -1.34 735.41 -6.1Q738.72 -10.85 741.98 -18.53Q743.14 -18.53 743.14 -17.66Q741.31 -13.34 739.1 -9.22Q736.9 -5.09 733.92 -2.4Q730.94 0.29 726.62 0.29Q724.8 0.29 723.26 -0.1Q721.06 0.38 718.46 0.38ZM717.02 -9.79Q717.02 -7.49 718.08 -5.38Q719.14 -3.26 721.92 -2.21Q724.42 -3.65 725.81 -6.67Q727.2 -9.7 727.2 -12.96Q727.2 -15.65 726.62 -18.43Q726.05 -21.22 725.42 -23.9Q724.8 -26.59 724.8 -28.7Q724.8 -29.38 724.85 -29.9Q724.9 -30.43 724.99 -30.91Q723.26 -28.32 721.49 -24.86Q719.71 -21.41 718.08 -18.24Q716.45 -15.07 715.1 -13.06Q717.02 -12.77 717.02 -9.79ZM713.86 -4.99Q713.86 -3.46 714.91 -2.3Q715.97 -1.15 718.08 -1.15Q719.04 -1.15 719.9 -1.34Q717.89 -2.59 716.69 -4.51Q715.49 -6.43 715.49 -8.93Q714.62 -7.97 714.24 -6.96Q713.86 -5.95 713.86 -4.99Z"/>
 <g class="vine vine-l"><g transform="translate(132.0 104.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 41.3 -8.0 82.6 8.0 118.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M118.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(27.2 -2.3) rotate(-4.9) scale(0.34)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(61.2 0.0) rotate(183.1) scale(0.35)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(93.8 2.3) rotate(2.9) scale(0.31)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <g class="vine vine-r"><g transform="translate(904.4 104.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 41.3 -8.0 82.6 8.0 118.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M118.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(27.2 -2.3) rotate(2.8) scale(0.36)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(61.2 0.0) rotate(191.6) scale(0.37)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(93.8 2.3) rotate(5.2) scale(0.37)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
-</svg>
+</svg></div>
       <p class="tagline">Short legs, big personalities. Munchkin kittens raised in our home, one litter at a time.</p>
       <ul class="socials">
-        <li><a class="social primary" href="https://www.facebook.com/" rel="me">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg>
-          Facebook</a></li>
-        <li><a class="social" href="https://www.instagram.com/" rel="me">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg>
-          Instagram</a></li>
-        <li><a class="social" href="https://www.tiktok.com/" rel="me">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg>
-          TikTok</a></li>
+        <li><a class="btn primary" href="https://www.facebook.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg> Facebook</a></li>
+        <li><a class="btn" href="https://www.instagram.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg> Instagram</a></li>
+        <li><a class="btn" href="https://www.tiktok.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg> TikTok</a></li>
       </ul>
     </div>
-    <figure class="arch-figure">
-      <div class="arch">
-        <img id="kotw" src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high">
-      </div>
-      <figcaption class="kotw-caption">Kitten of the week</figcaption>
-      <script>
-      (function () {
-        // same kitten for everyone all week: index by ISO week number
-        var pool = [["kitten-cream-blue-eyes.jpg","A cream Munchkin kitten with blue eyes sitting in front of peonies"],["kitten-ginger-peonies.jpg","Ginger and white Munchkin kitten looking up beside a jar of peonies"],["kitten-lynx-point-standing.jpg","Lynx-point Munchkin kitten standing with tail raised"],["kitten-blue-point-closeup.jpg","Fluffy blue-point Munchkin kitten with pale blue eyes"],["kitten-seal-point-lounging.jpg","Seal-point Munchkin kitten lying on a floral quilt"],["kitten-ginger-tail-up.jpg","Ginger Munchkin kitten with its tail held high"],["kitten-blue-point-scratcher.jpg","Blue-point Munchkin kitten stretched out on a cardboard scratcher"]];
-        var d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
-        var week = Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
-        var pick = pool[(t.getUTCFullYear() * 53 + week) % pool.length];
-        var img = document.getElementById('kotw');
-        img.src = 'img/' + pick[0]; img.alt = pick[1];
-      })();
-      </script>
-    </figure>
+    <div class="scroll-hint" aria-hidden="true">Scroll</div>
   </div>
 </header>
 
+<main class="sheet">
+
 <section class="about" id="about">
-  <div class="wrap">
-    <h2>A small home cattery</h2>
-    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
+  <div class="wrap cols">
+    <div class="text">
+      <h2>A small home cattery</h2>
+      <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
 <g class="vine vine-l"><g transform="translate(72.0 20.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(-4.7) scale(0.22)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.4) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-7.5) scale(0.19)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <g class="vine vine-r"><g transform="translate(78.0 20.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(0.0) scale(0.19)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.6) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-9.1) scale(0.20)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <circle cx="75.0" cy="20" r="2.2" fill="#3F8A35"/>
 </svg>
-    <p>We're a family-run cattery in <mark class="edit" title="Edit: your town and state">Your Town, ST</mark>, raising Munchkin kittens since <mark class="edit" title="Edit: the year you started">20XX</mark>. Every kitten grows up in our living room, around people, other cats and everyday noise, so they go home confident and cuddly.</p>
-    <p>Kittens leave us at <mark class="edit" title="Edit: the age kittens go home">12 weeks</mark>, vet-checked, with their first vaccinations and a starter kit. Litter announcements and availability are posted on Facebook first.</p>
+      <p>We're a family-run cattery in <mark class="edit" title="Edit: your town and state">Your Town, ST</mark>, raising Munchkin kittens since <mark class="edit" title="Edit: the year you started">20XX</mark>. Every kitten grows up in our living room, around people, other cats and everyday noise, so they go home confident and cuddly.</p>
+      <p>Kittens leave us at <mark class="edit" title="Edit: the age kittens go home">12 weeks</mark>, vet-checked, with their first vaccinations and a starter kit. Litter announcements and availability are posted on Facebook first.</p>
+    </div>
+    <ul class="promises" aria-label="What we promise">
+      <li class="promise"><span class="ico"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13"/><path d="M12 20v18h24V20"/><path d="M20 38V27h8v11"/></svg></span><div><h3>Raised underfoot</h3><p>Living-room kittens, not cage kittens. Handled every day from birth.</p></div></li>
+      <li class="promise"><span class="ico"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 40s-15-9.5-15-20a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 10.5-15 20-15 20z"/></svg></span><div><h3>Health first</h3><p>Vet-checked, vaccinated and dewormed before they leave, with records in the folder.</p></div></li>
+      <li class="promise"><span class="ico"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38C10 22 20 10 38 10c0 18-12 28-28 28z"/><path d="M12 36c6-8 12-14 20-20"/></svg></span><div><h3>Here for life</h3><p>Questions at week one or year ten, we're a message away.</p></div></li>
+    </ul>
   </div>
 </section>
 
-<section class="gallery" id="kittens">
-  <div class="wrap">
+<section class="nursery" id="nursery">
+  <div class="wrap centered">
     <div class="paw-trail" aria-hidden="true"><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg></div>
-    <h2>Recent kittens</h2>
+    <h2>In the nursery</h2>
     <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
 <g class="vine vine-l"><g transform="translate(72.0 20.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(-4.7) scale(0.22)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.4) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-7.5) scale(0.19)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <g class="vine vine-r"><g transform="translate(78.0 20.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(0.0) scale(0.19)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.6) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-9.1) scale(0.20)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <circle cx="75.0" cy="20" r="2.2" fill="#3F8A35"/>
 </svg>
-    <p class="lede">A few of the little ones who have grown up here. Many more on Instagram.</p>
+    <p class="lede">Who's here right now and who has already gone home. Tap a filter to see just the ones you're after.</p>
+    <ul class="chips" role="group" aria-label="Filter kittens">
+      <li><button class="chip" aria-pressed="true" data-filter="all">All</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="available">Available</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="reserved">Reserved</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="home">Gone home</button></li>
+    </ul>
     <ul class="grid">
-      <li><figure class="polaroid"><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1237" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">ginger &amp; white</mark></figcaption></figure></li>
-      <li><figure class="polaroid"><img src="img/kitten-blue-point-closeup.jpg" alt="Fluffy blue-point Munchkin kitten with pale blue eyes" loading="lazy" width="1069" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">blue point</mark></figcaption></figure></li>
-      <li><figure class="polaroid"><img src="img/kitten-lynx-point-standing.jpg" alt="Lynx-point Munchkin kitten standing with tail raised" loading="lazy" width="1067" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">lynx point</mark></figcaption></figure></li>
-      <li><figure class="polaroid"><img src="img/kitten-seal-point-lounging.jpg" alt="Seal-point Munchkin kitten lying on a floral quilt" loading="lazy" width="1078" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">seal point</mark></figcaption></figure></li>
-      <li><figure class="polaroid"><img src="img/kitten-ginger-tail-up.jpg" alt="Ginger Munchkin kitten with its tail held high" loading="lazy" width="1064" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">ginger</mark></figcaption></figure></li>
-      <li><figure class="polaroid"><img src="img/kitten-blue-point-scratcher.jpg" alt="Blue-point Munchkin kitten stretched out on a cardboard scratcher" loading="lazy" width="1081" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">blue point</mark></figcaption></figure></li>
+      <li data-status="available"><figure class="polaroid"><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1100" height="1400"><span class="ribbon">Available</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">ginger &amp; white, female</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
+      <li data-status="reserved"><figure class="polaroid"><img src="img/kitten-blue-point-closeup.jpg" alt="Fluffy blue-point Munchkin kitten with pale blue eyes" loading="lazy" width="1100" height="1400"><span class="ribbon">Reserved</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">blue point, male</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
+      <li data-status="available"><figure class="polaroid"><img src="img/kitten-lynx-point-standing.jpg" alt="Lynx-point Munchkin kitten standing with tail raised" loading="lazy" width="1100" height="1400"><span class="ribbon">Available</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">lynx point, female</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
+      <li data-status="home"><figure class="polaroid"><img src="img/kitten-seal-point-lounging.jpg" alt="Seal-point Munchkin kitten lying on a floral quilt" loading="lazy" width="1100" height="1400"><span class="ribbon">Gone home</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">seal point, male</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
+      <li data-status="reserved"><figure class="polaroid"><img src="img/kitten-ginger-tail-up.jpg" alt="Ginger Munchkin kitten with its tail held high" loading="lazy" width="1100" height="1400"><span class="ribbon">Reserved</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">ginger, male</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
+      <li data-status="home"><figure class="polaroid"><img src="img/kitten-blue-point-scratcher.jpg" alt="Blue-point Munchkin kitten stretched out on a cardboard scratcher" loading="lazy" width="1100" height="1400"><span class="ribbon">Gone home</span><figcaption><div class="name"><mark class="edit" title="Edit: the kitten's name">Name</mark></div><div class="meta"><mark class="edit" title="Edit: colour and sex">blue point, female</mark> &middot; <mark class="edit" title="Edit: birth date">Born MM/DD</mark></div></figcaption></figure></li>
     </ul>
   </div>
 </section>
 
-<section class="follow" id="follow">
-  <div class="wrap">
-    <h2>Follow along</h2>
+<section class="path" id="path">
+  <div class="wrap centered">
+    <h2>From our nursery to your home</h2>
     <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
 <g class="vine vine-l"><g transform="translate(72.0 20.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(-4.7) scale(0.22)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.4) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-7.5) scale(0.19)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <g class="vine vine-r"><g transform="translate(78.0 20.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(0.0) scale(0.19)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.6) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-9.1) scale(0.20)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <circle cx="75.0" cy="20" r="2.2" fill="#3F8A35"/>
 </svg>
-    <ul class="channels">
-      <li class="channel">
-        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg></span>
-        <div><h3>Facebook</h3><a href="https://www.facebook.com/"><mark class="edit" title="Edit: your Facebook page name">LittleFoot Munchkins</mark></a><p>Litter announcements, available kittens and updates from the nursery.</p></div>
-      </li>
-      <li class="channel">
-        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg></span>
-        <div><h3>Instagram</h3><a href="https://www.instagram.com/"><mark class="edit" title="Edit: your Instagram handle">@littlefootmunchkins</mark></a><p>Daily photos of the kittens as they grow.</p></div>
-      </li>
-      <li class="channel">
-        <span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg></span>
-        <div><h3>TikTok</h3><a href="https://www.tiktok.com/"><mark class="edit" title="Edit: your TikTok handle">@littlefootmunchkins</mark></a><p>Short videos of the little ones at play.</p></div>
-      </li>
-    </ul>
+    <p class="lede">Four steps, no surprises. Most families go from first message to a kitten on the sofa in about <mark class="edit" title="Edit: typical wait">three months</mark>.</p>
+  </div>
+  <div class="wrap">
+    <div class="route">
+      <svg class="line" viewBox="0 0 900 760" preserveAspectRatio="none" aria-hidden="true">
+        <path id="routeLine" pathLength="1" d="M 60 60 C 300 60 600 120 700 180 C 820 250 700 330 420 360 C 160 390 120 470 260 520 C 420 580 760 560 820 680"/>
+      </svg>
+      <ol class="steps">
+        <li class="step"><span class="badge"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h32v20H20l-8 7v-7H8z"/><path d="M16 20h16M16 26h10"/></svg><b>1</b></span><div class="copy"><h3>Say hello</h3><p>Message us on Facebook with a little about your home and who's in it.</p></div></li>
+        <li class="step"><span class="badge"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24s8-12 20-12 20 12 20 12-8 12-20 12S4 24 4 24z"/><circle cx="24" cy="24" r="6"/></svg><b>2</b></span><div class="copy"><h3>Meet the kittens</h3><p>Photos, videos and a video call so you can see them tumble about in real life.</p></div></li>
+        <li class="step"><span class="badge"><svg viewBox="0 0 128 128" aria-hidden="true"><use href="#paw"/></svg><b>3</b></span><div class="copy"><h3>Reserve your pick</h3><p>A deposit of <mark class="edit" title="Edit: deposit amount">$X</mark> holds your kitten until they're old enough to leave.</p></div></li>
+        <li class="step"><span class="badge"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2E8B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22 24 9l16 13"/><path d="M12 20v18h24V20"/><path d="M20 38V27h8v11"/></svg><b>4</b></span><div class="copy"><h3>Go home</h3><p>At <mark class="edit" title="Edit: go-home age">12 weeks</mark>, vet-checked and vaccinated, with a starter kit and their favourite blanket.</p></div></li>
+      </ol>
+    </div>
   </div>
 </section>
 
-<section class="contact" id="contact">
-  <div class="wrap">
-    <h2>Say hello</h2>
+<section class="homes" id="homes">
+  <div class="wrap centered">
+    <h2>Happy homes</h2>
     <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
 <g class="vine vine-l"><g transform="translate(72.0 20.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(-4.7) scale(0.22)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.4) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-7.5) scale(0.19)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <g class="vine vine-r"><g transform="translate(78.0 20.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(0.0) scale(0.19)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.6) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-9.1) scale(0.20)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
 <circle cx="75.0" cy="20" r="2.2" fill="#3F8A35"/>
 </svg>
-    <p>Questions about upcoming litters? Message us on Facebook, or email <a href="mailto:hello@example.com"><mark class="edit" title="Edit: your email address">hello@littlefootmunchkins.com</mark></a>. You can also call or text <a href="tel:+10000000000"><mark class="edit" title="Edit: your phone number">(000) 000-0000</mark></a>.</p>
+    <p class="lede">A few words from families who took a LittleFoot kitten home.</p>
+  </div>
+  <div class="wrap">
+    <ul class="quotes" style="list-style:none;padding:0;margin:0">
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">Replace this with a note from one of your families, in their own words.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">A second note goes here. Two or three sentences is plenty.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">And a third. Photos of the kitten in its new home make these even better.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+    </ul>
   </div>
 </section>
 
-<footer>
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Good to know</h2>
+    <svg class="ornament" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 34">
+<g class="vine vine-l"><g transform="translate(72.0 20.0)"><g transform="scale(-1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(-4.7) scale(0.22)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.4) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-7.5) scale(0.19)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
+<g class="vine vine-r"><g transform="translate(78.0 20.0)"><g transform="scale(1 1)"><path class="st vine-stem" pathLength="1" style="--d:0.00s;--len:0.68s" d="M0.0 0.0 C 18.2 -8.0 36.4 8.0 52.0 0.0" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/><path class="st curl" pathLength="1" style="--d:0.68s;--len:.35s" d="M52.0 0.0 c 6 8 -2 16 -8 10 c -4 -5 2 -10 5 -6" fill="none" stroke="#3F8A35" stroke-width="1.8" stroke-linecap="round"/><g transform="translate(12.0 -2.3) rotate(0.0) scale(0.19)"><g class="lf vine-leaf" style="--d:0.15s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(27.0 0.0) rotate(185.6) scale(0.21)"><g class="lf vine-leaf" style="--d:0.34s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g><g transform="translate(41.4 2.3) rotate(-9.1) scale(0.20)"><g class="lf vine-leaf" style="--d:0.53s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g></g></g></g>
+<circle cx="75.0" cy="20" r="2.2" fill="#3F8A35"/>
+</svg>
+    <details open><summary>What is a Munchkin?</summary><div class="a">A small to medium cat with noticeably short legs from a naturally occurring gene, and an otherwise ordinary, playful, affectionate cat. They run, climb and get into everything; they just do it closer to the ground.</div></details>
+    <details><summary>When can a kitten come home?</summary><div class="a">At <mark class="edit" title="Edit: go-home age">12 weeks</mark>, once they've had their first vaccinations and a vet check. Leaving mum and the litter a little later makes for a calmer, better-socialised kitten.</div></details>
+    <details><summary>What comes with a kitten?</summary><div class="a"><mark class="edit" title="Edit: what you include">Vet records, a starter bag of the food they're used to, a blanket that smells like home, and our number for anything that comes up.</mark></div></details>
+    <details><summary>Do you ship or deliver?</summary><div class="a"><mark class="edit" title="Edit: your delivery policy">We prefer families to collect in person so you can meet everyone. Ask us about delivery within a few hours' drive.</mark></div></details>
+    <details><summary>How do I follow along?</summary><div class="a">Facebook is where litters are announced first, Instagram has the daily photos, and TikTok has the little videos. Links are at the top and bottom of this page.</div></details>
+  </div>
+</section>
+
+<section class="evening" id="contact">
+  <div class="stars" aria-hidden="true"></div>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 330" class="ivy ivy-bottom" aria-hidden="true">
 <path class="st" pathLength="1" style="--d:0.05s;--len:1.40s" d="M318.0 326.0 C 300.0 260.0 330.0 200.0 280.0 150.0 C 230.0 100.0 250.0 50.0 190.0 30.0" fill="none" stroke="#3F8A35" stroke-width="4" stroke-linecap="round"/>
 <path class="st" pathLength="1" style="--d:0.57s;--len:0.60s" d="M309.8 214.5 C 269.8 224.5 239.8 194.5 214.8 224.5" fill="none" stroke="#3F8A35" stroke-width="2.4" stroke-linecap="round"/>
@@ -446,62 +516,114 @@ footer > :not(.ivy){position:relative;z-index:1}
 <g transform="translate(311.3 264.6) rotate(-92.1) scale(0.85)"><g class="lf" style="--d:0.27s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#52AE3C"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 <g transform="translate(285.6 156.0) rotate(50.6) scale(0.86)"><g class="lf" style="--d:0.72s"><path d="M0 0 C -8 -4 -22 -2 -30 -12 C -38 -22 -34 -34 -26 -34 C -34 -44 -24 -56 -14 -50 C -10 -60 0 -70 0 -70 C 0 -70 10 -60 14 -50 C 24 -56 34 -44 26 -34 C 34 -34 38 -22 30 -12 C 22 -2 8 -4 0 0 Z" fill="#3E9633"/><path d="M0 -4 L0 -64 M0 -14 L-20 -46 M0 -14 L20 -46 M0 -8 L-26 -18 M0 -8 L26 -18" fill="none" stroke="#CFEFA9" stroke-width="2" stroke-linecap="round" opacity=".9"/></g></g>
 </svg>
-  <img src="assets/logo-a-monogram-ink.svg" alt="" width="328" height="190">
-  <div>&copy; 2026 LittleFoot Munchkins</div>
-</footer>
+  <div class="wrap centered">
+    <h2>Say hello</h2>
+    <p class="lede">Questions about upcoming litters, or just want to see more photos? We'd love to hear from you.</p>
+    <div class="contact">
+      <div><span>Email</span><a href="mailto:hello@example.com"><mark class="edit" title="Edit: your email address">hello@littlefootmunchkins.com</mark></a></div>
+      <div><span>Call or text</span><a href="tel:+10000000000"><mark class="edit" title="Edit: your phone number">(000) 000-0000</mark></a></div>
+    </div>
+    <ul class="socials">
+      <li><a class="btn ghost" href="https://www.facebook.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg> Facebook</a></li>
+      <li><a class="btn ghost" href="https://www.instagram.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-8.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.4c2.8 0 3.1 0 4.2.1 2.9.1 4.2 1.5 4.3 4.3.1 1.1.1 1.4.1 4.2s0 3.1-.1 4.2c-.1 2.8-1.4 4.2-4.3 4.3-1.1.1-1.4.1-4.2.1s-3.1 0-4.2-.1c-2.9-.1-4.2-1.5-4.3-4.3C3.4 15.1 3.4 14.8 3.4 12s0-3.1.1-4.2C3.6 5 4.9 3.6 7.8 3.5c1.1-.1 1.4-.1 4.2-.1zM12 1.6c-2.8 0-3.2 0-4.3.1C3.8 1.9 1.9 3.8 1.7 7.7 1.6 8.8 1.6 9.2 1.6 12s0 3.2.1 4.3c.2 3.9 2.1 5.8 6 6 1.1.1 1.5.1 4.3.1s3.2 0 4.3-.1c3.9-.2 5.8-2.1 6-6 .1-1.1.1-1.5.1-4.3s0-3.2-.1-4.3c-.2-3.9-2.1-5.8-6-6C15.2 1.6 14.8 1.6 12 1.6z"/></svg> Instagram</a></li>
+      <li><a class="btn ghost" href="https://www.tiktok.com/" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2h-3.3v13.6a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.5a6.2 6.2 0 1 0 5.3 6.1V8.9a7.2 7.2 0 0 0 4.4 1.5V7.1A4.4 4.4 0 0 1 16.6 2z"/></svg> TikTok</a></li>
+    </ul>
+    <img class="mono" src="assets/logo-a-monogram-white.svg" alt="" width="328" height="190">
+    <div class="fine">&copy; 2026 LittleFoot Munchkins</div>
+  </div>
+</section>
+
+</main>
 
 <script>
 (function () {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  // scroll-triggered: paw trail + gallery tumble, once each
-  var grid = document.querySelector('.grid'), trail = document.querySelector('.paw-trail');
-  [grid, trail].forEach(function (el) {
-    if (!el) return;
-    el.classList.add('will-animate');
-    Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); });
-  });
-  var tiles = grid ? Array.prototype.slice.call(grid.children) : [];
-  function settle(el) { el.addEventListener('animationend', function () { el.classList.add('settled'); }, { once: true }); }
-  if ('IntersectionObserver' in window) {
-    // the trail enters as one unit; tiles enter one by one so a phone sees each as it scrolls
-    var io = new IntersectionObserver(function (entries) {
-      var k = 0;
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        if (e.target !== trail) { e.target.style.setProperty('--k', k++); settle(e.target); }
-        e.target.classList.add('is-in'); io.unobserve(e.target);
-      });
-    }, { threshold: 0.15 });
-    if (trail) io.observe(trail);
-    tiles.forEach(function (t) { io.observe(t); });
-    var sprouts = document.querySelectorAll('.ornament, .ivy-bottom');
-    Array.prototype.forEach.call(document.querySelectorAll('.ornament'), function (o) { if (o.previousElementSibling && o.previousElementSibling.tagName === 'H2') o.previousElementSibling.classList.add('will-rise'); });
-    var grow = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('grow'); var h = e.target.previousElementSibling; if (h && h.classList.contains('will-rise')) h.classList.add('risen'); grow.unobserve(e.target); } });
-    }, { threshold: 0.3 });
-    sprouts.forEach(function (el) { grow.observe(el); });
-  } else {
-    if (trail) trail.classList.add('is-in');
-    tiles.forEach(function (t) { t.classList.add('is-in', 'settled'); });
-    document.querySelectorAll('.ornament, .ivy-bottom').forEach(function (el) { el.classList.add('grow'); });
+  // kitten of the week: same kitten for everyone all week (ISO week number)
+  var pool = [["kitten-cream-blue-eyes.jpg","A cream Munchkin kitten with blue eyes sitting in front of peonies"],["kitten-ginger-peonies.jpg","Ginger and white Munchkin kitten looking up beside a jar of peonies"],["kitten-lynx-point-standing.jpg","Lynx-point Munchkin kitten standing with tail raised"],["kitten-blue-point-closeup.jpg","Fluffy blue-point Munchkin kitten with pale blue eyes"],["kitten-seal-point-lounging.jpg","Seal-point Munchkin kitten lying on a floral quilt"],["kitten-ginger-tail-up.jpg","Ginger Munchkin kitten with its tail held high"],["kitten-blue-point-scratcher.jpg","Blue-point Munchkin kitten stretched out on a cardboard scratcher"]];
+  var d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  var week = Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+  var pick = pool[(t.getUTCFullYear() * 53 + week) % pool.length];
+  var img = document.getElementById('kotw'); img.src = 'img/' + pick[0]; img.alt = pick[1];
+})();
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero = document.querySelector('.hero'), nav = document.querySelector('.nav');
+  // nav appears once the window has scrolled away; hero parallax while it is on screen
+  var pane = document.querySelector('.pane img'), ivies = document.querySelectorAll('.hero .ivy'), copy = document.querySelector('.hero-copy');
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY, h = hero.offsetHeight;
+      nav.classList.toggle('show', y > h * 0.55);
+      if (!reduce && y < h) {
+        var k = y / h;
+        pane.style.transform = 'translateY(' + (y * 0.18) + 'px) scale(' + (1 + k * 0.1) + ')';
+        copy.style.transform = 'translateY(' + (y * -0.12) + 'px)';
+        copy.style.opacity = String(Math.max(0, 1 - k * 1.6));
+        for (var i = 0; i < ivies.length; i++) ivies[i].style.marginTop = (y * 0.08) + 'px';
+      }
+      ticking = false;
+    });
   }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  // the settle animation owns the pane transform at first; hand over to parallax after it ends
+  pane.addEventListener('animationend', function () { pane.style.animation = 'none'; onScroll(); });
+
+  // the path draws itself as it scrolls through the viewport
+  var route = document.getElementById('routeLine'), routeBox = document.querySelector('.route');
+  function drawRoute() {
+    if (!route || reduce) return;
+    var r = routeBox.getBoundingClientRect(), vh = innerHeight;
+    var p = (vh * 0.8 - r.top) / (r.height + vh * 0.3);
+    route.style.strokeDashoffset = String(Math.min(1, Math.max(0, 1 - p)));
+  }
+  addEventListener('scroll', drawRoute, { passive: true }); addEventListener('resize', drawRoute); drawRoute();
+
+  // filter chips
+  var chips = document.querySelectorAll('.chip'), tiles = Array.prototype.slice.call(document.querySelectorAll('.grid li'));
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+      var f = c.dataset.filter;
+      tiles.forEach(function (li) { li.classList.toggle('hide', f !== 'all' && li.dataset.status !== f); });
+    });
+  });
+
+  if (reduce) { document.querySelectorAll('.ornament, .ivy-bottom, .step, .quote').forEach(function (el) { el.classList.add('grow'); }); return; }
+
+  // scroll-triggered entrances, each once
+  var grid = document.querySelector('.grid'), trail = document.querySelector('.paw-trail');
+  [grid, trail].forEach(function (el) { if (!el) return; el.classList.add('will-animate'); Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); }); });
+  document.querySelectorAll('.ornament').forEach(function (o) { var h = o.previousElementSibling; if (h && h.tagName === 'H2') h.classList.add('will-rise'); });
+  function settle(el) { el.addEventListener('animationend', function () { el.classList.add('settled'); }, { once: true }); }
+  var io = new IntersectionObserver(function (entries) {
+    var k = 0;
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var el = e.target;
+      if (el.matches('.grid li')) { el.style.setProperty('--k', k++); settle(el); el.classList.add('is-in'); }
+      else if (el === trail) el.classList.add('is-in');
+      else { el.style.setProperty('--k', k++); el.classList.add('grow'); var h = el.previousElementSibling; if (h && h.classList.contains('will-rise')) h.classList.add('risen'); }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.2 });
+  if (trail) io.observe(trail);
+  tiles.forEach(function (t) { io.observe(t); });
+  document.querySelectorAll('.ornament, .ivy-bottom, .step, .quote').forEach(function (el) { io.observe(el); });
+
   // cursor paw prints across the hero (mouse only)
   if (!matchMedia('(pointer: fine)').matches) return;
-  var hero = document.querySelector('.hero'), last = null, side = 1, live = 0;
+  var last = null, side = 1, live = 0;
   hero.addEventListener('mousemove', function (e) {
     var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
     if (last) {
       var dx = x - last.x, dy = y - last.y;
       if (dx * dx + dy * dy < 58 * 58) return;
-      var ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;
-      side = -side;
+      var ang = Math.atan2(dy, dx) * 180 / Math.PI + 90; side = -side;
       var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      s.setAttribute('class', 'paw-ghost');
-      s.innerHTML = '<use href="#paw"/>';
-      s.style.left = (x + side * 11) + 'px';
-      s.style.top = y + 'px';
-      s.style.setProperty('--rot', (ang + side * 16) + 'deg');
-      if (side < 0) s.style.setProperty('--rot', (ang + side * 16) + 'deg');
+      s.setAttribute('class', 'paw-ghost'); s.innerHTML = '<use href="#paw"/>';
+      s.style.left = (x + side * 11) + 'px'; s.style.top = y + 'px'; s.style.setProperty('--rot', (ang + side * 16) + 'deg');
       hero.appendChild(s); live++;
       if (live > 60) { var first = hero.querySelector('.paw-ghost'); if (first) { first.remove(); live--; } }
       s.addEventListener('animationend', function () { s.remove(); live--; });

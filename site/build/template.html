@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LittleFoot Munchkins</title>
+<meta name="description" content="LittleFoot Munchkins is a small home cattery raising Munchkin kittens. See who's in the nursery and follow along on Facebook, Instagram and TikTok.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<!--
+  EDIT ME: every placeholder is wrapped in <mark class="edit">…</mark>. Search for class="edit",
+  replace each one, then delete the <mark> tags. Kitten cards live in the "nursery" section:
+  each card has data-status="available|reserved|home" which drives the ribbon and the filter.
+  Social links: the three buttons in the hero, the nav button, and the evening band.
+-->
+<style>
+/* Layout concept: a shiplap wall with one big arched window into the nursery; the rest of the
+   page is a sheet of paper that slides up over the window as you scroll. */
+:root{
+  --whitewash:#F7F3EC; --linen:#EDE5D8; --paper:#FFFDF8;
+  --ink:#3A3532; --ink-soft:#6B635D;
+  --teal:#2E8B8B; --teal-deep:#236F6F; --evening:#1E5555; --evening-deep:#15403F;
+  --blush:#F0CFC0; --sage:#9DAE98; --leaf:#52AE3C;
+  --script:'Great Vibes',cursive; --serif:'Cormorant Garamond',Georgia,serif; --sans:'Nunito',system-ui,sans-serif;
+  --gutter:clamp(16px,4vw,56px); --spring:cubic-bezier(.34,1.56,.64,1); --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--whitewash);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:var(--teal-deep)}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+h2{font:600 clamp(2.1rem,4.4vw,3.4rem)/1.08 var(--serif);margin:0 0 .5em;letter-spacing:.005em;text-wrap:balance}
+h3{font:600 1.4rem/1.2 var(--serif);margin:0 0 .3em}
+p{margin:0 0 1em}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:var(--gutter)}
+mark.edit{background:none;color:inherit;border-bottom:2px dotted var(--teal);cursor:help}
+.lf,.vine-leaf{transform-box:fill-box;transform-origin:50% 100%}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.1em 0 1.1em}
+.centered .ornament{margin-inline:auto}
+.centered{text-align:center}
+.lede{color:var(--ink-soft);max-width:52ch;font-size:1.1rem}
+.centered .lede{margin-inline:auto}
+
+/* shiplap wall */
+.wall{background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 173px,rgba(120,100,78,.11) 173px,rgba(120,100,78,.11) 175px,rgba(255,255,255,.6) 175px,rgba(255,255,255,.6) 176px);
+  background-position:0 56px}
+
+/* ===== nav (appears once the window scrolls away) ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:18px;padding:10px var(--gutter);
+  background:rgba(247,243,236,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(58,53,50,.08);
+  transform:translateY(-110%);transition:transform .5s var(--ease)}
+.nav.show{transform:none}
+.nav .mono{height:34px;width:auto}
+.nav ul{display:flex;gap:4px 22px;list-style:none;margin:0 0 0 auto;padding:0;flex-wrap:wrap;justify-content:flex-end}
+.nav a{font:600 .95rem var(--sans);color:var(--ink);text-decoration:none}
+.nav a:hover{color:var(--teal-deep)}
+.nav .btn{margin-left:8px}
+@media (max-width:640px){.nav ul li:not(.keep){display:none}}
+
+/* ===== buttons ===== */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;border:1.5px solid var(--teal);
+  color:var(--teal-deep);background:transparent;font:700 1rem var(--sans);text-decoration:none;transition:background-color .15s,color .15s,transform .4s var(--spring),box-shadow .3s}
+.btn svg{width:20px;height:20px;fill:currentColor}
+.btn:hover,.btn.primary{background:var(--teal);color:#fff}
+.btn.primary:hover{background:var(--teal-deep)}
+.btn.small{min-height:40px;padding:0 18px;font-size:.9rem}
+.btn.ghost{border-color:rgba(255,255,255,.7);color:#fff}
+.btn.ghost:hover{background:#fff;color:var(--evening)}
+
+/* ===== hero: the window ===== */
+.hero{position:sticky;top:0;height:100svh;min-height:640px;overflow:hidden;z-index:0;display:grid;place-items:center}
+.hero .scene{position:relative;width:min(92vw,980px);height:100%;display:grid;grid-template-rows:1fr auto;align-items:end;justify-items:center;padding-bottom:clamp(18px,3vh,36px)}
+.window{position:relative;width:min(78vw,520px);aspect-ratio:4/5;max-height:50svh;align-self:center;margin-top:3svh}
+.window .frame{position:absolute;inset:0;border-radius:999px 999px 26px 26px;background:var(--paper);
+  box-shadow:0 2px 0 rgba(255,255,255,.9) inset,0 30px 60px -30px rgba(58,53,50,.45),0 0 0 1px rgba(58,53,50,.08)}
+.window .pane{position:absolute;inset:12px;border-radius:999px 999px 18px 18px;overflow:hidden;background:var(--linen);box-shadow:inset 0 0 0 1px rgba(58,53,50,.15),inset 0 18px 30px -20px rgba(58,53,50,.5)}
+.window .pane img{width:100%;height:100%;object-fit:cover;will-change:transform}
+.window .glare{position:absolute;inset:12px;border-radius:999px 999px 18px 18px;pointer-events:none;
+  background:linear-gradient(115deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 60%,rgba(255,255,255,.12) 100%)}
+.window .mullion{position:absolute;left:50%;top:12px;bottom:12px;width:8px;margin-left:-4px;background:var(--paper);opacity:.9;pointer-events:none;box-shadow:0 0 0 1px rgba(58,53,50,.08)}
+.sill{position:absolute;left:-6%;right:-6%;bottom:-16px;height:22px;border-radius:6px;background:var(--paper);box-shadow:0 12px 24px -12px rgba(58,53,50,.5),0 0 0 1px rgba(58,53,50,.08)}
+.kotw-tag{position:absolute;left:50%;bottom:-48px;transform:translateX(-50%);white-space:nowrap;font:italic 500 1.05rem var(--serif);color:var(--ink-soft)}
+.ivy{position:absolute;pointer-events:none;height:auto;overflow:visible;filter:drop-shadow(0 3px 3px rgba(58,53,50,.18));z-index:3}
+.ivy-top{left:-9%;top:-4%;width:min(58%,330px);transform-origin:0 0}
+.ivy-top-r{right:-9%;top:-5%;width:min(55%,310px);transform:scaleX(-1);transform-origin:50% 0}
+.hero-copy{position:relative;z-index:4;text-align:center;width:min(100%,760px);margin-top:clamp(40px,6vh,64px)}
+.glass{display:inline-block;padding:6px clamp(16px,3.5vw,34px) 0;border-radius:999px;background:rgba(247,243,236,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px -18px rgba(58,53,50,.5)}
+.wordmark{display:block;width:min(88vw,620px);height:auto}
+.tagline{font:italic 500 clamp(1.2rem,2.2vw,1.5rem)/1.35 var(--serif);max-width:34ch;margin:.7rem auto .9rem}
+.socials{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;padding:0;margin:0}
+.scroll-hint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font:600 .75rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);opacity:.7}
+.paw-ghost{position:absolute;z-index:5;width:36px;height:36px;fill:var(--teal);pointer-events:none;opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(.6)}
+@media (max-height:700px){.window{max-height:42svh}.hero-copy{margin-top:40px}}
+@media (max-width:640px){.window{max-height:44svh}}
+
+/* ===== the sheet that slides over the window ===== */
+.sheet{position:relative;z-index:10;background:var(--whitewash);border-radius:44px 44px 0 0;box-shadow:0 -24px 60px -30px rgba(58,53,50,.5);margin-top:0}
+
+/* ===== about + promises ===== */
+.about{padding:clamp(72px,9vw,120px) 0 clamp(56px,7vw,96px)}
+.about .cols{display:grid;gap:clamp(28px,5vw,64px);align-items:start}
+@media (min-width:900px){.about .cols{grid-template-columns:1.1fr .9fr}}
+.about .text p{font-size:1.1rem}
+.promises{display:grid;gap:16px}
+.promise{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;padding:20px 22px;border-radius:18px;background:var(--paper);box-shadow:0 1px 2px rgba(58,53,50,.06),0 18px 40px -30px rgba(58,53,50,.4)}
+.promise .ico{width:56px;height:56px;border-radius:50%;background:var(--linen);display:grid;place-items:center}
+.promise .ico svg{width:32px;height:32px}
+.promise p{margin:0;color:var(--ink-soft)}
+
+/* ===== nursery board ===== */
+.nursery{padding:clamp(56px,7vw,96px) 0;background:var(--linen);position:relative}
+.paw-trail{display:flex;justify-content:center;gap:clamp(10px,3vw,30px);height:44px;margin:0 auto 14px}
+.paw-trail svg{width:26px;height:26px;fill:var(--teal);opacity:.5}
+.paw-trail svg:nth-child(odd){transform:translateY(-7px) rotate(-16deg) scaleX(-1)}
+.paw-trail svg:nth-child(even){transform:translateY(7px) rotate(16deg)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 36px;padding:0;list-style:none}
+.chip{border:1.5px solid rgba(58,53,50,.18);background:transparent;color:var(--ink);font:700 .85rem var(--sans);padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .25s}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip:hover{border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:clamp(22px,3vw,40px);list-style:none;padding:0;margin:0}
+.grid li{transform:rotate(var(--rest,0deg));transition:transform .5s var(--spring),opacity .4s}
+.grid li:nth-child(6n+1){--rest:-2.4deg}.grid li:nth-child(6n+2){--rest:1.6deg}.grid li:nth-child(6n+3){--rest:-1.1deg}
+.grid li:nth-child(6n+4){--rest:2.1deg}.grid li:nth-child(6n+5){--rest:-1.7deg}.grid li:nth-child(6n+6){--rest:1.2deg}
+.grid li.hide{display:none}
+.polaroid{position:relative;margin:0;background:var(--paper);padding:12px 12px 14px;box-shadow:0 1px 2px rgba(58,53,50,.08),0 12px 28px -12px rgba(58,53,50,.4);transition:box-shadow .5s}
+.polaroid img{aspect-ratio:4/5;width:100%;height:auto;object-fit:cover;background:var(--linen)}
+.polaroid::before{content:"";position:absolute;left:50%;top:-11px;width:84px;height:24px;margin-left:-42px;background:rgba(237,229,216,.85);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(58,53,50,.12);
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px);mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px)}
+.ribbon{position:absolute;top:22px;right:-8px;padding:5px 14px 5px 12px;font:700 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--teal);box-shadow:0 4px 10px -4px rgba(0,0,0,.4);border-radius:4px 0 0 4px}
+.ribbon::after{content:"";position:absolute;right:0;bottom:-6px;border:3px solid transparent;border-top-color:var(--teal-deep);border-left-color:var(--teal-deep)}
+li[data-status="reserved"] .ribbon{background:#B8864B}li[data-status="reserved"] .ribbon::after{border-top-color:#8E6632;border-left-color:#8E6632}
+li[data-status="home"] .ribbon{background:#8A8F86}li[data-status="home"] .ribbon::after{border-top-color:#6B6F69;border-left-color:#6B6F69}
+.polaroid figcaption{padding:12px 4px 4px;text-align:center}
+.polaroid .name{font:400 1.7rem/1 var(--script);color:var(--ink)}
+.polaroid .meta{font:600 .82rem var(--sans);color:var(--ink-soft);margin-top:6px;letter-spacing:.02em}
+.grid li:hover{transform:rotate(0deg) translateY(-16px) scale(1.06);z-index:1}
+.grid li:hover .polaroid{box-shadow:0 2px 3px rgba(58,53,50,.1),0 28px 40px -16px rgba(58,53,50,.45)}
+
+/* ===== the path home ===== */
+.path{padding:clamp(64px,8vw,120px) 0;position:relative;overflow:hidden}
+.route{position:relative;max-width:900px;margin:0 auto}
+.route svg.line{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.route .line path{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.28}
+.route .line .dots{stroke:none;fill:var(--teal);opacity:.45}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:clamp(40px,6vw,72px);position:relative}
+.step{display:grid;grid-template-columns:84px 1fr;gap:20px;align-items:center;max-width:520px}
+.step:nth-child(even){margin-left:auto;grid-template-columns:1fr 84px}
+.step:nth-child(even) .badge{order:2}
+.step:nth-child(even) .copy{text-align:right}
+.badge{width:84px;height:84px;border-radius:50%;background:var(--paper);display:grid;place-items:center;box-shadow:0 1px 2px rgba(58,53,50,.08),0 16px 30px -18px rgba(58,53,50,.5);position:relative}
+.badge svg{width:40px;height:40px;fill:var(--teal)}
+.badge b{position:absolute;right:-4px;top:-4px;width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font:700 .85rem/28px var(--sans);text-align:center}
+.step p{margin:0;color:var(--ink-soft)}
+@media (max-width:640px){.step,.step:nth-child(even){grid-template-columns:64px 1fr;margin-left:0}.step:nth-child(even) .badge{order:0}.step:nth-child(even) .copy{text-align:left}.badge{width:64px;height:64px}}
+
+/* ===== happy homes ===== */
+.homes{padding:clamp(56px,7vw,96px) 0;background:var(--linen)}
+.quotes{display:grid;gap:18px}
+@media (min-width:820px){.quotes{grid-template-columns:repeat(3,1fr)}}
+.quote{background:var(--paper);border-radius:18px;padding:26px 26px 22px;position:relative;box-shadow:0 1px 2px rgba(58,53,50,.06),0 18px 40px -30px rgba(58,53,50,.4)}
+.quote::before{content:"\201C";position:absolute;left:18px;top:-6px;font:400 4.6rem/1 var(--serif);color:var(--blush)}
+.quote p{font:italic 500 1.2rem/1.45 var(--serif);margin:14px 0 14px}
+.quote cite{font:600 .9rem var(--sans);color:var(--ink-soft);font-style:normal}
+
+/* ===== faq ===== */
+.faq{padding:clamp(56px,7vw,96px) 0}
+.faq .wrap{max-width:820px}
+details{border-bottom:1px solid rgba(58,53,50,.14)}
+summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 4px;font:600 1.3rem/1.25 var(--serif)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:12px;height:12px;border-right:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(45deg);transition:transform .35s var(--spring);flex:none;margin-right:6px}
+details[open] summary::after{transform:rotate(-135deg)}
+details .a{padding:0 4px 20px;color:var(--ink-soft);max-width:62ch}
+
+/* ===== evening band ===== */
+.evening{position:relative;overflow:hidden;color:#fff;background:radial-gradient(1200px 600px at 70% -10%,#2A7272 0%,var(--evening) 45%,var(--evening-deep) 100%);padding:clamp(72px,9vw,128px) 0 clamp(40px,5vw,64px)}
+.evening h2{color:#fff}
+.evening .lede{color:rgba(255,255,255,.78)}
+.evening a{color:#fff}
+.evening .contact{display:grid;gap:10px;margin:22px 0 30px;font-size:1.1rem}
+.evening .contact span{display:block;color:rgba(255,255,255,.7);font-size:.9rem}
+.evening .ivy-bottom{right:-10px;bottom:-8px;width:clamp(180px,26vw,340px);transform-origin:100% 100%;filter:drop-shadow(0 0 18px rgba(127,203,85,.25)) drop-shadow(0 3px 3px rgba(0,0,0,.3));z-index:0}
+.evening .wrap{position:relative;z-index:1;max-width:760px}
+.evening .mono{width:140px;height:auto;margin:48px auto 10px;opacity:.9}
+.evening .fine{text-align:center;color:rgba(255,255,255,.6);font-size:.9rem}
+.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,.55) 50%,transparent 51%),radial-gradient(1px 1px at 32% 40%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 58% 12%,rgba(255,255,255,.5) 50%,transparent 51%),radial-gradient(1px 1px at 80% 30%,rgba(255,255,255,.45) 50%,transparent 51%),radial-gradient(1px 1px at 45% 70%,rgba(255,255,255,.3) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 90% 65%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1px 1px at 22% 85%,rgba(255,255,255,.35) 50%,transparent 51%)}
+
+/* paper grain over everything */
+body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;background:url("{{GRAIN_URI}}") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
+
+/* ===== motion ===== */
+@media (prefers-reduced-motion:no-preference){
+  .st{stroke-dasharray:1;stroke-dashoffset:1}
+  .lf{transform:scale(0)}
+  .grow .st{animation:draw calc(var(--len,.8s) * .8) cubic-bezier(.2,.9,.3,1) calc(var(--base,0s) + var(--d,0s)) forwards}
+  .grow .lf{animation:leafPop .7s var(--spring) calc(var(--base,0s) + var(--d,0s)) forwards,ripple 3.6s ease-in-out calc(var(--base,0s) + var(--d,0s) + .9s) infinite alternate}
+  .grow .vine-leaf{animation:leafPop .7s var(--spring) calc(var(--base,0s) + var(--d,0s)) forwards,sway 3.2s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1s) infinite alternate}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes leafPop{55%{transform:scale(1.32) rotate(-8deg)}80%{transform:scale(.94) rotate(4deg)}to{transform:scale(1)}}
+  @keyframes sway{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+  @keyframes ripple{from{transform:rotate(-7deg) scale(1)}50%{transform:rotate(2deg) scale(1.04)}to{transform:rotate(7deg) scale(1)}}
+  /* hero sequence */
+  .window{opacity:0;animation:windowIn 1.3s var(--spring) .1s forwards}
+  @keyframes windowIn{from{opacity:0;transform:translateY(70px) scale(.86)}to{opacity:1;transform:none}}
+  .window .pane img{transform:scale(1.22) rotate(-3deg);animation:settle 2.6s var(--ease) .2s forwards}
+  @keyframes settle{to{transform:scale(1) rotate(0)}}
+  .wm-text{clip-path:inset(-12% 100% -12% -2%);animation:writeOn 1.6s cubic-bezier(.45,0,.25,1) 1.1s forwards}
+  @keyframes writeOn{to{clip-path:inset(-12% -2% -12% -2%)}}
+  .glass{opacity:0;animation:rise .9s var(--spring) .9s forwards}
+  .tagline{opacity:0;animation:rise .9s var(--spring) 2.3s forwards}
+  .socials li{opacity:0;animation:rise .9s var(--spring) forwards}
+  .socials li:nth-child(1){animation-delay:2.6s}.socials li:nth-child(2){animation-delay:2.75s}.socials li:nth-child(3){animation-delay:2.9s}
+  .kotw-tag{opacity:0;animation:rise .9s var(--spring) 2s forwards}
+  .scroll-hint{animation:bob 1.8s ease-in-out 3.5s infinite}
+  @keyframes bob{50%{transform:translate(-50%,6px)}}
+  @keyframes rise{from{opacity:0;transform:translateY(42px) scale(.86)}to{opacity:1;transform:none}}
+  .ivy-top{animation:swayL 5s ease-in-out infinite alternate}
+  .ivy-top-r{animation:swayR 6s ease-in-out -2.5s infinite alternate}
+  @keyframes swayL{from{transform:rotate(-2.6deg) translateX(-4px)}to{transform:rotate(2.6deg) translateX(4px)}}
+  @keyframes swayR{from{transform:scaleX(-1) rotate(-2.2deg) translateX(-3px)}to{transform:scaleX(-1) rotate(2.2deg) translateX(3px)}}
+  .ivy-bottom{animation:swayB 6s ease-in-out -3s infinite alternate}
+  @keyframes swayB{from{transform:rotate(2.4deg)}to{transform:rotate(-2.4deg)}}
+  /* buttons */
+  .btn:hover{transform:translateY(-7px) scale(1.06)}
+  .btn:hover svg{animation:wiggle .6s ease-in-out}
+  @keyframes wiggle{20%{transform:rotate(-24deg) scale(1.25)}60%{transform:rotate(18deg) scale(1.15)}}
+  /* headings + ornaments on scroll */
+  h2.will-rise{opacity:0;transform:translateY(34px)}
+  h2.risen{animation:rise .9s var(--spring) forwards}
+  /* nursery */
+  .paw-trail.will-animate svg{opacity:0;transform:scale(.4)}
+  .paw-trail.is-in svg{animation:pawIn .55s var(--spring) calc(var(--i,0) * .22s) forwards}
+  .paw-trail.is-in svg:nth-child(odd){animation-name:pawInL}
+  @keyframes pawIn{50%{opacity:.75;transform:translateY(-4px) rotate(16deg) scale(1.5)}to{opacity:.55;transform:translateY(7px) rotate(16deg) scale(1)}}
+  @keyframes pawInL{50%{opacity:.75;transform:translateY(-18px) rotate(-16deg) scaleX(-1) scale(1.5)}to{opacity:.55;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(90px) rotate(calc(var(--rest,0deg) + var(--tilt,2deg))) scale(.9)}
+  .grid li:nth-child(even){--tilt:-2deg}
+  .grid li.is-in{animation:tumble 1s cubic-bezier(.34,1.4,.64,1) calc(.1s + var(--k,0) * .13s) forwards}
+  .grid li.settled{animation:none}
+  @keyframes tumble{to{opacity:1;transform:rotate(var(--rest,0deg))}}
+  .ribbon{transform-origin:100% 0}
+  .grid li.settled .ribbon{animation:flutter 4s ease-in-out infinite alternate}
+  @keyframes flutter{to{transform:rotate(-2deg) translateX(-1px)}}
+  /* path steps */
+  .step{opacity:0;transform:translateY(40px)}
+  .step.grow{animation:rise .9s var(--spring) forwards}
+  .step.grow .badge{animation:pop .7s var(--spring) .2s both}
+  @keyframes pop{from{transform:scale(.4)}60%{transform:scale(1.15)}to{transform:scale(1)}}
+  /* quotes */
+  .quote{opacity:0;transform:translateY(30px)}
+  .quote.grow{animation:rise .9s var(--spring) calc(var(--k,0) * .15s) forwards}
+  /* cursor paws */
+  .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
+  @keyframes pawGhost{12%{opacity:.34;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}}
+}
+@media (prefers-reduced-motion:reduce){.route .line path{stroke-dashoffset:0}}
+</style>
+<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}.step,.quote,h2.will-rise{opacity:1!important;transform:none!important}.route .line path{stroke-dashoffset:0}</style></noscript>
+</head>
+<body>
+{{PAW_SYMBOL}}
+
+<nav class="nav" aria-label="Page">
+  <a href="#top" aria-label="LittleFoot Munchkins, back to top"><img class="mono" src="assets/logo-a-monogram-ink.svg" alt="" width="328" height="190"></a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#nursery">Nursery</a></li>
+    <li><a href="#path">Bringing one home</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li class="keep"><a class="btn primary small" href="https://www.facebook.com/" rel="me">Facebook</a></li>
+  </ul>
+</nav>
+
+<header class="hero wall" id="top">
+  <div class="scene">
+    <figure class="window">
+      <div class="frame"></div>
+      <div class="pane"><img id="kotw" src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high"></div>
+      <div class="mullion"></div>
+      <div class="glare"></div>
+      <div class="sill"></div>
+      {{IVY_GARLAND}}
+      {{IVY_GARLAND_B}}
+      <figcaption class="kotw-tag">Kitten of the week</figcaption>
+    </figure>
+    <div class="hero-copy">
+      <div class="glass">{{WORDMARK}}</div>
+      <p class="tagline">Short legs, big personalities. Munchkin kittens raised in our home, one litter at a time.</p>
+      <ul class="socials">
+        <li><a class="btn primary" href="https://www.facebook.com/" rel="me">{{ICON_FB}} Facebook</a></li>
+        <li><a class="btn" href="https://www.instagram.com/" rel="me">{{ICON_IG}} Instagram</a></li>
+        <li><a class="btn" href="https://www.tiktok.com/" rel="me">{{ICON_TT}} TikTok</a></li>
+      </ul>
+    </div>
+    <div class="scroll-hint" aria-hidden="true">Scroll</div>
+  </div>
+</header>
+
+<main class="sheet">
+
+<section class="about" id="about">
+  <div class="wrap cols">
+    <div class="text">
+      <h2>A small home cattery</h2>
+      {{ORNAMENT}}
+      <p>We're a family-run cattery in <mark class="edit" title="Edit: your town and state">Your Town, ST</mark>, raising Munchkin kittens since <mark class="edit" title="Edit: the year you started">20XX</mark>. Every kitten grows up in our living room, around people, other cats and everyday noise, so they go home confident and cuddly.</p>
+      <p>Kittens leave us at <mark class="edit" title="Edit: the age kittens go home">12 weeks</mark>, vet-checked, with their first vaccinations and a starter kit. Litter announcements and availability are posted on Facebook first.</p>
+    </div>
+    <ul class="promises" aria-label="What we promise">
+      <li class="promise"><span class="ico">{{ICO_HOME}}</span><div><h3>Raised underfoot</h3><p>Living-room kittens, not cage kittens. Handled every day from birth.</p></div></li>
+      <li class="promise"><span class="ico">{{ICO_HEART}}</span><div><h3>Health first</h3><p>Vet-checked, vaccinated and dewormed before they leave, with records in the folder.</p></div></li>
+      <li class="promise"><span class="ico">{{ICO_LEAF}}</span><div><h3>Here for life</h3><p>Questions at week one or year ten, we're a message away.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="nursery" id="nursery">
+  <div class="wrap centered">
+    <div class="paw-trail" aria-hidden="true">{{PAW_TRAIL}}</div>
+    <h2>In the nursery</h2>
+    {{ORNAMENT}}
+    <p class="lede">Who's here right now and who has already gone home. Tap a filter to see just the ones you're after.</p>
+    <ul class="chips" role="group" aria-label="Filter kittens">
+      <li><button class="chip" aria-pressed="true" data-filter="all">All</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="available">Available</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="reserved">Reserved</button></li>
+      <li><button class="chip" aria-pressed="false" data-filter="home">Gone home</button></li>
+    </ul>
+    <ul class="grid">
+      {{KITTEN_CARDS}}
+    </ul>
+  </div>
+</section>
+
+<section class="path" id="path">
+  <div class="wrap centered">
+    <h2>From our nursery to your home</h2>
+    {{ORNAMENT}}
+    <p class="lede">Four steps, no surprises. Most families go from first message to a kitten on the sofa in about <mark class="edit" title="Edit: typical wait">three months</mark>.</p>
+  </div>
+  <div class="wrap">
+    <div class="route">
+      <svg class="line" viewBox="0 0 900 760" preserveAspectRatio="none" aria-hidden="true">
+        <path id="routeLine" pathLength="1" d="M 60 60 C 300 60 600 120 700 180 C 820 250 700 330 420 360 C 160 390 120 470 260 520 C 420 580 760 560 820 680"/>
+      </svg>
+      <ol class="steps">
+        <li class="step"><span class="badge">{{ICO_CHAT}}<b>1</b></span><div class="copy"><h3>Say hello</h3><p>Message us on Facebook with a little about your home and who's in it.</p></div></li>
+        <li class="step"><span class="badge">{{ICO_EYES}}<b>2</b></span><div class="copy"><h3>Meet the kittens</h3><p>Photos, videos and a video call so you can see them tumble about in real life.</p></div></li>
+        <li class="step"><span class="badge">{{ICO_PAW}}<b>3</b></span><div class="copy"><h3>Reserve your pick</h3><p>A deposit of <mark class="edit" title="Edit: deposit amount">$X</mark> holds your kitten until they're old enough to leave.</p></div></li>
+        <li class="step"><span class="badge">{{ICO_HOME}}<b>4</b></span><div class="copy"><h3>Go home</h3><p>At <mark class="edit" title="Edit: go-home age">12 weeks</mark>, vet-checked and vaccinated, with a starter kit and their favourite blanket.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="homes" id="homes">
+  <div class="wrap centered">
+    <h2>Happy homes</h2>
+    {{ORNAMENT}}
+    <p class="lede">A few words from families who took a LittleFoot kitten home.</p>
+  </div>
+  <div class="wrap">
+    <ul class="quotes" style="list-style:none;padding:0;margin:0">
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">Replace this with a note from one of your families, in their own words.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">A second note goes here. Two or three sentences is plenty.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+      <li class="quote"><p><mark class="edit" title="Edit: replace with a real note from a family">And a third. Photos of the kitten in its new home make these even better.</mark></p><cite><mark class="edit" title="Edit: family name and town">A family, Their Town</mark></cite></li>
+    </ul>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Good to know</h2>
+    {{ORNAMENT}}
+    <details open><summary>What is a Munchkin?</summary><div class="a">A small to medium cat with noticeably short legs from a naturally occurring gene, and an otherwise ordinary, playful, affectionate cat. They run, climb and get into everything; they just do it closer to the ground.</div></details>
+    <details><summary>When can a kitten come home?</summary><div class="a">At <mark class="edit" title="Edit: go-home age">12 weeks</mark>, once they've had their first vaccinations and a vet check. Leaving mum and the litter a little later makes for a calmer, better-socialised kitten.</div></details>
+    <details><summary>What comes with a kitten?</summary><div class="a"><mark class="edit" title="Edit: what you include">Vet records, a starter bag of the food they're used to, a blanket that smells like home, and our number for anything that comes up.</mark></div></details>
+    <details><summary>Do you ship or deliver?</summary><div class="a"><mark class="edit" title="Edit: your delivery policy">We prefer families to collect in person so you can meet everyone. Ask us about delivery within a few hours' drive.</mark></div></details>
+    <details><summary>How do I follow along?</summary><div class="a">Facebook is where litters are announced first, Instagram has the daily photos, and TikTok has the little videos. Links are at the top and bottom of this page.</div></details>
+  </div>
+</section>
+
+<section class="evening" id="contact">
+  <div class="stars" aria-hidden="true"></div>
+  {{IVY_CLIMBER}}
+  <div class="wrap centered">
+    <h2>Say hello</h2>
+    <p class="lede">Questions about upcoming litters, or just want to see more photos? We'd love to hear from you.</p>
+    <div class="contact">
+      <div><span>Email</span><a href="mailto:hello@example.com"><mark class="edit" title="Edit: your email address">hello@littlefootmunchkins.com</mark></a></div>
+      <div><span>Call or text</span><a href="tel:+10000000000"><mark class="edit" title="Edit: your phone number">(000) 000-0000</mark></a></div>
+    </div>
+    <ul class="socials">
+      <li><a class="btn ghost" href="https://www.facebook.com/" rel="me">{{ICON_FB}} Facebook</a></li>
+      <li><a class="btn ghost" href="https://www.instagram.com/" rel="me">{{ICON_IG}} Instagram</a></li>
+      <li><a class="btn ghost" href="https://www.tiktok.com/" rel="me">{{ICON_TT}} TikTok</a></li>
+    </ul>
+    <img class="mono" src="assets/logo-a-monogram-white.svg" alt="" width="328" height="190">
+    <div class="fine">&copy; 2026 LittleFoot Munchkins</div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  // kitten of the week: same kitten for everyone all week (ISO week number)
+  var pool = {{KOTW_POOL}};
+  var d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  var week = Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+  var pick = pool[(t.getUTCFullYear() * 53 + week) % pool.length];
+  var img = document.getElementById('kotw'); img.src = 'img/' + pick[0]; img.alt = pick[1];
+})();
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero = document.querySelector('.hero'), nav = document.querySelector('.nav');
+  // nav appears once the window has scrolled away; hero parallax while it is on screen
+  var pane = document.querySelector('.pane img'), ivies = document.querySelectorAll('.hero .ivy'), copy = document.querySelector('.hero-copy');
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY, h = hero.offsetHeight;
+      nav.classList.toggle('show', y > h * 0.55);
+      if (!reduce && y < h) {
+        var k = y / h;
+        pane.style.transform = 'translateY(' + (y * 0.18) + 'px) scale(' + (1 + k * 0.1) + ')';
+        copy.style.transform = 'translateY(' + (y * -0.12) + 'px)';
+        copy.style.opacity = String(Math.max(0, 1 - k * 1.6));
+        for (var i = 0; i < ivies.length; i++) ivies[i].style.marginTop = (y * 0.08) + 'px';
+      }
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  // the settle animation owns the pane transform at first; hand over to parallax after it ends
+  pane.addEventListener('animationend', function () { pane.style.animation = 'none'; onScroll(); });
+
+  // the path draws itself as it scrolls through the viewport
+  var route = document.getElementById('routeLine'), routeBox = document.querySelector('.route');
+  function drawRoute() {
+    if (!route || reduce) return;
+    var r = routeBox.getBoundingClientRect(), vh = innerHeight;
+    var p = (vh * 0.8 - r.top) / (r.height + vh * 0.3);
+    route.style.strokeDashoffset = String(Math.min(1, Math.max(0, 1 - p)));
+  }
+  addEventListener('scroll', drawRoute, { passive: true }); addEventListener('resize', drawRoute); drawRoute();
+
+  // filter chips
+  var chips = document.querySelectorAll('.chip'), tiles = Array.prototype.slice.call(document.querySelectorAll('.grid li'));
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+      var f = c.dataset.filter;
+      tiles.forEach(function (li) { li.classList.toggle('hide', f !== 'all' && li.dataset.status !== f); });
+    });
+  });
+
+  if (reduce) { document.querySelectorAll('.ornament, .ivy-bottom, .step, .quote').forEach(function (el) { el.classList.add('grow'); }); return; }
+
+  // scroll-triggered entrances, each once
+  var grid = document.querySelector('.grid'), trail = document.querySelector('.paw-trail');
+  [grid, trail].forEach(function (el) { if (!el) return; el.classList.add('will-animate'); Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); }); });
+  document.querySelectorAll('.ornament').forEach(function (o) { var h = o.previousElementSibling; if (h && h.tagName === 'H2') h.classList.add('will-rise'); });
+  function settle(el) { el.addEventListener('animationend', function () { el.classList.add('settled'); }, { once: true }); }
+  var io = new IntersectionObserver(function (entries) {
+    var k = 0;
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var el = e.target;
+      if (el.matches('.grid li')) { el.style.setProperty('--k', k++); settle(el); el.classList.add('is-in'); }
+      else if (el === trail) el.classList.add('is-in');
+      else { el.style.setProperty('--k', k++); el.classList.add('grow'); var h = el.previousElementSibling; if (h && h.classList.contains('will-rise')) h.classList.add('risen'); }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.2 });
+  if (trail) io.observe(trail);
+  tiles.forEach(function (t) { io.observe(t); });
+  document.querySelectorAll('.ornament, .ivy-bottom, .step, .quote').forEach(function (el) { io.observe(el); });
+
+  // cursor paw prints across the hero (mouse only)
+  if (!matchMedia('(pointer: fine)').matches) return;
+  var last = null, side = 1, live = 0;
+  hero.addEventListener('mousemove', function (e) {
+    var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (last) {
+      var dx = x - last.x, dy = y - last.y;
+      if (dx * dx + dy * dy < 58 * 58) return;
+      var ang = Math.atan2(dy, dx) * 180 / Math.PI + 90; side = -side;
+      var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      s.setAttribute('class', 'paw-ghost'); s.innerHTML = '<use href="#paw"/>';
+      s.style.left = (x + side * 11) + 'px'; s.style.top = y + 'px'; s.style.setProperty('--rot', (ang + side * 16) + 'deg');
+      hero.appendChild(s); live++;
+      if (live > 60) { var first = hero.querySelector('.paw-ghost'); if (first) { first.remove(); live--; } }
+      s.addEventListener('animationend', function () { s.remove(); live--; });
+    }
+    last = { x: x, y: y };
+  });
+  hero.addEventListener('mouseleave', function () { last = null; });
+})();
+</script>
+</body>
+</html>
