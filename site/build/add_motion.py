@@ -57,7 +57,7 @@ css = r"""
 .paw-trail svg{width:26px;height:26px;fill:var(--teal);opacity:.5}
 .paw-trail svg:nth-child(odd){transform:translateY(-7px) rotate(-16deg) scaleX(-1)}
 .paw-trail svg:nth-child(even){transform:translateY(7px) rotate(16deg)}
-.paw-ghost{position:absolute;z-index:2;width:26px;height:26px;fill:var(--teal);pointer-events:none;opacity:0;
+.paw-ghost{position:absolute;z-index:2;width:36px;height:36px;fill:var(--teal);pointer-events:none;opacity:0;
   transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(.6)}
 .social{transition:background-color .15s,color .15s,transform .35s cubic-bezier(.34,1.56,.64,1)}
 .grid img{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
@@ -68,46 +68,51 @@ css = r"""
   /* ivy growth: stems draw on, leaves unfurl as the tip passes (any .grow container) */
   .st{stroke-dasharray:1;stroke-dashoffset:1}
   .lf{transform:scale(0)}
-  .grow .st{animation:draw var(--len,.8s) ease-out calc(var(--base,0s) + var(--d,0s)) forwards}
-  .grow .lf{animation:leafPop .55s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards}
-  .grow .vine-leaf{animation:leafPop .55s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
-    sway 5.5s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1.2s) infinite alternate}
+  .grow .st{animation:draw calc(var(--len,.8s) * .8) cubic-bezier(.2,.9,.3,1) calc(var(--base,0s) + var(--d,0s)) forwards}
+  .grow .lf{animation:leafPop .7s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
+    ripple 3.6s ease-in-out calc(var(--base,0s) + var(--d,0s) + .9s) infinite alternate}
+  .grow .vine-leaf{animation:leafPop .7s cubic-bezier(.34,1.56,.64,1) calc(var(--base,0s) + var(--d,0s)) forwards,
+    sway 3.2s ease-in-out calc(var(--base,0s) + var(--d,0s) + 1s) infinite alternate}
   @keyframes draw{to{stroke-dashoffset:0}}
-  @keyframes leafPop{60%{transform:scale(1.12)}to{transform:scale(1)}}
-  @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
-  .tagline,.socials li{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  h2.will-rise{opacity:0;transform:translateY(34px)}
+  h2.risen{animation:rise .9s cubic-bezier(.34,1.56,.64,1) forwards}
+  @keyframes leafPop{55%{transform:scale(1.32) rotate(-8deg)}80%{transform:scale(.94) rotate(4deg)}to{transform:scale(1)}}
+  @keyframes sway{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+  @keyframes ripple{from{transform:rotate(-7deg) scale(1)}50%{transform:rotate(2deg) scale(1.04)}to{transform:rotate(7deg) scale(1)}}
+  .tagline,.socials li{opacity:0;animation:rise .9s cubic-bezier(.34,1.56,.64,1) forwards}
   .tagline{animation-delay:1.4s}
   .socials li:nth-child(1){animation-delay:1.9s}
   .socials li:nth-child(2){animation-delay:2.05s}
   .socials li:nth-child(3){animation-delay:2.2s}
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .hero .arch{animation:fadeIn .9s ease-out both}
-  .hero .arch img{transform:scale(1.08);animation:settle 2.2s cubic-bezier(.2,.7,.2,1) .1s forwards}
+  @keyframes rise{from{opacity:0;transform:translateY(42px) scale(.86)}to{opacity:1;transform:none}}
+  .hero .arch{animation:archIn 1.1s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes archIn{from{opacity:0;transform:translateY(60px) scale(.92)}to{opacity:1;transform:none}}
+  .hero .arch img{transform:scale(1.22) rotate(-3deg);animation:settle 2.4s cubic-bezier(.2,.8,.2,1) .1s forwards}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  @keyframes settle{to{transform:scale(1)}}
+  @keyframes settle{to{transform:scale(1) rotate(0)}}
   /* buttons answer the pointer */
-  .social:hover{transform:translateY(-3px)}
-  .social:hover svg{animation:wiggle .5s ease-in-out}
-  @keyframes wiggle{25%{transform:rotate(-14deg)}75%{transform:rotate(12deg)}}
+  .social:hover{transform:translateY(-7px) scale(1.06)}
+  .social:hover svg{animation:wiggle .6s ease-in-out}
+  @keyframes wiggle{20%{transform:rotate(-24deg) scale(1.25)}60%{transform:rotate(18deg) scale(1.15)}}
   /* gallery: paw prints walk in, then the tiles tumble into place */
   .paw-trail.will-animate svg{opacity:0;transform:scale(.4)}
-  .paw-trail.is-in svg{animation:pawIn .45s cubic-bezier(.34,1.56,.64,1) calc(var(--i,0) * .16s) forwards}
+  .paw-trail.is-in svg{animation:pawIn .55s cubic-bezier(.34,1.56,.64,1) calc(var(--i,0) * .22s) forwards}
   .paw-trail.is-in svg:nth-child(odd){animation-name:pawInL}
-  @keyframes pawIn{to{opacity:.5;transform:translateY(7px) rotate(16deg) scale(1)}}
-  @keyframes pawInL{to{opacity:.5;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
-  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(var(--tilt,2deg))}
+  @keyframes pawIn{50%{opacity:.75;transform:translateY(-4px) rotate(16deg) scale(1.5)}to{opacity:.55;transform:translateY(7px) rotate(16deg) scale(1)}}
+  @keyframes pawInL{50%{opacity:.75;transform:translateY(-18px) rotate(-16deg) scaleX(-1) scale(1.5)}to{opacity:.55;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(90px) rotate(var(--tilt,2deg)) scale(.9)}
   .grid li:nth-child(even){--tilt:-2deg}
-  .grid li.is-in{animation:tumble .85s cubic-bezier(.2,.8,.2,1) calc(.15s + var(--k,0) * .11s) forwards}
+  .grid li.is-in{animation:tumble 1s cubic-bezier(.34,1.4,.64,1) calc(.1s + var(--k,0) * .13s) forwards}
   .grid li.settled{animation:none}
   @keyframes tumble{to{opacity:1;transform:none}}
-  .grid li:hover img{transform:scale(1.045)}
+  .grid li:hover img{transform:scale(1.07)}
   /* cursor paw prints across the hero */
-  .paw-ghost{animation:pawGhost 1.7s ease-out forwards}
-  @keyframes pawGhost{12%{opacity:.42;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}
+  .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
+  @keyframes pawGhost{12%{opacity:.62;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}
     100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}}
 }
 """
-html = re.sub(r'\n/\* ===== motion.*?\n\}\n', "\n", html, count=1, flags=re.S)
+html = re.sub(r'\n/\* ===== (texture \+ ornament|motion \(everything)[^\n]*\n.*?(?=\n/\* =====|\n</style>)', "", html, flags=re.S)
 html = html.replace("</style>", css.rstrip("\n") + "\n</style>\n<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}</style></noscript>", 1)
 html = html.replace("<noscript><style>.st{stroke-dashoffset:0!important}.lf,.vine-leaf{transform:none!important}</style></noscript>\n<noscript>", "<noscript>")
 
@@ -138,8 +143,9 @@ js = r"""
     if (trail) io.observe(trail);
     tiles.forEach(function (t) { io.observe(t); });
     var sprouts = document.querySelectorAll('.ornament, .ivy-bottom');
+    Array.prototype.forEach.call(document.querySelectorAll('.ornament'), function (o) { if (o.previousElementSibling && o.previousElementSibling.tagName === 'H2') o.previousElementSibling.classList.add('will-rise'); });
     var grow = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('grow'); grow.unobserve(e.target); } });
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('grow'); var h = e.target.previousElementSibling; if (h && h.classList.contains('will-rise')) h.classList.add('risen'); grow.unobserve(e.target); } });
     }, { threshold: 0.3 });
     sprouts.forEach(function (el) { grow.observe(el); });
   } else {
@@ -154,7 +160,7 @@ js = r"""
     var r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
     if (last) {
       var dx = x - last.x, dy = y - last.y;
-      if (dx * dx + dy * dy < 85 * 85) return;
+      if (dx * dx + dy * dy < 58 * 58) return;
       var ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;
       side = -side;
       var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -165,7 +171,7 @@ js = r"""
       s.style.setProperty('--rot', (ang + side * 16) + 'deg');
       if (side < 0) s.style.setProperty('--rot', (ang + side * 16) + 'deg');
       hero.appendChild(s); live++;
-      if (live > 40) { var first = hero.querySelector('.paw-ghost'); if (first) { first.remove(); live--; } }
+      if (live > 60) { var first = hero.querySelector('.paw-ghost'); if (first) { first.remove(); live--; } }
       s.addEventListener('animationend', function () { s.remove(); live--; });
     }
     last = { x: x, y: y };

@@ -68,8 +68,10 @@ css = r"""
 @media (min-width:860px){.hero .arch-figure{order:0}}
 .arch-figure .arch{width:100%}
 .kotw-caption{font:italic 500 1.05rem/1.3 var(--serif);color:var(--ink-soft);text-align:center;margin-top:.9rem}
+@media (prefers-reduced-motion:no-preference){.kotw-caption{opacity:0;animation:rise .9s cubic-bezier(.34,1.56,.64,1) 1.6s forwards}}
 .grid{gap:clamp(18px,3vw,34px)}
-.grid li{aspect-ratio:auto;border-radius:0;overflow:visible;background:none;transform:rotate(var(--rest,0deg));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.grid li{aspect-ratio:auto;border-radius:0;overflow:visible;background:none;transform:rotate(var(--rest,0deg));transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.polaroid{transition:box-shadow .5s}
 .grid li:nth-child(6n+1){--rest:-2.4deg}
 .grid li:nth-child(6n+2){--rest:1.6deg}
 .grid li:nth-child(6n+3){--rest:-1.1deg}
@@ -87,11 +89,12 @@ css = r"""
 @media (prefers-reduced-motion:no-preference){
   .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(calc(var(--rest,0deg) + var(--tilt,2deg)))}
   @keyframes tumble{to{opacity:1;transform:rotate(var(--rest,0deg))}}
-  .grid li:hover{transform:rotate(0deg) translateY(-6px) scale(1.02);z-index:1}
+  .grid li:hover{transform:rotate(0deg) translateY(-16px) scale(1.06);z-index:1}
+  .grid li:hover .polaroid{box-shadow:0 2px 3px rgba(58,53,50,.1),0 28px 40px -16px rgba(58,53,50,.45)}
   .grid li:hover img{transform:none}
 }
 """
-html = re.sub(r'\n/\* ===== polaroid gallery.*?\n\}\n', "\n", html, count=1, flags=re.S)
+html = re.sub(r'\n/\* ===== polaroid gallery[^\n]*\n.*?(?=\n/\* =====|\n</style>)', "", html, flags=re.S)
 html = html.replace("</style>", css.rstrip("\n") + "\n</style>", 1)
 
 # ---------- 4. paper grain: alpha-only SVG noise laid over the whole page ----------
@@ -105,7 +108,7 @@ grain_css = """
 body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
   background:url("NOISE") repeat;background-size:260px 260px;opacity:.075;mix-blend-mode:multiply}
 """.replace("NOISE", noise_uri)
-html = re.sub(r'\n/\* ===== paper grain =====.*?\n', "\n", html, count=1, flags=re.S)
+html = re.sub(r'\n/\* ===== paper grain[^\n]*\n.*?(?=\n/\* =====|\n</style>)', "", html, flags=re.S)
 html = re.sub(r'body::after\{content:"";position:fixed;inset:0;z-index:9999;[^\n]*\n[^\n]*\n', "", html, count=1)
 html = html.replace("</style>", grain_css.rstrip("\n") + "\n</style>", 1)
 
@@ -115,7 +118,7 @@ def _ivy(name, cls, style=""):
     svg = (SITE / f"assets/{name}.svg").read_text(encoding="utf-8").strip()
     svg = re.sub(r'\s(width|height)="[^"]*"', "", svg, count=2)
     return svg.replace('class="ivy"', f'class="{cls}"' + (f' style="{style}"' if style else ""), 1)
-html = re.sub(r'\s*<svg class="ivy ivy-(top|bottom)[^"]*".*?</svg>', "", html, flags=re.S)
+html = re.sub(r'\s*<svg[^>]*class="ivy ivy-(top|bottom)[^"]*"[^>]*>.*?</svg>', "", html, flags=re.S)
 html = re.sub(r'\s*<img class="ivy ivy-(top|bottom)"[^>]*>', "", html)
 html = html.replace('<header class="hero">\n', '<header class="hero">\n  ' + _ivy("ivy-garland", "ivy ivy-top grow", "--base:.4s") + '\n', 1)
 html = html.replace('<footer>\n', '<footer>\n  ' + _ivy("ivy-climber", "ivy ivy-bottom") + '\n', 1)
@@ -127,13 +130,13 @@ footer{position:relative;overflow:hidden}
 footer > :not(.ivy){position:relative;z-index:1}
 .ivy-bottom{right:-10px;bottom:-8px;transform-origin:100% 100%;width:clamp(170px,24vw,320px)}
 @media (prefers-reduced-motion:no-preference){
-  .ivy-top{animation:ivySwayTop 7s ease-in-out infinite alternate}
-  .ivy-bottom{animation:ivySwayBottom 8s ease-in-out -3s infinite alternate}
-  @keyframes ivySwayTop{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
-  @keyframes ivySwayBottom{from{transform:rotate(1deg)}to{transform:rotate(-1deg)}}
+  .ivy-top{animation:ivySwayTop 5s ease-in-out infinite alternate}
+  .ivy-bottom{animation:ivySwayBottom 6s ease-in-out -3s infinite alternate}
+  @keyframes ivySwayTop{from{transform:rotate(-2.6deg) translateX(-4px)}to{transform:rotate(2.6deg) translateX(4px)}}
+  @keyframes ivySwayBottom{from{transform:rotate(2.4deg)}to{transform:rotate(-2.4deg)}}
 }
 """
-html = re.sub(r'\n/\* ===== ivy drapes =====.*?\n\}\n', "\n", html, count=1, flags=re.S)
+html = re.sub(r'\n/\* ===== ivy drapes[^\n]*\n.*?(?=\n/\* =====|\n</style>)', "", html, flags=re.S)
 html = html.replace("</style>", ivy_css.rstrip("\n") + "\n</style>", 1)
 
 html_path.write_text(html, encoding="utf-8")
