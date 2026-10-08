@@ -64,6 +64,8 @@ html = re.sub(r'<div class="arch">\s*<img src="img/kitten-cream-blue-eyes.jpg"[^
 css = r"""
 /* ===== polaroid gallery + kitten of the week ===== */
 .arch-figure{margin:0;width:min(100%,500px);margin-inline:auto}
+.hero .arch-figure{order:-1}
+@media (min-width:860px){.hero .arch-figure{order:0}}
 .arch-figure .arch{width:100%}
 .kotw-caption{font:italic 500 1.05rem/1.3 var(--serif);color:var(--ink-soft);text-align:center;margin-top:.9rem}
 .grid{gap:clamp(18px,3vw,34px)}
@@ -106,6 +108,28 @@ body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
 html = re.sub(r'\n/\* ===== paper grain =====.*?\n', "\n", html, count=1, flags=re.S)
 html = re.sub(r'body::after\{content:"";position:fixed;inset:0;z-index:9999;[^\n]*\n[^\n]*\n', "", html, count=1)
 html = html.replace("</style>", grain_css.rstrip("\n") + "\n</style>", 1)
+
+
+# ---------- 5. ivy drapes: the generated ivy garland (build_ivy.py) over the hero and the footer ----------
+html = re.sub(r'\s*<img class="ivy ivy-(top|bottom)"[^>]*>', "", html)
+html = html.replace('<header class="hero">\n', '<header class="hero">\n  <img class="ivy ivy-top" src="assets/ivy.svg" alt="" aria-hidden="true" width="560" height="310">\n', 1)
+html = html.replace('<footer>\n', '<footer>\n  <img class="ivy ivy-bottom" src="assets/ivy.svg" alt="" aria-hidden="true" width="560" height="310">\n', 1)
+ivy_css = """
+/* ===== ivy drapes ===== */
+.ivy{position:absolute;z-index:0;pointer-events:none;width:clamp(210px,34vw,470px);height:auto;filter:drop-shadow(0 2px 2px rgba(58,53,50,.12))}
+.ivy-top{left:-14px;top:-12px;transform-origin:0 0}
+footer{position:relative;overflow:hidden}
+footer > :not(.ivy){position:relative;z-index:1}
+.ivy-bottom{right:-18px;bottom:-16px;transform:rotate(180deg);transform-origin:50% 50%;width:clamp(170px,26vw,360px)}
+@media (prefers-reduced-motion:no-preference){
+  .ivy-top{animation:ivySwayTop 7s ease-in-out infinite alternate}
+  .ivy-bottom{animation:ivySwayBottom 8s ease-in-out -3s infinite alternate}
+  @keyframes ivySwayTop{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
+  @keyframes ivySwayBottom{from{transform:rotate(178.9deg)}to{transform:rotate(181.1deg)}}
+}
+"""
+html = re.sub(r'\n/\* ===== ivy drapes =====.*?\n\}\n', "\n", html, count=1, flags=re.S)
+html = html.replace("</style>", ivy_css.rstrip("\n") + "\n</style>", 1)
 
 html_path.write_text(html, encoding="utf-8")
 print("index.html patched:", len(html), "chars; polaroids:", html.count('class="polaroid"'), "; kotw:", html.count('id="kotw"'))
