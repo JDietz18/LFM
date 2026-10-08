@@ -24,5 +24,10 @@ whole `site/` folder (minus `build/`) to any web host.
 
   Needs `fonttools` and `uharfbuzz` (`pip install fonttools uharfbuzz`).
 
+  The page is then assembled by two idempotent patch steps (run both, in order, from
+  `build/`, after any logo rebuild): `python -P add_motion.py` (inlines the wordmark, adds
+  motion, shiplap and ornaments) and `python -P add_features.py` (polaroid gallery, kitten
+  of the week). `python -P make_artifact.py` derives the claude.ai preview page.
+
 Palette: whitewash #F7F3EC, linen #EDE5D8, ink #3A3532, teal #2E8B8B, blush #F0CFC0,
 sage #9DAE98. Type: Great Vibes (script), Cormorant Garamond (headings), Nunito (body).

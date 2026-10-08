@@ -97,9 +97,10 @@ css = r"""
   .paw-trail.is-in svg:nth-child(odd){animation-name:pawInL}
   @keyframes pawIn{to{opacity:.5;transform:translateY(7px) rotate(16deg) scale(1)}}
   @keyframes pawInL{to{opacity:.5;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
-  .grid.will-animate li{opacity:0;transform:translateY(30px) rotate(var(--tilt,2deg))}
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(var(--tilt,2deg))}
   .grid li:nth-child(even){--tilt:-2deg}
-  .grid.is-in li{animation:tumble .85s cubic-bezier(.2,.8,.2,1) calc(.5s + var(--i,0) * .11s) forwards}
+  .grid li.is-in{animation:tumble .85s cubic-bezier(.2,.8,.2,1) calc(.15s + var(--k,0) * .11s) forwards}
+  .grid li.settled{animation:none}
   @keyframes tumble{to{opacity:1;transform:none}}
   .grid li:hover img{transform:scale(1.045)}
   /* cursor paw prints across the hero */
@@ -123,13 +124,23 @@ js = r"""
     el.classList.add('will-animate');
     Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); });
   });
+  var tiles = grid ? Array.prototype.slice.call(grid.children) : [];
+  function settle(el) { el.addEventListener('animationend', function () { el.classList.add('settled'); }, { once: true }); }
   if ('IntersectionObserver' in window) {
+    // the trail enters as one unit; tiles enter one by one so a phone sees each as it scrolls
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.2 });
-    [grid, trail].forEach(function (el) { if (el) io.observe(el); });
+      var k = 0;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        if (e.target !== trail) { e.target.style.setProperty('--k', k++); settle(e.target); }
+        e.target.classList.add('is-in'); io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    if (trail) io.observe(trail);
+    tiles.forEach(function (t) { io.observe(t); });
   } else {
-    [grid, trail].forEach(function (el) { if (el) el.classList.add('is-in'); });
+    if (trail) trail.classList.add('is-in');
+    tiles.forEach(function (t) { t.classList.add('is-in', 'settled'); });
   }
   // cursor paw prints across the hero (mouse only)
   if (!matchMedia('(pointer: fine)').matches) return;

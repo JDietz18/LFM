@@ -122,6 +122,35 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
 }
 .ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
 .gallery .ornament,.contact .ornament{margin-inline:auto}
+
+
+
+/* ===== texture + ornament ===== */
+.about,.follow{
+  --plank:176px;
+  background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--plank) - 3px),
+      rgba(120,100,78,.11) calc(var(--plank) - 3px), rgba(120,100,78,.11) calc(var(--plank) - 1px),
+      rgba(255,255,255,.6) calc(var(--plank) - 1px), rgba(255,255,255,.6) var(--plank));
+  background-position:0 56px;
+}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
+.gallery .ornament,.contact .ornament{margin-inline:auto}
+
+
+/* ===== texture + ornament ===== */
+.about,.follow{
+  --plank:176px;
+  background-color:var(--linen);
+  background-image:repeating-linear-gradient(to bottom,
+      transparent 0, transparent calc(var(--plank) - 3px),
+      rgba(120,100,78,.11) calc(var(--plank) - 3px), rgba(120,100,78,.11) calc(var(--plank) - 1px),
+      rgba(255,255,255,.6) calc(var(--plank) - 1px), rgba(255,255,255,.6) var(--plank));
+  background-position:0 56px;
+}
+.ornament{display:block;width:150px;max-width:60%;height:auto;margin:-.15em 0 1.1em}
+.gallery .ornament,.contact .ornament{margin-inline:auto}
 /* ===== motion (everything below is skipped when the viewer prefers reduced motion) ===== */
 .wordmark{display:block;height:auto}
 .hero{position:relative;overflow:hidden}
@@ -171,15 +200,43 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
   .paw-trail.is-in svg:nth-child(odd){animation-name:pawInL}
   @keyframes pawIn{to{opacity:.5;transform:translateY(7px) rotate(16deg) scale(1)}}
   @keyframes pawInL{to{opacity:.5;transform:translateY(-7px) rotate(-16deg) scaleX(-1) scale(1)}}
-  .grid.will-animate li{opacity:0;transform:translateY(30px) rotate(var(--tilt,2deg))}
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(var(--tilt,2deg))}
   .grid li:nth-child(even){--tilt:-2deg}
-  .grid.is-in li{animation:tumble .85s cubic-bezier(.2,.8,.2,1) calc(.5s + var(--i,0) * .11s) forwards}
+  .grid li.is-in{animation:tumble .85s cubic-bezier(.2,.8,.2,1) calc(.15s + var(--k,0) * .11s) forwards}
+  .grid li.settled{animation:none}
   @keyframes tumble{to{opacity:1;transform:none}}
   .grid li:hover img{transform:scale(1.045)}
   /* cursor paw prints across the hero */
   .paw-ghost{animation:pawGhost 1.7s ease-out forwards}
   @keyframes pawGhost{12%{opacity:.42;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}
     100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1)}}
+}
+
+/* ===== polaroid gallery + kitten of the week ===== */
+.arch-figure{margin:0;width:min(100%,500px);margin-inline:auto}
+.arch-figure .arch{width:100%}
+.kotw-caption{font:italic 500 1.05rem/1.3 var(--serif);color:var(--ink-soft);text-align:center;margin-top:.9rem}
+.grid{gap:clamp(18px,3vw,34px)}
+.grid li{aspect-ratio:auto;border-radius:0;overflow:visible;background:none;transform:rotate(var(--rest,0deg));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.grid li:nth-child(6n+1){--rest:-2.4deg}
+.grid li:nth-child(6n+2){--rest:1.6deg}
+.grid li:nth-child(6n+3){--rest:-1.1deg}
+.grid li:nth-child(6n+4){--rest:2.1deg}
+.grid li:nth-child(6n+5){--rest:-1.7deg}
+.grid li:nth-child(6n+6){--rest:1.2deg}
+.polaroid{position:relative;margin:0;background:#FFFDF8;padding:12px 12px 14px;
+  box-shadow:0 1px 2px rgba(58,53,50,.08),0 10px 24px -10px rgba(58,53,50,.35)}
+.polaroid img{aspect-ratio:4/5;width:100%;height:auto;object-fit:cover;display:block;background:var(--linen)}
+.polaroid::before{content:"";position:absolute;left:50%;top:-11px;width:84px;height:24px;margin-left:-42px;
+  background:rgba(237,229,216,.82);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(58,53,50,.12);
+  -webkit-mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px);mask:repeating-linear-gradient(90deg,#000 0 7px,rgba(0,0,0,.85) 7px 9px)}
+.polaroid figcaption{font:400 1.55rem/1 var(--script);color:var(--ink);text-align:center;padding:14px 4px 8px;min-height:2.6rem}
+.polaroid figcaption mark.edit{border-bottom-width:1px}
+@media (prefers-reduced-motion:no-preference){
+  .grid.will-animate li:not(.settled){opacity:0;transform:translateY(30px) rotate(calc(var(--rest,0deg) + var(--tilt,2deg)))}
+  @keyframes tumble{to{opacity:1;transform:rotate(var(--rest,0deg))}}
+  .grid li:hover{transform:rotate(0deg) translateY(-6px) scale(1.02);z-index:1}
+  .grid li:hover img{transform:none}
 }
 </style>
 </head>
@@ -221,9 +278,24 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
           TikTok</a></li>
       </ul>
     </div>
-    <div class="arch">
-      <img src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high">
-    </div>
+    <figure class="arch-figure">
+      <div class="arch">
+        <img id="kotw" src="img/kitten-cream-blue-eyes.jpg" alt="A cream Munchkin kitten with blue eyes sitting in front of peonies" width="1054" height="1400" fetchpriority="high">
+      </div>
+      <figcaption class="kotw-caption">Kitten of the week</figcaption>
+      <script>
+      (function () {
+        // same kitten for everyone all week: index by ISO week number
+        var pool = [["kitten-cream-blue-eyes.jpg","A cream Munchkin kitten with blue eyes sitting in front of peonies"],["kitten-ginger-peonies.jpg","Ginger and white Munchkin kitten looking up beside a jar of peonies"],["kitten-lynx-point-standing.jpg","Lynx-point Munchkin kitten standing with tail raised"],["kitten-blue-point-closeup.jpg","Fluffy blue-point Munchkin kitten with pale blue eyes"],["kitten-seal-point-lounging.jpg","Seal-point Munchkin kitten lying on a floral quilt"],["kitten-ginger-tail-up.jpg","Ginger Munchkin kitten with its tail held high"],["kitten-blue-point-scratcher.jpg","Blue-point Munchkin kitten stretched out on a cardboard scratcher"]];
+        var d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+        var week = Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+        var pick = pool[(t.getUTCFullYear() * 53 + week) % pool.length];
+        var img = document.getElementById('kotw');
+        img.src = 'img/' + pick[0]; img.alt = pick[1];
+      })();
+      </script>
+    </figure>
   </div>
 </header>
 
@@ -271,12 +343,12 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
 </svg>
     <p class="lede">A few of the little ones who have grown up here. Many more on Instagram.</p>
     <ul class="grid">
-      <li><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1237" height="1400"></li>
-      <li><img src="img/kitten-blue-point-closeup.jpg" alt="Fluffy blue-point Munchkin kitten with pale blue eyes" loading="lazy" width="1069" height="1400"></li>
-      <li><img src="img/kitten-lynx-point-standing.jpg" alt="Lynx-point Munchkin kitten standing with tail raised" loading="lazy" width="1067" height="1400"></li>
-      <li><img src="img/kitten-seal-point-lounging.jpg" alt="Seal-point Munchkin kitten lying on a floral quilt" loading="lazy" width="1078" height="1400"></li>
-      <li><img src="img/kitten-ginger-tail-up.jpg" alt="Ginger Munchkin kitten with its tail held high" loading="lazy" width="1064" height="1400"></li>
-      <li><img src="img/kitten-blue-point-scratcher.jpg" alt="Blue-point Munchkin kitten stretched out on a cardboard scratcher" loading="lazy" width="1081" height="1400"></li>
+      <li><figure class="polaroid"><img src="img/kitten-ginger-peonies.jpg" alt="Ginger and white Munchkin kitten looking up beside a jar of peonies" loading="lazy" width="1237" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">ginger &amp; white</mark></figcaption></figure></li>
+      <li><figure class="polaroid"><img src="img/kitten-blue-point-closeup.jpg" alt="Fluffy blue-point Munchkin kitten with pale blue eyes" loading="lazy" width="1069" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">blue point</mark></figcaption></figure></li>
+      <li><figure class="polaroid"><img src="img/kitten-lynx-point-standing.jpg" alt="Lynx-point Munchkin kitten standing with tail raised" loading="lazy" width="1067" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">lynx point</mark></figcaption></figure></li>
+      <li><figure class="polaroid"><img src="img/kitten-seal-point-lounging.jpg" alt="Seal-point Munchkin kitten lying on a floral quilt" loading="lazy" width="1078" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">seal point</mark></figcaption></figure></li>
+      <li><figure class="polaroid"><img src="img/kitten-ginger-tail-up.jpg" alt="Ginger Munchkin kitten with its tail held high" loading="lazy" width="1064" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">ginger</mark></figcaption></figure></li>
+      <li><figure class="polaroid"><img src="img/kitten-blue-point-scratcher.jpg" alt="Blue-point Munchkin kitten stretched out on a cardboard scratcher" loading="lazy" width="1081" height="1400"><figcaption><mark class="edit" title="Edit: the kitten's name or colour">blue point</mark></figcaption></figure></li>
     </ul>
   </div>
 </section>
@@ -353,13 +425,23 @@ footer img{width:128px;margin:0 auto 10px;opacity:.85}
     el.classList.add('will-animate');
     Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); });
   });
+  var tiles = grid ? Array.prototype.slice.call(grid.children) : [];
+  function settle(el) { el.addEventListener('animationend', function () { el.classList.add('settled'); }, { once: true }); }
   if ('IntersectionObserver' in window) {
+    // the trail enters as one unit; tiles enter one by one so a phone sees each as it scrolls
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.2 });
-    [grid, trail].forEach(function (el) { if (el) io.observe(el); });
+      var k = 0;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        if (e.target !== trail) { e.target.style.setProperty('--k', k++); settle(e.target); }
+        e.target.classList.add('is-in'); io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    if (trail) io.observe(trail);
+    tiles.forEach(function (t) { io.observe(t); });
   } else {
-    [grid, trail].forEach(function (el) { if (el) el.classList.add('is-in'); });
+    if (trail) trail.classList.add('is-in');
+    tiles.forEach(function (t) { t.classList.add('is-in', 'settled'); });
   }
   // cursor paw prints across the hero (mouse only)
   if (!matchMedia('(pointer: fine)').matches) return;
