@@ -78,10 +78,27 @@ ICO_CHAT = f'<svg viewBox="0 0 48 48" aria-hidden="true" {T}><path d="M8 12h32v2
 ICO_EYES = f'<svg viewBox="0 0 48 48" aria-hidden="true" {T}><path d="M4 24s8-12 20-12 20 12 20 12-8 12-20 12S4 24 4 24z"/><circle cx="24" cy="24" r="6"/></svg>'
 ICO_PAW = '<svg viewBox="0 0 128 128" aria-hidden="true"><use href="#paw"/></svg>'
 
+# ---- footprints: a kitten walks across the evening band on a meandering path ----
+import math
+N_FP, STEP_S = 18, 0.36
+# total cycle: every print appears during the first N*step, stays ~26% of the cycle, then the trail clears
+CYCLE_S = round(N_FP * STEP_S / 0.62, 2)
+fps = []
+for i in range(N_FP):
+    t = i / (N_FP - 1)
+    x = 3 + 94 * t                                   # percent across the band
+    y = 72 + 14 * math.sin(t * math.pi * 1.6 + 0.4)  # percent down, meandering
+    dy = 14 * 1.6 * math.pi * math.cos(t * math.pi * 1.6 + 0.4) / 94  # slope in percent units
+    heading = math.degrees(math.atan2(dy, 1)) + 90   # paw points along travel
+    side = -1 if i % 2 else 1
+    fps.append(f'<svg class="fp" style="left:{x:.1f}%;top:{y + side * 2.2:.1f}%;--i:{i};--rot:{heading:.0f}deg;--flip:{side}"><use href="#paw"/></svg>')
+FOOTPRINTS = "".join(fps)
+
 html = (B / "template.html").read_text(encoding="utf-8")
+html = html.replace(".footprints{position:absolute;", f".footprints{{--cycle:{CYCLE_S}s;--step:{STEP_S}s;position:absolute;", 1)
 subs = {
     "{{PAW_SYMBOL}}": PAW_SYMBOL, "{{PAW_TRAIL}}": PAW_TRAIL, "{{KITTEN_CARDS}}": KITTEN_CARDS, "{{KOTW_POOL}}": KOTW_POOL,
-    "{{GRAIN_URI}}": GRAIN_URI,
+    "{{GRAIN_URI}}": GRAIN_URI, "{{FOOTPRINTS}}": FOOTPRINTS,
     "{{WORDMARK}}": svg_inline("logo-a-wordmark-ivy", "wordmark grow", "--base:2.6s"),
     "{{ORNAMENT}}": svg_inline("ornament", "ornament"),
     "{{IVY_GARLAND}}": svg_inline("ivy-garland", "ivy ivy-top grow", "--base:.6s"),

@@ -191,6 +191,8 @@ details .a{padding:0 4px 20px;color:var(--ink-soft);max-width:62ch}
 .evening .wrap{position:relative;z-index:1;max-width:760px}
 .evening .mono{width:140px;height:auto;margin:48px auto 10px;opacity:.9}
 .evening .fine{text-align:center;color:rgba(255,255,255,.6);font-size:.9rem}
+.footprints{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fp{position:absolute;width:30px;height:30px;fill:#fff;opacity:.22;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scaleX(var(--flip,1))}
 .stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 12% 18%,rgba(255,255,255,.55) 50%,transparent 51%),radial-gradient(1px 1px at 32% 40%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 58% 12%,rgba(255,255,255,.5) 50%,transparent 51%),radial-gradient(1px 1px at 80% 30%,rgba(255,255,255,.45) 50%,transparent 51%),radial-gradient(1px 1px at 45% 70%,rgba(255,255,255,.3) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 90% 65%,rgba(255,255,255,.4) 50%,transparent 51%),radial-gradient(1px 1px at 22% 85%,rgba(255,255,255,.35) 50%,transparent 51%)}
 
 /* paper grain over everything */
@@ -216,8 +218,8 @@ body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;b
   @keyframes writeOn{to{clip-path:inset(-12% -2% -12% -2%)}}
   .glass{opacity:0;animation:rise .9s var(--spring) .9s forwards}
   .tagline{opacity:0;animation:rise .9s var(--spring) 2.3s forwards}
-  .socials li{opacity:0;animation:rise .9s var(--spring) forwards}
-  .socials li:nth-child(1){animation-delay:2.6s}.socials li:nth-child(2){animation-delay:2.75s}.socials li:nth-child(3){animation-delay:2.9s}
+  .hero .socials li{opacity:0;animation:rise .9s var(--spring) forwards}
+  .hero .socials li:nth-child(1){animation-delay:2.6s}.hero .socials li:nth-child(2){animation-delay:2.75s}.hero .socials li:nth-child(3){animation-delay:2.9s}
   .kotw-tag{opacity:0;animation:rise .9s var(--spring) 2s forwards}
   .scroll-hint{animation:bob 1.8s ease-in-out 3.5s infinite}
   @keyframes bob{50%{transform:translate(-50%,6px)}}
@@ -257,6 +259,12 @@ body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;b
   /* quotes */
   .quote{opacity:0;transform:translateY(30px)}
   .quote.grow{animation:rise .9s var(--spring) calc(var(--k,0) * .15s) forwards}
+  /* a kitten walks across the evening band, prints fading behind it */
+  .fp{opacity:0;animation:walk var(--cycle,12s) linear calc(var(--i,0) * var(--step,.36s)) infinite}
+  @keyframes walk{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(.4)}
+    2.5%{opacity:.5;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(1.15)}
+    4%{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scaleX(var(--flip,1)) scale(1)}
+    26%{opacity:.5}34%{opacity:0}100%{opacity:0}}
   /* cursor paws */
   .paw-ghost{animation:pawGhost 2.3s ease-out forwards}
   @keyframes pawGhost{12%{opacity:.34;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.25)}}
@@ -389,6 +397,7 @@ body::after{content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;b
 
 <section class="evening" id="contact">
   <div class="stars" aria-hidden="true"></div>
+  <div class="footprints" aria-hidden="true">{{FOOTPRINTS}}</div>
   {{IVY_CLIMBER}}
   <div class="wrap centered">
     <h2>Say hello</h2>
