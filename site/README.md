@@ -24,6 +24,8 @@ whole `site/` folder (minus `build/`) to any web host.
 
   Needs `fonttools` and `uharfbuzz` (`pip install fonttools uharfbuzz`).
 
+  `python -P build_ivy.py` draws `assets/ivy.svg`, the ivy garland on the hero and footer.
+
   The page is then assembled by two idempotent patch steps (run both, in order, from
   `build/`, after any logo rebuild): `python -P add_motion.py` (inlines the wordmark, adds
   motion, shiplap and ornaments) and `python -P add_features.py` (polaroid gallery, kitten
