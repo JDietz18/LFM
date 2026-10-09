@@ -16,7 +16,9 @@ whole `site/` folder (minus `build/`) to any web host.
 - `exports/` — PNG avatars for Facebook and Instagram: `avatar-paw` (paw on teal, full bleed)
   and `avatar-monogram` (L.F.M on whitewash), each at 1024 and 400 px. Re-render with
   `build/avatars.html` (`?v=paw` or `?v=mono`) at a 1024x1024 viewport.
-- `img/` — the seven unwatermarked photos, resized to 1400 px for the web.
+- `img/` — the seven unwatermarked photos, resized to 1400 px for the web, plus `social-card.jpg`
+  (1200x630, the Facebook / Twitter share image; re-render `build/socialcard.html` at 1200x630).
+- `favicon.ico` — multi-size icon from the paw avatar, for browsers that ignore the SVG favicon.
 - `build/` — run from inside `build/`, in this order, after any change:
 
   ```

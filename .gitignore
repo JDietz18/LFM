@@ -1,6 +1,7 @@
 # derived / scratch
 site/build/artifact.html
-site/build/shot-*.jpg
+site/build/*.jpg
+site/build/*.png
 __pycache__/
 *.pyc
 Thumbs.db
